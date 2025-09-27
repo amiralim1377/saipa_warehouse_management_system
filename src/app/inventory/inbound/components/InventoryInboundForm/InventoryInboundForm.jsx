@@ -1,21 +1,8 @@
 "use client";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import CategorySelect from "../CategorySelect/CategorySelect";
 import { useInventoryInbound } from "../../context/InventoryInboundProvider";
-import { useQuery } from "@tanstack/react-query";
-import { getSubcategories } from "../../services/getSubcategory";
 import SubcategorySelect from "../SubcategorySelect/SubcategorySelect";
 import UnitSelect from "../UnitSelect/UnitSelect";
 import LocationInput from "../LocationInput/LocationInput";
@@ -29,6 +16,7 @@ import SupplierInput from "../SupplierInput/SupplierInput";
 import EntryDateInput from "../EntryDateInput/EntryDateInput";
 import UnitPriceInput from "../UnitPriceInput/UnitPriceInput";
 import DescriptionTextarea from "../DescriptionTextarea/DescriptionTextarea";
+import { useSubcategories } from "../../hook/useSubcategories";
 
 export default function InventoryInboundForm() {
   const {
@@ -45,6 +33,7 @@ export default function InventoryInboundForm() {
     handleSubmit,
     watch,
     setValue,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -65,20 +54,12 @@ export default function InventoryInboundForm() {
     },
   });
 
-  const selectedCategoryId = watch("category");
-
   const {
+    selectedCategoryId,
     data: subcategories,
     isLoading,
     error,
-  } = useQuery({
-    queryKey: ["subcategories", selectedCategoryId],
-    queryFn: () => getSubcategories(selectedCategoryId),
-    enabled: !!selectedCategoryId,
-  });
-
-  const selectedWarehouseId = watch("warehouse");
-  console.log(selectedWarehouseId);
+  } = useSubcategories(control);
 
   const onSubmit = (data) => {
     console.log("Submitted data:", data);
