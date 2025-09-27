@@ -6,16 +6,17 @@ import jalaliday from "jalaliday";
 dayjs.extend(jalaliday);
 
 function ShamsiClock() {
-  const [time, setTime] = useState(
-    dayjs().calendar("jalali").locale("fa").format("YYYY/MM/DD HH:mm:ss")
-  );
+  const [time, setTime] = useState("");
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const updateTime = () => {
       setTime(
         dayjs().calendar("jalali").locale("fa").format("YYYY/MM/DD HH:mm:ss")
       );
-    }, 1000);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
 
     return () => clearInterval(interval);
   }, []);
