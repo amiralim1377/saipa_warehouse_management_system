@@ -5,10 +5,9 @@ import SideBar from "@/components/SideBar/SideBar";
 import Header from "@/components/Header/Header";
 
 export default function RootLayout({ children }) {
-  console.log(yekanbakh);
   return (
     <html dir="rtl" lang="fa" suppressHydrationWarning>
-      <body className={` ${yekanbakh.variable} flex`}>
+      <body className={`  ${yekanbakh.variable} flex`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -16,7 +15,7 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           <SideBar />
-          <section className="bg-yellow-300 w-full">
+          <section className=" w-full">
             <Header />
             <main>{children}</main>
           </section>
