@@ -25,8 +25,12 @@ import { useRacksByAisle } from "../../hook/useRacksByAisle";
 import { RackSelect } from "../RackSelect/RackSelect";
 import { ShelfSelect } from "../ShelfSelect/ShelfSelect";
 import { useShelvesByRack } from "../../hook/useShelvesByRack";
-
+import { v4 as uuidv4 } from "uuid";
+import { addPart } from "../../actions/addPart";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 export default function InventoryInboundForm() {
+  const router = useRouter();
   const {
     categories,
     setCategories,
@@ -40,9 +44,8 @@ export default function InventoryInboundForm() {
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
     control,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -51,11 +54,11 @@ export default function InventoryInboundForm() {
       partName: "",
       stock: 0,
       status: "",
-      categories,
+      category: "",
       subcategory: "",
       unit: "",
       location: "",
-      warehouses,
+      warehouse: "",
       zone: "",
       aisle: "",
       rack: "",
@@ -66,12 +69,7 @@ export default function InventoryInboundForm() {
     },
   });
 
-  const {
-    selectedCategoryId,
-    data: subcategories,
-    isLoading,
-    error,
-  } = useSubcategories(control);
+  const { data: subcategories, isLoading, error } = useSubcategories(control);
   const { zones, zonesLoading } = useWarehouseZones({ control });
   const {
     selectedZoneId,
@@ -83,8 +81,49 @@ export default function InventoryInboundForm() {
 
   const { shelves, isLoading: shelvesLoading } = useShelvesByRack(control);
 
-  const onSubmit = (data) => {
-    console.log("Submitted data:", data);
+  const onSubmit = async (data) => {
+    try {
+      const id = uuidv4();
+
+      const total_value = Number(data.stock) * Number(data.unitPrice);
+
+      const parts_inventory = {
+        id,
+        part_code: data.partCode,
+        part_name: data.partName,
+        stock: Number(data.stock),
+        status: data.status,
+        category_id: data.category,
+        subcategory_id: data.subcategory,
+        unit: data.unit,
+        warehouse_id: data.warehouse,
+        zone_id: data.zone,
+        aisle_id: data.aisle,
+        rack_id: data.rack,
+        shelf_id: data.shelf,
+        supplier_id: data.supplier,
+        location: data.location,
+        inbound_type: data.inboundType,
+        entry_date: data.entryDate
+          ? new Date(data.entryDate).toISOString()
+          : new Date().toISOString(),
+        unit_price: Number(data.unitPrice),
+        total_value,
+        description: data.description || "",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        batch_number: uuidv4(),
+      };
+
+      console.log("Prepared parts_inventory:", parts_inventory);
+
+      const result = await addPart(parts_inventory);
+      toast.success("محصول با موفقیت وارد انبار شد!");
+      reset();
+      router.replace("/inventory");
+    } catch (error) {
+      console.error("Error adding part:", error);
+    }
   };
 
   return (
@@ -198,6 +237,8 @@ export default function InventoryInboundForm() {
           racksLoading={racksLoading}
           rules={{ required: "انتخاب رک الزامی است" }}
         />
+        {/* طبقه*/}
+
         <ShelfSelect
           control={control}
           shelves={shelves}

@@ -28,6 +28,7 @@ export function ShelfSelect({
             {...field}
             onValueChange={(val) => field.onChange(val)}
             disabled={shelvesLoading || !shelves?.length}
+            value={field.value ?? ""}
           >
             <SelectTrigger id={name} className="w-full">
               <SelectValue placeholder="انتخاب طبقه" />
