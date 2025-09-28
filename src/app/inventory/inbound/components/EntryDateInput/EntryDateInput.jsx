@@ -6,6 +6,7 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { Controller } from "react-hook-form";
+import "./style.css";
 
 const EntryDateInput = ({ control, errors }) => {
   return (
@@ -20,6 +21,7 @@ const EntryDateInput = ({ control, errors }) => {
           <DatePicker
             id="entryDate"
             value={field.value || null}
+            containerClassName="custom-container"
             onChange={(val) => {
               field.onChange(val?.toDate?.() || null);
             }}

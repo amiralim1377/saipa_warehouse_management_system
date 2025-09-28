@@ -38,8 +38,8 @@ const UnitSelect = ({ control, errors }) => {
               <SelectValue placeholder="انتخاب واحد" />
             </SelectTrigger>
             <SelectContent>
-              {UNITS?.map((u) => (
-                <SelectItem key={u.id} value={u.id}>
+              {UNITS?.map((u, i) => (
+                <SelectItem key={i + 1} value={u.id}>
                   {u.name}
                 </SelectItem>
               ))}

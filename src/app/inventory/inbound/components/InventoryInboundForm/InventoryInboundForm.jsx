@@ -1,5 +1,5 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import CategorySelect from "../CategorySelect/CategorySelect";
 import { useInventoryInbound } from "../../context/InventoryInboundProvider";
@@ -12,11 +12,19 @@ import PartCodeInput from "../PartCodeInput/PartCodeInput";
 import PartNameInput from "../PartNameInput/PartNameInput";
 import StockInput from "../StockInput/StockInput";
 import StatusSelect from "../StatusSelect/StatusSelect";
-import SupplierInput from "../SupplierInput/SupplierInput";
 import EntryDateInput from "../EntryDateInput/EntryDateInput";
 import UnitPriceInput from "../UnitPriceInput/UnitPriceInput";
 import DescriptionTextarea from "../DescriptionTextarea/DescriptionTextarea";
 import { useSubcategories } from "../../hook/useSubcategories";
+import SupplierSelect from "../SupplierSelect/SupplierSelect";
+import { useWarehouseZones } from "../../hook/useWarehouseZones";
+import { ZoneSelect } from "../ZoneSelect/ZoneSelect";
+import { AisleSelect } from "../AisleSelect/AisleSelect";
+import { useAislesByZone } from "../../hook/useAislesByZone";
+import { useRacksByAisle } from "../../hook/useRacksByAisle";
+import { RackSelect } from "../RackSelect/RackSelect";
+import { ShelfSelect } from "../ShelfSelect/ShelfSelect";
+import { useShelvesByRack } from "../../hook/useShelvesByRack";
 
 export default function InventoryInboundForm() {
   const {
@@ -26,6 +34,7 @@ export default function InventoryInboundForm() {
     setWarehouses,
     inboundType,
     setInboundType,
+    suppliers,
   } = useInventoryInbound();
 
   const {
@@ -47,6 +56,9 @@ export default function InventoryInboundForm() {
       unit: "",
       location: "",
       warehouses,
+      zone: "",
+      aisle: "",
+      rack: "",
       supplier: "",
       entryDate: "",
       unitPrice: 0,
@@ -60,6 +72,16 @@ export default function InventoryInboundForm() {
     isLoading,
     error,
   } = useSubcategories(control);
+  const { zones, zonesLoading } = useWarehouseZones({ control });
+  const {
+    selectedZoneId,
+    data: aisles,
+    isLoading: aislesLoading,
+  } = useAislesByZone(control);
+
+  const { racks, isLoading: racksLoading } = useRacksByAisle(control);
+
+  const { shelves, isLoading: shelvesLoading } = useShelvesByRack(control);
 
   const onSubmit = (data) => {
     console.log("Submitted data:", data);
@@ -92,7 +114,6 @@ export default function InventoryInboundForm() {
           errors={errors}
           categories={categories}
         />
-
         {/* زیرمجموعه */}
         <SubcategorySelect
           control={control}
@@ -110,12 +131,43 @@ export default function InventoryInboundForm() {
           errors={errors}
           warehouses={warehouses}
         />
+        {/* زون */}
+        <ZoneSelect
+          control={control}
+          zones={zones}
+          zonesLoading={zonesLoading}
+          rules={{ required: "انتخاب زون الزامی است" }}
+        />
+        {/* راهرو */}
+        <AisleSelect
+          control={control}
+          aisles={aisles}
+          aislesLoading={aislesLoading}
+          rules={{ required: "انتخاب راهرو الزامی است" }}
+        />
+        {/* رک ها */}
+        <RackSelect
+          control={control}
+          racks={racks}
+          racksLoading={racksLoading}
+          rules={{ required: "انتخاب رک الزامی است" }}
+        />
+        <ShelfSelect
+          control={control}
+          shelves={shelves}
+          shelvesLoading={shelvesLoading}
+          rules={{ required: "انتخاب طبقه الزامی است" }}
+        />
 
         {/* مکان */}
         <LocationInput register={register} errors={errors} />
 
         {/* تامین‌کننده */}
-        <SupplierInput register={register} errors={errors} />
+        <SupplierSelect
+          control={control} // از useForm
+          errors={errors}
+          suppliers={suppliers} // آرایه تامین‌کنندگان فعال
+        />
 
         {/* تاریخ ورود */}
         <EntryDateInput control={control} errors={errors} />

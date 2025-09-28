@@ -7,13 +7,14 @@ export function InventoryInboundProvider({
   children,
   initialCategories = [],
   warehouse: initialWarehouse = [],
+  suppliers: initialSuppliers = [],
 }) {
   const [categories, setCategories] = useState(initialCategories);
   const [warehouses, setWarehouses] = useState(initialWarehouse);
-  const [subcategories, setSubcategories] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [suppliers, setSuppliers] = useState(initialSuppliers);
   const [inboundType, setInboundType] = useState("");
+  const [subcategories, setSubcategories] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   return (
     <InventoryInboundContext.Provider
