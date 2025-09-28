@@ -94,43 +94,89 @@ export default function InventoryInboundForm() {
       </h1>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         {/* نوع ورودی */}
-        <InboundTypeSelect control={control} errors={errors} />
+        <InboundTypeSelect
+          control={control}
+          errors={errors}
+          options={[
+            { value: "receipt", label: "رسید کالا" },
+            { value: "return", label: "برگشتی از مشتری" },
+            { value: "production", label: "تولید داخلی" },
+          ]}
+          rules={{ required: "نوع ورودی الزامی است" }}
+        />
 
         {/* کد قطعه */}
-        <PartCodeInput register={register} errors={errors} />
+        <PartCodeInput
+          register={register}
+          errors={errors}
+          rules={{ required: "کد قطعه الزامی است" }}
+        />
 
         {/* نام قطعه */}
-        <PartNameInput register={register} errors={errors} />
+        <PartNameInput
+          register={register}
+          errors={errors}
+          rules={{ required: "نام قطعه الزامی است" }}
+        />
 
         {/* تعداد */}
-        <StockInput register={register} errors={errors} />
+        <StockInput
+          register={register}
+          errors={errors}
+          rules={{
+            required: "تعداد الزامی است",
+            min: { value: 1, message: "تعداد باید حداقل 1 باشد" },
+          }}
+        />
 
         {/* وضعیت */}
-        <StatusSelect control={control} errors={errors} />
+        <StatusSelect
+          control={control}
+          errors={errors}
+          options={[
+            { value: "available", label: "موجود" },
+            { value: "low", label: "کم" },
+            { value: "out", label: "تمام شده" },
+            { value: "damaged", label: "خراب" },
+            { value: "pending", label: "در انتظار بررسی" },
+          ]}
+        />
 
         {/* دسته‌بندی */}
         <CategorySelect
           control={control}
           errors={errors}
           categories={categories}
+          rules={{ required: "دسته‌بندی الزامی است" }}
+          placeholder="لطفاً یک دسته‌بندی انتخاب کنید"
         />
+
         {/* زیرمجموعه */}
         <SubcategorySelect
           control={control}
           errors={errors}
-          subcategories={subcategories || []}
-          disabled={isLoading || !subcategories?.length}
+          subcategories={subcategories}
+          isLoading={isLoading}
+          rules={{ required: "انتخاب زیرمجموعه الزامی است" }}
+          placeholder="زیرمجموعه را انتخاب کنید"
         />
 
         {/* واحد */}
-        <UnitSelect control={control} errors={errors} />
+        <UnitSelect
+          control={control}
+          errors={errors}
+          rules={{ required: "انتخاب واحد الزامی است" }}
+          placeholder="واحد قطعه را انتخاب کنید"
+        />
 
         {/* انبار */}
         <WarehouseSelect
           control={control}
           errors={errors}
           warehouses={warehouses}
+          rules={{ required: "انتخاب انبار الزامی است" }}
         />
+
         {/* زون */}
         <ZoneSelect
           control={control}
@@ -160,23 +206,49 @@ export default function InventoryInboundForm() {
         />
 
         {/* مکان */}
-        <LocationInput register={register} errors={errors} />
+        <LocationInput
+          register={register}
+          errors={errors}
+          rules={{
+            required: "مکان الزامی است",
+            minLength: { value: 5, message: "حداقل ۵ کاراکتر" },
+          }}
+          placeholder="مکان دقیق قطعه"
+        />
 
         {/* تامین‌کننده */}
         <SupplierSelect
-          control={control} // از useForm
+          control={control}
           errors={errors}
-          suppliers={suppliers} // آرایه تامین‌کنندگان فعال
+          suppliers={suppliers}
+          rules={{ required: "انتخاب تامین‌کننده الزامی است" }}
         />
 
         {/* تاریخ ورود */}
-        <EntryDateInput control={control} errors={errors} />
+        <EntryDateInput
+          control={control}
+          errors={errors}
+          rules={{ required: "تاریخ ورود الزامی است" }}
+        />
 
         {/* قیمت واحد */}
-        <UnitPriceInput register={register} errors={errors} />
+        <UnitPriceInput
+          control={control}
+          errors={errors}
+          rules={{
+            required: "قیمت واحد الزامی است",
+            validate: (value) => value > 0 || "قیمت باید بزرگتر از 0 باشد",
+            valueAsNumber: true,
+          }}
+        />
 
         {/* توضیحات */}
-        <DescriptionTextarea register={register} />
+        <DescriptionTextarea
+          control={control}
+          rules={{
+            maxLength: { value: 500, message: "حداکثر 500 کاراکتر مجاز است" },
+          }}
+        />
 
         {/* دکمه‌ها */}
         <div className="flex gap-4 mt-4">

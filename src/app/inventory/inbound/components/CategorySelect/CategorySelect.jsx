@@ -15,6 +15,8 @@ export default function CategorySelect({
   errors,
   categories,
   disabled = false,
+  rules = {},
+  placeholder = "انتخاب دسته‌بندی",
 }) {
   return (
     <div>
@@ -23,7 +25,7 @@ export default function CategorySelect({
       <Controller
         name="category"
         control={control}
-        rules={{ required: "انتخاب دسته‌بندی الزامی است" }}
+        rules={rules}
         render={({ field }) => (
           <Select
             onValueChange={field.onChange}
@@ -31,7 +33,7 @@ export default function CategorySelect({
             disabled={disabled}
           >
             <SelectTrigger id="category" className="w-full">
-              <SelectValue placeholder="انتخاب دسته‌بندی" />
+              <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
               {categories.map((cat) => (

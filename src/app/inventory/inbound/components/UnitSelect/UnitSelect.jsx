@@ -23,36 +23,42 @@ const UNITS = [
   { value: "g", label: "گرم" },
 ];
 
-const UnitSelect = ({ control, errors }) => {
+export default function UnitSelect({
+  control,
+  errors,
+  rules = {},
+  placeholder = "انتخاب واحد",
+  disabled = false,
+}) {
   return (
     <div>
       <Label htmlFor="unit">واحد</Label>
-
       <Controller
         name="unit"
         control={control}
-        rules={{ required: "انتخاب واحد الزامی است" }}
+        rules={rules}
         render={({ field }) => (
-          <Select value={field.value ?? ""} onValueChange={field.onChange}>
+          <Select
+            value={field.value ?? ""}
+            onValueChange={field.onChange}
+            disabled={disabled}
+          >
             <SelectTrigger id="unit" className="w-full">
-              <SelectValue placeholder="انتخاب واحد" />
+              <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
-              {UNITS?.map((u, i) => (
-                <SelectItem key={i + 1} value={u.id}>
-                  {u.name}
+              {UNITS.map((u, i) => (
+                <SelectItem key={i} value={u.value}>
+                  {u.label}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         )}
       />
-
       {errors.unit && (
         <p className="text-destructive text-sm mt-1">{errors.unit.message}</p>
       )}
     </div>
   );
-};
-
-export default UnitSelect;
+}

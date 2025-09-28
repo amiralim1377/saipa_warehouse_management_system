@@ -13,8 +13,10 @@ import { Controller } from "react-hook-form";
 export default function SubcategorySelect({
   control,
   errors,
-  subcategories,
-  isLoading,
+  subcategories = [],
+  isLoading = false,
+  rules = {},
+  placeholder = "انتخاب زیرمجموعه",
 }) {
   return (
     <div>
@@ -23,15 +25,15 @@ export default function SubcategorySelect({
       <Controller
         name="subcategory"
         control={control}
-        rules={{ required: "انتخاب زیرمجموعه الزامی است" }}
+        rules={rules}
         render={({ field }) => (
           <Select
             onValueChange={field.onChange}
             value={field.value ?? ""}
-            disabled={isLoading || !subcategories?.length} // 👈 اضافه شد
+            disabled={isLoading || !subcategories?.length}
           >
             <SelectTrigger id="subcategory" className="w-full">
-              <SelectValue placeholder="انتخاب زیرمجموعه" />
+              <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
               {subcategories.map((sub) => (

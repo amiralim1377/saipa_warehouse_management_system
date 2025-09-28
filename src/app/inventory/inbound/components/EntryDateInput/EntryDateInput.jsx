@@ -8,7 +8,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { Controller } from "react-hook-form";
 import "./style.css";
 
-const EntryDateInput = ({ control, errors }) => {
+const EntryDateInput = ({ control, errors, rules }) => {
   return (
     <div className="w-full">
       <Label htmlFor="entryDate">تاریخ ورود</Label>
@@ -16,7 +16,7 @@ const EntryDateInput = ({ control, errors }) => {
       <Controller
         name="entryDate"
         control={control}
-        rules={{ required: "تاریخ ورود الزامی است" }}
+        rules={rules}
         render={({ field }) => (
           <DatePicker
             id="entryDate"

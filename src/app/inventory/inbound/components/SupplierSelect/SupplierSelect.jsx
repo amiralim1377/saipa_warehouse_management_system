@@ -11,14 +11,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const SupplierSelect = ({ control, errors, suppliers }) => {
+const SupplierSelect = ({ control, errors, suppliers, rules }) => {
   return (
     <div>
       <Label htmlFor="supplier">تامین‌کننده</Label>
       <Controller
         name="supplier"
         control={control}
-        rules={{ required: "نام تامین‌کننده الزامی است" }}
+        rules={rules}
         render={({ field }) => (
           <Select {...field} onValueChange={(value) => field.onChange(value)}>
             <SelectTrigger id="supplier" className="w-full">
