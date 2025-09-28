@@ -8,6 +8,7 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { Controller } from "react-hook-form";
 
 const UNITS = [
   { value: "pcs", label: "عدد" },
@@ -22,25 +23,36 @@ const UNITS = [
   { value: "g", label: "گرم" },
 ];
 
-export default function UnitSelect({ register, errors, onChange }) {
+const UnitSelect = ({ control, errors }) => {
   return (
     <div>
       <Label htmlFor="unit">واحد</Label>
-      <Select onValueChange={(value) => onChange(value)}>
-        <SelectTrigger id="unit" className="w-full">
-          <SelectValue placeholder="انتخاب واحد" />
-        </SelectTrigger>
-        <SelectContent>
-          {UNITS.map((unit) => (
-            <SelectItem key={unit.value} value={unit.value}>
-              {unit.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+
+      <Controller
+        name="unit"
+        control={control}
+        rules={{ required: "انتخاب واحد الزامی است" }}
+        render={({ field }) => (
+          <Select value={field.value ?? ""} onValueChange={field.onChange}>
+            <SelectTrigger id="unit" className="w-full">
+              <SelectValue placeholder="انتخاب واحد" />
+            </SelectTrigger>
+            <SelectContent>
+              {UNITS?.map((u) => (
+                <SelectItem key={u.id} value={u.id}>
+                  {u.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      />
+
       {errors.unit && (
         <p className="text-destructive text-sm mt-1">{errors.unit.message}</p>
       )}
     </div>
   );
-}
+};
+
+export default UnitSelect;

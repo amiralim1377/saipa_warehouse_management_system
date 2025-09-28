@@ -72,11 +72,7 @@ export default function InventoryInboundForm() {
       </h1>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         {/* نوع ورودی */}
-        <InboundTypeSelect
-          register={register}
-          errors={errors}
-          onValueChange={(value) => setInboundType(value)}
-        />
+        <InboundTypeSelect control={control} errors={errors} />
 
         {/* کد قطعه */}
         <PartCodeInput register={register} errors={errors} />
@@ -88,38 +84,31 @@ export default function InventoryInboundForm() {
         <StockInput register={register} errors={errors} />
 
         {/* وضعیت */}
-        <StatusSelect register={register} errors={errors} />
+        <StatusSelect control={control} errors={errors} />
 
         {/* دسته‌بندی */}
         <CategorySelect
-          register={register}
+          control={control}
           errors={errors}
           categories={categories}
-          onChange={(value) => setValue("category", value)}
         />
 
         {/* زیرمجموعه */}
         <SubcategorySelect
-          register={register}
+          control={control}
           errors={errors}
           subcategories={subcategories || []}
-          onChange={(value) => setValue("subcategory", value)}
           disabled={isLoading || !subcategories?.length}
         />
 
         {/* واحد */}
-        <UnitSelect
-          register={register}
-          errors={errors}
-          onChange={(value) => setValue("unit", value)}
-        />
+        <UnitSelect control={control} errors={errors} />
 
         {/* انبار */}
         <WarehouseSelect
-          register={register}
+          control={control}
           errors={errors}
           warehouses={warehouses}
-          onChange={(value) => setValue("warehouse", value)}
         />
 
         {/* مکان */}
@@ -129,7 +118,7 @@ export default function InventoryInboundForm() {
         <SupplierInput register={register} errors={errors} />
 
         {/* تاریخ ورود */}
-        <EntryDateInput register={register} errors={errors} />
+        <EntryDateInput control={control} errors={errors} />
 
         {/* قیمت واحد */}
         <UnitPriceInput register={register} errors={errors} />

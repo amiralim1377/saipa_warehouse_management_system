@@ -8,32 +8,42 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { Controller } from "react-hook-form";
 
 export default function CategorySelect({
-  register,
+  control,
   errors,
   categories,
-  onChange,
+  disabled = false,
 }) {
   return (
     <div>
       <Label htmlFor="category">دسته‌بندی</Label>
-      <Select
-        onValueChange={(value) => {
-          onChange(value);
-        }}
-      >
-        <SelectTrigger id="category" className="w-full">
-          <SelectValue placeholder="انتخاب دسته‌بندی" />
-        </SelectTrigger>
-        <SelectContent>
-          {categories.map((cat) => (
-            <SelectItem key={cat.id} value={cat.id}>
-              {cat.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+
+      <Controller
+        name="category"
+        control={control}
+        rules={{ required: "انتخاب دسته‌بندی الزامی است" }}
+        render={({ field }) => (
+          <Select
+            onValueChange={field.onChange}
+            value={field.value ?? ""}
+            disabled={disabled}
+          >
+            <SelectTrigger id="category" className="w-full">
+              <SelectValue placeholder="انتخاب دسته‌بندی" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((cat) => (
+                <SelectItem key={cat.id} value={cat.id}>
+                  {cat.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      />
+
       {errors.category && (
         <p className="text-destructive text-sm mt-1">
           {errors.category.message}

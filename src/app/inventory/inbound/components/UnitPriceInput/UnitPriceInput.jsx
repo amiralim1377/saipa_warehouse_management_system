@@ -4,17 +4,19 @@ import { Input } from "@/components/ui/input";
 
 const UnitPriceInput = ({ register, errors }) => {
   return (
-    <div>
+    <div className="w-full">
       <Label htmlFor="unitPrice">قیمت واحد</Label>
       <Input
         id="unitPrice"
         type="number"
         step="0.01"
+        placeholder="قیمت واحد"
         {...register("unitPrice", {
           required: "قیمت واحد الزامی است",
-          min: { value: 0, message: "قیمت باید بزرگتر یا مساوی 0 باشد" },
+          valueAsNumber: true,
+          validate: (value) => value > 0 || "قیمت باید بزرگتر از 0 باشد",
         })}
-        placeholder="قیمت واحد"
+        className="border rounded-md p-2 text-sm w-full"
       />
       {errors.unitPrice && (
         <p className="text-destructive text-sm mt-1">
