@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import DeleteCustomerButton from "../DeleteCustomerButton/DeleteCustomerButton";
+import DeleteItemButton from "@/components/DeleteItemButton/DeleteItemButton";
+import deleteCustomer from "../../actions/deleteCustomers";
 
 function DeleteCustomerListView({ initialCustomers = [] }) {
   const [customers, setCustomers] = useState(initialCustomers);
@@ -48,13 +50,19 @@ function DeleteCustomerListView({ initialCustomers = [] }) {
                   {customer.phone}
                 </td>
                 <td className="p-2 border-b">
-                  <DeleteCustomerButton
+                  {/* <DeleteCustomerButton
                     customerId={customer.id}
                     onDeleted={() =>
                       setCustomers((prev) =>
                         prev.filter((c) => c.id !== customer.id)
                       )
                     }
+                  /> */}
+                  <DeleteItemButton
+                    itemId={customer.id}
+                    itemType="مشتری"
+                    deleteFunction={deleteCustomer}
+                    onDeleted={() => router.refresh()}
                   />
                 </td>
               </tr>
