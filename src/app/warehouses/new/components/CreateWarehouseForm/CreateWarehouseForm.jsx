@@ -1,22 +1,22 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import TextInputField from "../TextInputField/TextInputField";
 import TextareaField from "../TextareaField/TextareaField";
 import NumberInputField from "../NumberInputField/NumberInputField";
+import useWarehouseCapacity from "../../hook/useWarehouseCapacity";
 
 export default function CreateWarehouseForm() {
   const {
     register,
     handleSubmit,
-    control,
     reset,
     formState: { errors },
+    watch,
   } = useForm();
+
+  const { totalCapacity, isCapacityEqual } = useWarehouseCapacity(watch);
 
   const onSubmit = (data) => {
     console.log("Warehouse data:", data);
@@ -28,7 +28,7 @@ export default function CreateWarehouseForm() {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="p-6 max-w-2xl space-y-2 mx-auto" dir="rtl">
-        <h1 className="text-2xl font-semibold text-[var(--color-foreground)] mb-6">
+        <h1 className="text-2xl font-semibold text-foreground mb-6">
           تعریف انبار جدید
         </h1>
 
@@ -89,7 +89,11 @@ export default function CreateWarehouseForm() {
           register={register}
           defaultValue={50}
           rules={{
-            min: { value: 0, message: "حداقل موجودی نمی‌تواند منفی باشد" },
+            required: "وارد کردن حداقل موجودی الزامی است",
+            min: {
+              value: 50,
+              message: "حداقل موجودی نمی‌تواند کمتر از 50 باشد",
+            },
           }}
           errors={errors}
         />
@@ -153,6 +157,15 @@ export default function CreateWarehouseForm() {
             }}
             errors={errors}
           />
+          {/* نمایش لحظه‌ای ظرفیت */}
+          <div className="mt-4 font-bold">
+            ظرفیت کل: {totalCapacity.toLocaleString()} قطعه
+          </div>
+          {!isCapacityEqual() && (
+            <p className="text-destructive text-sm mt-1">
+              عدم برابری ظرفیت انبار با ساختار انبار
+            </p>
+          )}
         </div>
       </div>
 
@@ -161,6 +174,7 @@ export default function CreateWarehouseForm() {
         <Button
           type="submit"
           className="bg-primary text-primary-foreground px-6 py-3 rounded-lg"
+          disabled={!isCapacityEqual()}
         >
           ثبت
         </Button>
