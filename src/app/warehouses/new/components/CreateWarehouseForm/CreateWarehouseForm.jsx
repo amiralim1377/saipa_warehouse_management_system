@@ -6,6 +6,8 @@ import TextInputField from "../TextInputField/TextInputField";
 import TextareaField from "../TextareaField/TextareaField";
 import NumberInputField from "../NumberInputField/NumberInputField";
 import useWarehouseCapacity from "../../hook/useWarehouseCapacity";
+import buildWarehousePayload from "../../utils/buildWarehousePayload";
+import createWarehouseWithStructure from "../../actions/createWarehouseWithStructure";
 
 export default function CreateWarehouseForm() {
   const {
@@ -18,13 +20,20 @@ export default function CreateWarehouseForm() {
 
   const { totalCapacity, isCapacityEqual } = useWarehouseCapacity(watch);
 
-  const onSubmit = (data) => {
-    console.log("Warehouse data:", data);
+  const onSubmit = async (data) => {
+    const payload = buildWarehousePayload(data);
+    console.log(payload);
+    try {
+      const createdWarehouse = await createWarehouseWithStructure(payload);
+      console.log("Warehouse created successfully:", createdWarehouse);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <form
-      className="max-w-xl mx-auto space-y-6"
+      className="max-w-2xl mx-auto space-y-6"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="p-6 max-w-2xl space-y-2 mx-auto" dir="rtl">
