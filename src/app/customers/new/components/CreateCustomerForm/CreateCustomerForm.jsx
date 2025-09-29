@@ -12,30 +12,35 @@ import {
 } from "@/components/ui/select";
 import { provinces } from "@/data/provinces";
 import { useProvinceCity } from "../../hook/useProvinceCity";
+import { createCustomer } from "../../actions/CreateCustomer";
+import { useRouter } from "next/navigation";
 
 function CreateCustomerForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     control,
-    watch,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      customerType: "individual",
-    },
-  });
+    reset,
+  } = useForm({});
 
   const customerType = useWatch({
     control,
-    name: "customerType",
+    name: "customer_type",
   });
 
-  const onSubmit = (data) => {
-    console.log("Customer data:", data);
-  };
-
   const { selectedProvince, cities } = useProvinceCity({ control, provinces });
+
+  const onSubmit = async (data) => {
+    console.log(data);
+
+    try {
+      await createCustomer(data);
+      reset();
+      router.replace("/customers");
+    } catch (err) {}
+  };
 
   return (
     <form
@@ -46,7 +51,7 @@ function CreateCustomerForm() {
         تعریف مشتری جدید
       </h1>
       <Controller
-        name="customerType"
+        name="customer_type"
         control={control}
         rules={{ required: "انتخاب نوع مشتری الزامی است" }}
         render={({ field, fieldState }) => (
@@ -71,13 +76,13 @@ function CreateCustomerForm() {
       {customerType === "individual" && (
         <>
           <Input
-            {...register("firstName", { required: "نام الزامی است" })}
+            {...register("first_name", { required: "نام الزامی است" })}
             placeholder="نام"
           />
 
-          {errors.firstName && (
+          {errors.first_name && (
             <p className="text-destructive text-sm">
-              {errors.firstName.message}
+              {errors.first_name.message}
             </p>
           )}
         </>
@@ -85,26 +90,26 @@ function CreateCustomerForm() {
       {customerType === "company" && (
         <>
           <Input
-            {...register("companyName", {
+            {...register("company_name", {
               required: "نام شرکت الزامی است",
             })}
             placeholder="نام شرکت"
           />
-          {errors.companyName && (
+          {errors.company_name && (
             <p className="text-destructive text-sm">
-              {errors.companyName.message}
+              {errors.company_name.message}
             </p>
           )}
 
           <Input
-            {...register("companyRegistrationNumber", {
+            {...register("company_registration_number", {
               required: "شماره ثبت شرکت الزامی است",
             })}
             placeholder="شماره ثبت شرکت"
           />
-          {errors.companyRegistrationNumber && (
+          {errors.company_registration_number && (
             <p className="text-destructive text-sm">
-              {errors.companyRegistrationNumber.message}
+              {errors.company_registration_number.message}
             </p>
           )}
         </>
@@ -112,12 +117,12 @@ function CreateCustomerForm() {
       {customerType === "individual" && (
         <>
           <Input
-            {...register("lastName", { required: "نام خانوادگی الزامی است" })}
+            {...register("last_name", { required: "نام خانوادگی الزامی است" })}
             placeholder="نام خانوادگی"
           />
-          {errors.lastName && (
+          {errors.last_name && (
             <p className="text-destructive text-sm">
-              {errors.lastName.message}
+              {errors.last_name.message}
             </p>
           )}
         </>
@@ -125,12 +130,12 @@ function CreateCustomerForm() {
       {customerType === "individual" && (
         <>
           <Input
-            {...register("nationalId", { required: "کد ملی الزامی است" })}
+            {...register("national_id", { required: "کد ملی الزامی است" })}
             placeholder="کد ملی"
           />
-          {errors.nationalId && (
+          {errors.national_id && (
             <p className="text-destructive text-sm">
-              {errors.nationalId.message}
+              {errors.national_id.message}
             </p>
           )}
         </>
@@ -190,7 +195,11 @@ function CreateCustomerForm() {
         rules={{ required: "انتخاب شهر الزامی است" }}
         render={({ field, fieldState }) => (
           <div className="w-full">
-            <Select {...field} disabled={!selectedProvince}>
+            <Select
+              value={field.value}
+              onValueChange={field.onChange}
+              disabled={!selectedProvince}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="شهر" />
               </SelectTrigger>
@@ -220,12 +229,12 @@ function CreateCustomerForm() {
         </p>
       )}
       <Input
-        {...register("postalCode", { required: "کد پستی الزامی است" })}
+        {...register("postal_code", { required: "کد پستی الزامی است" })}
         placeholder="کد پستی"
       />
-      {errors.postalCode && (
+      {errors.postal_code && (
         <p className="text-destructive text-sm mt-1">
-          {errors.postalCode.message}
+          {errors.postal_code.message}
         </p>
       )}{" "}
       <Textarea {...register("notes")} placeholder="توضیحات اختیاری" />
