@@ -204,8 +204,8 @@ function CreateCustomerForm() {
                 <SelectValue placeholder="شهر" />
               </SelectTrigger>
               <SelectContent>
-                {cities.map((city) => (
-                  <SelectItem key={city} value={city}>
+                {cities.map((city, i) => (
+                  <SelectItem key={i + 1} value={city}>
                     {city}
                   </SelectItem>
                 ))}
