@@ -7,7 +7,7 @@ import TextareaField from "../TextareaField/TextareaField";
 import NumberInputField from "../NumberInputField/NumberInputField";
 import useWarehouseCapacity from "../../hook/useWarehouseCapacity";
 import buildWarehousePayload from "../../utils/buildWarehousePayload";
-import createWarehouseWithStructure from "../../actions/createWarehouseWithStructure";
+import { createWarehouseWithStructureServer } from "../../actions/createWarehouseWithStructureServer";
 
 export default function CreateWarehouseForm() {
   const {
@@ -21,13 +21,16 @@ export default function CreateWarehouseForm() {
   const { totalCapacity, isCapacityEqual } = useWarehouseCapacity(watch);
 
   const onSubmit = async (data) => {
-    const payload = buildWarehousePayload(data);
-    console.log(payload);
     try {
-      const createdWarehouse = await createWarehouseWithStructure(payload);
+      const payload = buildWarehousePayload(data); // ساختار کامل
+      const createdWarehouse = await createWarehouseWithStructureServer(
+        payload
+      );
       console.log("Warehouse created successfully:", createdWarehouse);
+      alert("انبار با موفقیت ایجاد شد!");
     } catch (err) {
-      console.error(err);
+      console.error("Failed to create warehouse:", err);
+      alert("خطا در ایجاد انبار، لطفاً دوباره تلاش کنید.");
     }
   };
 
