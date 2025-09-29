@@ -8,8 +8,11 @@ import NumberInputField from "../NumberInputField/NumberInputField";
 import useWarehouseCapacity from "../../hook/useWarehouseCapacity";
 import buildWarehousePayload from "../../utils/buildWarehousePayload";
 import { createWarehouseWithStructureServer } from "../../actions/createWarehouseWithStructureServer";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function CreateWarehouseForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -22,21 +25,23 @@ export default function CreateWarehouseForm() {
 
   const onSubmit = async (data) => {
     try {
-      const payload = buildWarehousePayload(data); // ساختار کامل
+      const payload = buildWarehousePayload(data);
       const createdWarehouse = await createWarehouseWithStructureServer(
         payload
       );
-      console.log("Warehouse created successfully:", createdWarehouse);
-      alert("انبار با موفقیت ایجاد شد!");
+
+      toast.success("انبار با موفقیت ایجاد شد!");
+      reset();
+      router.replace("/warehouses");
     } catch (err) {
-      console.error("Failed to create warehouse:", err);
-      alert("خطا در ایجاد انبار، لطفاً دوباره تلاش کنید.");
+      toast.error("خطا در ایجاد انبار، لطفاً دوباره تلاش کنید.");
+      toast.error(err);
     }
   };
 
   return (
     <form
-      className="max-w-2xl mx-auto space-y-6"
+      className="max-w-2xl my-2 mx-auto space-y-6"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="p-6 max-w-2xl space-y-2 mx-auto" dir="rtl">

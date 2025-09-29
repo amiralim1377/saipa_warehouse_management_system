@@ -17,7 +17,7 @@ function WarehousesActions() {
       </Link>
       <Link
         href="/warehouses/delete"
-        className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg inline-block text-center"
+        className="bg-destructive text-secondary px-6 py-3 rounded-lg inline-block text-center"
       >
         حذف انبار
       </Link>
