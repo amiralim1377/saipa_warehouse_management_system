@@ -2,14 +2,14 @@
 
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import TextInputField from "../TextInputField/TextInputField";
-import TextareaField from "../TextareaField/TextareaField";
-import NumberInputField from "../NumberInputField/NumberInputField";
 import useWarehouseCapacity from "../../hook/useWarehouseCapacity";
 import buildWarehousePayload from "../../utils/buildWarehousePayload";
 import { createWarehouseWithStructureServer } from "../../actions/createWarehouseWithStructureServer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import NumberInputField from "@/components/Form/NumberInputField/NumberInputField";
+import TextareaField from "@/components/Form/TextareaField/TextareaField";
+import TextInputField from "@/components/Form/TextInputField/TextInputField";
 
 export default function CreateWarehouseForm() {
   const router = useRouter();
