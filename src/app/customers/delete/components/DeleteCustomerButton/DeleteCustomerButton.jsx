@@ -18,7 +18,7 @@ function DeleteCustomerButton({ customerId, onDeleted }) {
 
   const handleDelete = async () => {
     try {
-      await deleteCustomer(customerId);
+      const result = await deleteCustomer(customerId);
 
       setOpen(false);
 

@@ -1,4 +1,5 @@
 "use client";
+
 import { useForm, Controller, useWatch } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,11 +12,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { provinces } from "@/data/provinces";
-import { useProvinceCity } from "../../hook/useProvinceCity";
-import { createCustomer } from "../../actions/CreateCustomer";
 import { useRouter } from "next/navigation";
+import { useProvinceCity } from "@/app/customers/new/hook/useProvinceCity";
+import { updateCustomer } from "../../actions/updateCustomer";
+import { toast } from "react-toastify";
 
-function CreateCustomerForm() {
+function EditDynamicCustomerForm({ targetCustomer }) {
   const router = useRouter();
   const {
     register,
@@ -23,23 +25,45 @@ function CreateCustomerForm() {
     control,
     formState: { errors },
     reset,
-  } = useForm({});
+  } = useForm({
+    defaultValues: {
+      customer_type: targetCustomer.customer_type || "",
+      first_name: targetCustomer.first_name || "",
+      last_name: targetCustomer.last_name || "",
+      national_id: targetCustomer.national_id || "",
+      company_name: targetCustomer.company_name || "",
+      company_registration_number:
+        targetCustomer.company_registration_number || "",
+      phone: targetCustomer.phone || "",
+      email: targetCustomer.email || "",
+      province: targetCustomer.province || "",
+      city: targetCustomer.city || "",
+      address: targetCustomer.address || "",
+      postal_code: targetCustomer.postal_code || "",
+      notes: targetCustomer.notes || "",
+    },
+  });
 
   const customerType = useWatch({
     control,
     name: "customer_type",
   });
 
-  const { selectedProvince, cities } = useProvinceCity({ control, provinces });
+  const { selectedProvince, cities } = useProvinceCity({
+    control,
+    provinces,
+  });
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     try {
-      await createCustomer(data);
-      reset();
+      await updateCustomer(targetCustomer.id, data);
+      toast.success("مشتری با موفقیت ویرایش شد.");
+
       router.replace("/customers");
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+      toast.error(`خطا در بروزرسانی مشتری: ${err.message}`);
+    }
   };
 
   return (
@@ -48,8 +72,9 @@ function CreateCustomerForm() {
       className="my-6 space-y-4 max-w-lg mx-auto"
     >
       <h1 className="text-2xl font-semibold text-foreground mb-6">
-        تعریف مشتری جدید
+        ویرایش مشتری
       </h1>
+
       <Controller
         name="customer_type"
         control={control}
@@ -73,26 +98,45 @@ function CreateCustomerForm() {
           </div>
         )}
       />
+
       {customerType === "individual" && (
         <>
           <Input
             {...register("first_name", { required: "نام الزامی است" })}
             placeholder="نام"
           />
-
           {errors.first_name && (
             <p className="text-destructive text-sm">
               {errors.first_name.message}
             </p>
           )}
+
+          <Input
+            {...register("last_name", { required: "نام خانوادگی الزامی است" })}
+            placeholder="نام خانوادگی"
+          />
+          {errors.last_name && (
+            <p className="text-destructive text-sm">
+              {errors.last_name.message}
+            </p>
+          )}
+
+          <Input
+            {...register("national_id", { required: "کد ملی الزامی است" })}
+            placeholder="کد ملی"
+          />
+          {errors.national_id && (
+            <p className="text-destructive text-sm">
+              {errors.national_id.message}
+            </p>
+          )}
         </>
       )}
+
       {customerType === "company" && (
         <>
           <Input
-            {...register("company_name", {
-              required: "نام شرکت الزامی است",
-            })}
+            {...register("company_name", { required: "نام شرکت الزامی است" })}
             placeholder="نام شرکت"
           />
           {errors.company_name && (
@@ -114,32 +158,7 @@ function CreateCustomerForm() {
           )}
         </>
       )}
-      {customerType === "individual" && (
-        <>
-          <Input
-            {...register("last_name", { required: "نام خانوادگی الزامی است" })}
-            placeholder="نام خانوادگی"
-          />
-          {errors.last_name && (
-            <p className="text-destructive text-sm">
-              {errors.last_name.message}
-            </p>
-          )}
-        </>
-      )}
-      {customerType === "individual" && (
-        <>
-          <Input
-            {...register("national_id", { required: "کد ملی الزامی است" })}
-            placeholder="کد ملی"
-          />
-          {errors.national_id && (
-            <p className="text-destructive text-sm">
-              {errors.national_id.message}
-            </p>
-          )}
-        </>
-      )}
+
       <Input
         {...register("phone", { required: "شماره تماس الزامی است" })}
         placeholder="شماره تماس"
@@ -149,6 +168,7 @@ function CreateCustomerForm() {
       {errors.phone && (
         <p className="text-destructive text-sm">{errors.phone.message}</p>
       )}
+
       <Input
         {...register("email", {
           required: "ایمیل الزامی است",
@@ -163,6 +183,7 @@ function CreateCustomerForm() {
       {errors.email && (
         <p className="text-destructive text-sm">{errors.email.message}</p>
       )}
+
       <Controller
         name="province"
         control={control}
@@ -189,7 +210,7 @@ function CreateCustomerForm() {
           </div>
         )}
       />
-      {/* انتخاب شهر بر اساس استان */}
+
       <Controller
         name="city"
         control={control}
@@ -220,6 +241,7 @@ function CreateCustomerForm() {
           </div>
         )}
       />
+
       <Input
         {...register("address", { required: "آدرس الزامی است" })}
         placeholder="آدرس"
@@ -229,6 +251,7 @@ function CreateCustomerForm() {
           {errors.address.message}
         </p>
       )}
+
       <Input
         {...register("postal_code", { required: "کد پستی الزامی است" })}
         placeholder="کد پستی"
@@ -237,11 +260,13 @@ function CreateCustomerForm() {
         <p className="text-destructive text-sm mt-1">
           {errors.postal_code.message}
         </p>
-      )}{" "}
+      )}
+
       <Textarea {...register("notes")} placeholder="توضیحات اختیاری" />
-      <Button type="submit">ثبت مشتری</Button>
+
+      <Button type="submit">ویرایش مشتری</Button>
     </form>
   );
 }
 
-export default CreateCustomerForm;
+export default EditDynamicCustomerForm;

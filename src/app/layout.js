@@ -1,11 +1,13 @@
+"use server";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 import { yekanbakh } from "../fonts/fonts";
 import SideBar from "@/components/SideBar/SideBar";
 import Header from "@/components/Header/Header";
 import { ToastContainer } from "react-toastify";
+import CustomCloseButton from "@/components/CustomCloseButton/CustomCloseButton";
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
     <html dir="rtl" lang="fa" suppressHydrationWarning>
       <body className={`  ${yekanbakh.variable} flex`}>
@@ -23,6 +25,7 @@ export default function RootLayout({ children }) {
             closeOnClick
             pauseOnHover
             draggable
+            closeButton={CustomCloseButton}
           />
           <SideBar />
           <section className=" w-full">

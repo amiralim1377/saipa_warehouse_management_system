@@ -1,5 +1,6 @@
+"use server";
 import { supabase } from "@/lib/supabaseClient";
-import { toast } from "react-toastify";
+import { revalidatePath } from "next/cache";
 
 /**
  * @param {string} customerId
@@ -27,12 +28,16 @@ const deleteCustomer = async (customerId) => {
       .eq("id", customerId);
 
     if (error) throw error;
+    revalidatePath("/customers/delete");
 
-    toast.success("مشتری با موفقیت حذف شد!");
+    revalidatePath("/customers");
+    return { status: 200, message: "مشتری با موفقیت حذف گردید" };
   } catch (err) {
     console.error("حذف مشتری با خطا مواجه شد:", err);
-    toast.error("خطا در حذف مشتری، لطفاً دوباره تلاش کنید.");
-    toast.error(`حذف مشتری با خطا مواجه شد:", ${err.message}`);
+    return {
+      status: 404,
+      message: `"حذف مشتری با خطا مواجه شد:", ${err.message}`,
+    };
   }
 };
 

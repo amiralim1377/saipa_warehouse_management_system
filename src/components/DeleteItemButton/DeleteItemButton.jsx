@@ -13,21 +13,30 @@ import {
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-function DeleteItemButton({ itemId, itemType, deleteFunction }) {
+function DeleteItemButton({ itemId, itemType, deleteFunction, onDeleted }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = async () => {
     try {
-      await deleteFunction(itemId);
+      const result = await deleteFunction(itemId);
+
+      if (result.status === 200) {
+        toast.success(result.message);
+      } else {
+        throw new Error(result.message);
+      }
       setOpen(false);
+      onDeleted?.();
+
       startTransition(() => {
         router.refresh();
       });
     } catch (err) {
-      toast.error(`خطا در حذف ${itemType}، لطفاً دوباره تلاش کنید.`);
-      toast.error(`حذف ${itemType} با خطا مواجه شد:, ${err.message}`);
+      toast.error(
+        `خطا در حذف ${itemType}، لطفاً دوباره تلاش کنید. ${err?.message || ""}`
+      );
     }
   };
 

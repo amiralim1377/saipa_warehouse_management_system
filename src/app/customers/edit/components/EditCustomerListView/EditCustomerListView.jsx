@@ -1,13 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
-import DeleteItemButton from "@/components/DeleteItemButton/DeleteItemButton";
-import deleteCustomer from "../../actions/deleteCustomers";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
-function DeleteCustomerListView({ initialCustomers = [] }) {
-  const [customers, setCustomers] = useState(initialCustomers);
-  const router = useRouter();
+function EditCustomerListView({ initialCustomers = [] }) {
+  const [customers] = useState(initialCustomers);
 
   return (
     <div className="mt-6 p-4">
@@ -51,25 +49,17 @@ function DeleteCustomerListView({ initialCustomers = [] }) {
                   {customer.phone}
                 </td>
                 <td className="p-2 border-b">
-                  {/* <DeleteCustomerButton
-                    customerId={customer.id}
-                    onDeleted={() =>
-                      setCustomers((prev) =>
-                        prev.filter((c) => c.id !== customer.id)
-                      )
-                    }
-                  /> */}
-                  <DeleteItemButton
-                    itemId={customer.id}
-                    itemType="مشتری"
-                    deleteFunction={deleteCustomer}
-                    onDeleted={() => {
-                      setCustomers((prev) =>
-                        prev.filter((c) => c.id !== customer.id)
-                      );
-                      router.refresh();
-                    }}
-                  />
+                  <Link
+                    href={`/customers/edit/${encodeURIComponent(customer.id)}`}
+                  >
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="px-3 py-1 text-xs sm:text-sm"
+                    >
+                      ویرایش
+                    </Button>
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -80,4 +70,4 @@ function DeleteCustomerListView({ initialCustomers = [] }) {
   );
 }
 
-export default DeleteCustomerListView;
+export default EditCustomerListView;
