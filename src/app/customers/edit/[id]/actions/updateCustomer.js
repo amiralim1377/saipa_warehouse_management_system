@@ -1,7 +1,6 @@
 "use server";
 import { supabase } from "@/lib/supabaseClient";
 import { revalidatePath } from "next/cache";
-import { toast } from "react-toastify";
 
 export async function updateCustomer(customerId, data) {
   try {
@@ -29,9 +28,16 @@ export async function updateCustomer(customerId, data) {
     if (error) throw error;
 
     revalidatePath("/customers");
-    return true;
+
+    return {
+      status: 200,
+      message: "مشتری با موفقیت ویرایش گردید",
+    };
   } catch (err) {
     console.error("خطا در بروزرسانی مشتری:", err);
-    throw err;
+    return {
+      status: 500,
+      message: `ویرایش مشتری با خطا مواجه شد: ${err.message}`,
+    };
   }
 }

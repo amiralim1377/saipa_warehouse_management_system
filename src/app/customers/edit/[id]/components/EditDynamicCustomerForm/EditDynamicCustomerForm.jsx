@@ -23,7 +23,7 @@ function EditDynamicCustomerForm({ targetCustomer }) {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm({
     defaultValues: {
@@ -56,13 +56,19 @@ function EditDynamicCustomerForm({ targetCustomer }) {
 
   const onSubmit = async (data) => {
     try {
-      await updateCustomer(targetCustomer.id, data);
-      toast.success("مشتری با موفقیت ویرایش شد.");
+      const result = await updateCustomer(targetCustomer.id, data);
 
-      router.replace("/customers");
+      if (result.status === 200) {
+        toast.success(result.message);
+        router.replace("/customers");
+      } else {
+        throw new Error(result.message);
+      }
     } catch (err) {
       console.error(err);
       toast.error(`خطا در بروزرسانی مشتری: ${err.message}`);
+      toast.error(result.message);
+    } finally {
     }
   };
 
@@ -264,7 +270,9 @@ function EditDynamicCustomerForm({ targetCustomer }) {
 
       <Textarea {...register("notes")} placeholder="توضیحات اختیاری" />
 
-      <Button type="submit">ویرایش مشتری</Button>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "در حال ویرایش..." : "ثبت تغییرات"}
+      </Button>
     </form>
   );
 }

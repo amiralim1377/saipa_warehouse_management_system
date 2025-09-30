@@ -1,18 +1,20 @@
 import { supabase } from "@/lib/supabaseClient";
-import { toast } from "react-toastify";
 
 export async function createCustomer(data) {
   try {
     const { error } = await supabase.from("customers").insert([data]);
     if (error) throw error;
 
-    toast.success("مشتری با موفقیت ثبت شد!");
-    return { success: true };
+    return {
+      status: 200,
+      message: "مشتری با موفقیت ثبت شد!",
+    };
   } catch (err) {
     console.error("خطا در ثبت مشتری:", err);
-    toast.error("خطا در ثبت مشتری، لطفاً دوباره تلاش کنید.");
-    toast.error(`"خطا در ثبت مشتری:", ${err.message}`);
 
-    return { success: false, error: err };
+    return {
+      status: 500,
+      message: `حذف مشتری با خطا مواجه شد: ${err.message}`,
+    };
   }
 }

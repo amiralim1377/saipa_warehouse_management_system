@@ -14,6 +14,7 @@ import { provinces } from "@/data/provinces";
 import { useProvinceCity } from "../../hook/useProvinceCity";
 import { createCustomer } from "../../actions/CreateCustomer";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 function CreateCustomerForm() {
   const router = useRouter();
@@ -21,7 +22,7 @@ function CreateCustomerForm() {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm({});
 
@@ -33,13 +34,20 @@ function CreateCustomerForm() {
   const { selectedProvince, cities } = useProvinceCity({ control, provinces });
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     try {
-      await createCustomer(data);
-      reset();
-      router.replace("/customers");
-    } catch (err) {}
+      const result = await createCustomer(data);
+
+      if (result.status === 200) {
+        toast.success(result.message);
+        reset();
+        router.replace("/customers");
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (err) {
+      toast.error(err.message || "خطای ناشناخته رخ داد");
+    } finally {
+    }
   };
 
   return (
@@ -239,7 +247,9 @@ function CreateCustomerForm() {
         </p>
       )}{" "}
       <Textarea {...register("notes")} placeholder="توضیحات اختیاری" />
-      <Button type="submit">ثبت مشتری</Button>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "در حال ثبت..." : "ثبت مشتری"}
+      </Button>
     </form>
   );
 }
