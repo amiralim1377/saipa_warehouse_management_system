@@ -1,5 +1,5 @@
+import NoCustomers from "../delete/components/NoCustomers/NoCustomers";
 import { getCustomers } from "../delete/services/getCustomer";
-import CreateCustomerForm from "../new/components/CreateCustomerForm/CreateCustomerForm";
 import EditCustomerListView from "./components/EditCustomerListView/EditCustomerListView";
 
 async function EditCustomersPage() {
@@ -7,7 +7,11 @@ async function EditCustomersPage() {
 
   return (
     <>
-      <EditCustomerListView initialCustomers={customers} />
+      {customers?.length > 0 ? (
+        <EditCustomerListView initialCustomers={customers} />
+      ) : (
+        <NoCustomers />
+      )}
     </>
   );
 }

@@ -23,19 +23,19 @@ function DeleteItemButton({ itemId, itemType, deleteFunction, onDeleted }) {
       const result = await deleteFunction(itemId);
 
       if (result.status === 200) {
-        toast.success(result.message);
+        toast.success(result.message || `${itemType} با موفقیت حذف شد`);
+        onDeleted?.(result);
+        setOpen(false);
       } else {
         throw new Error(result.message);
       }
-      setOpen(false);
-      onDeleted?.();
 
       startTransition(() => {
         router.refresh();
       });
     } catch (err) {
       toast.error(
-        `خطا در حذف ${itemType}، لطفاً دوباره تلاش کنید. ${err?.message || ""}`
+        err?.message || `خطا در حذف ${itemType}، لطفاً دوباره تلاش کنید.`
       );
     }
   };
