@@ -141,9 +141,10 @@ function CreateCustomerForm() {
         </>
       )}
       <Input
-        {...register("phone", { required: "شماره موبایل الزامی است" })}
-        placeholder="شماره موبایل"
+        {...register("phone", { required: "شماره تماس الزامی است" })}
+        placeholder="شماره تماس"
         type="tel"
+        className={"text-right"}
       />
       {errors.phone && (
         <p className="text-destructive text-sm">{errors.phone.message}</p>
@@ -169,7 +170,7 @@ function CreateCustomerForm() {
         render={({ field, fieldState }) => (
           <div className="w-full">
             <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full flex-row-reverse justify-between text-right">
                 <SelectValue placeholder="استان" />
               </SelectTrigger>
               <SelectContent>
@@ -200,7 +201,7 @@ function CreateCustomerForm() {
               onValueChange={field.onChange}
               disabled={!selectedProvince}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full flex-row-reverse justify-between text-right">
                 <SelectValue placeholder="شهر" />
               </SelectTrigger>
               <SelectContent>
