@@ -4,7 +4,6 @@ import { getSuppliers } from "./services/getSuppliers";
 
 async function DeleteSuppliersPage() {
   const { suppliers, message } = await getSuppliers();
-  console.log(suppliers);
 
   return (
     <>
