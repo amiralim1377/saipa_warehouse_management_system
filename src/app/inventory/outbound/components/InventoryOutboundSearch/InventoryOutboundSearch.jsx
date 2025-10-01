@@ -4,18 +4,19 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import TextInputField from "@/components/Form/TextInputField/TextInputField";
 import SelectField from "@/components/Form/SelectField/SelectField";
+import { useInventoryOutbound } from "../../context/InventoryOutboundProvider";
 
-function InventoryOutboundSearch({ warehouses = [] }) {
+function InventoryOutboundSearch() {
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
     register,
   } = useForm();
+  const { warehouses } = useInventoryOutbound();
 
   const onSubmit = (data) => {
     console.log("Search Params:", data);
-    // اینجا می‌تونی پارامترها رو به URL اضافه کنی یا API کال بزنی
   };
 
   return (

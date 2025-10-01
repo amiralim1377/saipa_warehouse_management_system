@@ -1,18 +1,22 @@
 "use client";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 
 const InventoryOutboundContext = createContext();
 
-export function InventoryOutboundProvider({ children }) {
+export function InventoryOutboundProvider({
+  children,
+  warehouses: initialWarehouses,
+}) {
+  const [warehouses, setWarehouses] = useState(initialWarehouses);
   return (
-    <InventoryOutboundContext.Provider value={{}}>
+    <InventoryOutboundContext.Provider value={{ warehouses, setWarehouses }}>
       {children}
     </InventoryOutboundContext.Provider>
   );
 }
 
 export const useInventoryOutbound = () => {
-  const context = useContext(InventoryInboundContext);
+  const context = useContext(InventoryOutboundContext);
   if (!context) {
     throw new Error(
       "InventoryOutbound must be used within an InventoryOutboundProvider"

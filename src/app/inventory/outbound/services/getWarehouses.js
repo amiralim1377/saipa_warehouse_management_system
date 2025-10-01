@@ -11,6 +11,14 @@ const getWarehouses = async () => {
       return {
         success: false,
         message: `خطا در دریافت لیست انبارها: ${error.message}`,
+        warehouses: undefined,
+      };
+    }
+
+    if (!data || data.length === 0) {
+      return {
+        success: false,
+        message: "هیچ انباری ثبت نشده است ❌",
         warehouses: [],
       };
     }
@@ -18,14 +26,14 @@ const getWarehouses = async () => {
     return {
       success: true,
       message: "لیست انبارها با موفقیت دریافت شد ✅",
-      warehouses: data ?? [],
+      warehouses: data,
     };
   } catch (err) {
     console.error("Unexpected error:", err);
     return {
       success: false,
       message: "خطای غیرمنتظره در دریافت انبارها ❌",
-      warehouses: [],
+      warehouses: undefined,
     };
   }
 };
