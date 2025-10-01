@@ -59,6 +59,7 @@ function EditDynamicCustomerForm({ targetCustomer }) {
       const result = await updateCustomer(targetCustomer.id, data);
 
       if (result.status === 200) {
+        reset();
         toast.success(result.message);
         router.replace("/customers");
       } else {
