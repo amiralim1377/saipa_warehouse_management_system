@@ -17,7 +17,7 @@ export default function CreateWarehouseForm() {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     watch,
   } = useForm();
 
@@ -191,10 +191,11 @@ export default function CreateWarehouseForm() {
         <Button
           type="submit"
           className="bg-primary text-primary-foreground px-6 py-3 rounded-lg"
-          disabled={!isCapacityEqual()}
+          disabled={!isCapacityEqual() || isSubmitting}
         >
-          ثبت
+          {isSubmitting ? "در حال ثبت..." : "ثبت"}
         </Button>
+
         <Button
           type="button"
           className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg"

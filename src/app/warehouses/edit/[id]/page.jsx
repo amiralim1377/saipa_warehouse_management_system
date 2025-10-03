@@ -1,4 +1,4 @@
-import EditDynamicWarehouseForm from "./components/EditDynamicWarehouseForm";
+import EditDynamicWarehouseForm from "./components/EditDynamicWarehouseForm/EditDynamicWarehouseForm";
 import NoWarehouses from "../../components/NoWarehouses/NoWarehouses";
 import { getTargetWarehouse } from "./services/getTargetWarehouse";
 
