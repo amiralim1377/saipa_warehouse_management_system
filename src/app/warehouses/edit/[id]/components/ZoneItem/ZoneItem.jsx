@@ -12,6 +12,7 @@ import { AisleItem } from "../AisleItem/AisleItem";
 import NoAisle from "../NoAisle/NoAisle";
 
 export const ZoneItem = ({ zone }) => {
+  console.log(zone);
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -40,14 +41,6 @@ export const ZoneItem = ({ zone }) => {
                 className="font-medium"
                 readOnly
               />
-            </div>
-            <div className="items-center hidden lg:flex gap-2 text-sm text-muted-foreground">
-              <span>ایجاد شده:</span>
-              <span>
-                {zone?.created_at
-                  ? new Date(zone.created_at).toLocaleDateString("fa-IR")
-                  : "—"}
-              </span>
             </div>
           </div>
 

@@ -39,12 +39,6 @@ export const RackItem = ({ rack }) => {
               className="font-medium"
               placeholder="نام قفسه"
             />
-            <span className="text-sm hidden lg:flex text-muted-foreground items-center">
-              ایجاد شده:{" "}
-              {rack?.created_at
-                ? new Date(rack.created_at).toLocaleDateString("fa-IR")
-                : "—"}
-            </span>
           </div>
 
           <Button variant="outline" size="sm">

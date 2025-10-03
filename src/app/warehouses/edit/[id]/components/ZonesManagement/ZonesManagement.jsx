@@ -11,53 +11,6 @@ import NoZone from "../NoZone/NoZone";
 import { ZoneItem } from "../ZoneItem/ZoneItem";
 import { useWarehouse } from "../../context/WarehouseContext";
 
-// داده‌ی تستی
-const testZones = [
-  {
-    id: "zone-1",
-    name: "زون A",
-    createdAt: "1404/07/11",
-    aisles: [
-      {
-        id: "aisle-1",
-        name: "راهرو 1",
-        racks: [
-          {
-            id: "rack-1",
-            name: "قفسه 1",
-            shelves: [
-              { id: "shelf-1", name: "طبقه 1" },
-              { id: "shelf-2", name: "طبقه 2" },
-            ],
-          },
-          {
-            id: "rack-2",
-            name: "قفسه 2",
-            shelves: [
-              { id: "shelf-3", name: "طبقه 1" },
-              { id: "shelf-4", name: "طبقه 2" },
-            ],
-          },
-        ],
-      },
-      {
-        id: "aisle-2",
-        name: "راهرو 2",
-        racks: [
-          {
-            id: "rack-3",
-            name: "قفسه 1",
-            shelves: [
-              { id: "shelf-5", name: "طبقه 1" },
-              { id: "shelf-6", name: "طبقه 2" },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
-
 function ZonesManagement() {
   const { zones } = useWarehouse();
 

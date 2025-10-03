@@ -39,12 +39,6 @@ export const AisleItem = ({ aisle }) => {
               className="font-medium"
               placeholder="نام راهرو"
             />
-            <span className="text-sm hidden lg:flex text-muted-foreground items-center">
-              ایجاد شده:{" "}
-              {aisle?.created_at
-                ? new Date(aisle.created_at).toLocaleDateString("fa-IR")
-                : "—"}
-            </span>
           </div>
 
           <Button variant="outline">

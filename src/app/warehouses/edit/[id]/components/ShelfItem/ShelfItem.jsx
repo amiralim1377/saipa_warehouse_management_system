@@ -11,7 +11,7 @@ export const ShelfItem = ({ shelf }) => {
 
   return (
     <div className="border rounded p-2 text-sm flex items-center justify-between ml-16">
-      {/* آیکون + نام طبقه + تاریخ ایجاد */}
+      {/* آیکون + نام طبقه    */}
       <div className="flex items-center gap-3">
         <Layers className="h-5 w-5 text-primary hidden lg:block" />
         <Input
@@ -21,12 +21,6 @@ export const ShelfItem = ({ shelf }) => {
           className="h-8 w-32 text-sm font-medium"
           {...register(`shelves.${shelf?.id}.name`)}
         />
-        <span className="text-sm hidden lg:flex text-muted-foreground items-center">
-          ایجاد شده:{" "}
-          {shelf?.created_at
-            ? new Date(shelf.created_at).toLocaleDateString("fa-IR")
-            : "—"}
-        </span>
       </div>
 
       {/* دکمه‌ها */}

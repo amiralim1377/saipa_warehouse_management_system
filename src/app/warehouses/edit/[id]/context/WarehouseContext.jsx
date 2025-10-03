@@ -5,6 +5,7 @@ import { useWarehouseData } from "../hook/useWarehouseData/useWarehouseData";
 const WarehouseContext = createContext(null);
 
 export function WarehouseProvider({ targetWarehouse, children }) {
+  console.log(targetWarehouse);
   const { warehouse, zones, aisles, racks, shelves } =
     useWarehouseData(targetWarehouse);
   return (
