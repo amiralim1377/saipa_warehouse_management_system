@@ -30,11 +30,11 @@ export const RackItem = () => {
           </CollapsibleTrigger>
 
           {/* آیکون قفسه */}
-          <Archive className="h-6 w-6 text-primary" />
+          <Archive className="h-6 w-6 text-primary hidden lg:block" />
 
           <div className="flex-1 grid grid-cols-2 gap-4">
             <Input value="قفسه 1" readOnly className="font-medium" />
-            <span className="text-sm text-muted-foreground flex items-center">
+            <span className="text-sm hidden lg:flex text-muted-foreground  items-center">
               ایجاد شده: 1404/07/11
             </span>
           </div>

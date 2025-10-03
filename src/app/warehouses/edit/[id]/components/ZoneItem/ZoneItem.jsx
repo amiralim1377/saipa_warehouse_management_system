@@ -30,7 +30,7 @@ export const ZoneItem = () => {
           </CollapsibleTrigger>
 
           {/* آیکون زون */}
-          <Grid3x3 className="h-6 w-6 text-primary hidden md:block" />
+          <Grid3x3 className="h-6 w-6 text-primary hidden lg:block" />
 
           <div className="flex-1 grid grid-cols-2 gap-4">
             <div className="space-y-1">
@@ -41,7 +41,7 @@ export const ZoneItem = () => {
                 readOnly
               />
             </div>
-            <div className=" items-center hidden md:flex gap-2 text-sm text-muted-foreground">
+            <div className=" items-center hidden lg:flex gap-2 text-sm text-muted-foreground">
               <span>ایجاد شده:</span>
               <span>1404/07/11</span>
             </div>
