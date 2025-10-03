@@ -11,7 +11,7 @@ import {
 import { AisleItem } from "../AisleItem/AisleItem";
 import NoAisle from "../NoAisle/NoAisle";
 
-export const ZoneItem = () => {
+export const ZoneItem = ({ zone }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -35,15 +35,19 @@ export const ZoneItem = () => {
           <div className="flex-1 grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <Input
-                value="زون A"
+                value={zone?.name || ""}
                 placeholder="نام زون"
                 className="font-medium"
                 readOnly
               />
             </div>
-            <div className=" items-center hidden lg:flex gap-2 text-sm text-muted-foreground">
+            <div className="items-center hidden lg:flex gap-2 text-sm text-muted-foreground">
               <span>ایجاد شده:</span>
-              <span>1404/07/11</span>
+              <span>
+                {zone?.created_at
+                  ? new Date(zone.created_at).toLocaleDateString("fa-IR")
+                  : "—"}
+              </span>
             </div>
           </div>
 
@@ -64,11 +68,11 @@ export const ZoneItem = () => {
         {/* Content */}
         <CollapsibleContent>
           <div className="p-6 space-y-4">
-            {true ? (
-              // حالت پر (استاتیک نمونه)
-              <AisleItem />
+            {zone?.aisles?.length > 0 ? (
+              zone.aisles.map((aisle) => (
+                <AisleItem key={aisle.id} aisle={aisle} />
+              ))
             ) : (
-              // حالت خالی
               <NoAisle />
             )}
           </div>

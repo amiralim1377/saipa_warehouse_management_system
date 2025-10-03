@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import NoZone from "../NoZone/NoZone";
 import { ZoneItem } from "../ZoneItem/ZoneItem";
+import { useWarehouse } from "../../context/WarehouseContext";
 
 // داده‌ی تستی
 const testZones = [
@@ -58,7 +59,7 @@ const testZones = [
 ];
 
 function ZonesManagement() {
-  const zones = testZones; // 👈 فعلاً داده‌ی تستی
+  const { zones } = useWarehouse();
 
   return (
     <Card className="w-full">

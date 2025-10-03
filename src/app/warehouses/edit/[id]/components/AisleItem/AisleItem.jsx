@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Trash2, ChevronDown, Columns } from "lucide-react"; // 👈 آیکون راهرو اضافه شد
+import { Plus, Trash2, ChevronDown, Columns } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -11,7 +11,7 @@ import {
 import { RackItem } from "../RackItem/RackItem";
 import NoRack from "../NoRack/NoRack";
 
-export const AisleItem = () => {
+export const AisleItem = ({ aisle }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -33,9 +33,17 @@ export const AisleItem = () => {
           <Columns className="h-6 w-6 text-primary hidden lg:block" />
 
           <div className="flex-1 grid grid-cols-2 gap-4">
-            <Input value="راهرو 1" readOnly className="font-medium" />
-            <span className="text-sm hidden lg:flex text-muted-foreground  items-center">
-              ایجاد شده: 1404/07/11
+            <Input
+              value={aisle?.name || ""}
+              readOnly
+              className="font-medium"
+              placeholder="نام راهرو"
+            />
+            <span className="text-sm hidden lg:flex text-muted-foreground items-center">
+              ایجاد شده:{" "}
+              {aisle?.created_at
+                ? new Date(aisle.created_at).toLocaleDateString("fa-IR")
+                : "—"}
             </span>
           </div>
 
@@ -56,11 +64,9 @@ export const AisleItem = () => {
         {/* Content */}
         <CollapsibleContent>
           <div className="p-4 space-y-4">
-            {true ? (
-              // حالت پر (نمونه)
-              <RackItem />
+            {aisle?.racks?.length > 0 ? (
+              aisle.racks.map((rack) => <RackItem key={rack.id} rack={rack} />)
             ) : (
-              // حالت خالی
               <NoRack />
             )}
           </div>

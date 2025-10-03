@@ -11,7 +11,7 @@ import {
 import { ShelfItem } from "../ShelfItem/ShelfItem";
 import NoShelf from "../NoShelf/NoShelf";
 
-export const RackItem = () => {
+export const RackItem = ({ rack }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -33,9 +33,17 @@ export const RackItem = () => {
           <Archive className="h-6 w-6 text-primary hidden lg:block" />
 
           <div className="flex-1 grid grid-cols-2 gap-4">
-            <Input value="قفسه 1" readOnly className="font-medium" />
-            <span className="text-sm hidden lg:flex text-muted-foreground  items-center">
-              ایجاد شده: 1404/07/11
+            <Input
+              value={rack?.name || ""}
+              readOnly
+              className="font-medium"
+              placeholder="نام قفسه"
+            />
+            <span className="text-sm hidden lg:flex text-muted-foreground items-center">
+              ایجاد شده:{" "}
+              {rack?.created_at
+                ? new Date(rack.created_at).toLocaleDateString("fa-IR")
+                : "—"}
             </span>
           </div>
 
@@ -56,11 +64,11 @@ export const RackItem = () => {
         {/* Content */}
         <CollapsibleContent>
           <div className="p-4 space-y-2">
-            {true ? (
-              // حالت پر (نمونه)
-              <ShelfItem />
+            {rack?.shelves?.length > 0 ? (
+              rack.shelves.map((shelf) => (
+                <ShelfItem key={shelf.id} shelf={shelf} />
+              ))
             ) : (
-              // حالت خالی
               <NoShelf />
             )}
           </div>

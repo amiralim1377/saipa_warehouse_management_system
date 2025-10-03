@@ -8,7 +8,32 @@ export async function getTargetWarehouse(id) {
 
     const { data, error } = await supabase
       .from("warehouses")
-      .select("*")
+      .select(
+        `
+        id,
+        name,
+        location,
+        capacity,
+        min_stock,
+        zones (
+          id,
+          name,
+          aisles (
+            id,
+            name,
+            racks (
+              id,
+              name,
+              shelves (
+                id,
+                name,
+                level
+              )
+            )
+          )
+        )
+      `
+      )
       .eq("id", id)
       .single();
 
@@ -17,7 +42,7 @@ export async function getTargetWarehouse(id) {
     return {
       status: 200,
       warehouse: data,
-      message: "انبار با موفقیت دریافت شد",
+      message: "اطلاعات کامل انبار با موفقیت دریافت شد ✅",
     };
   } catch (err) {
     console.error("خطا در دریافت انبار:", err);

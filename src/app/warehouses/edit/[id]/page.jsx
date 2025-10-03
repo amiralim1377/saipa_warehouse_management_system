@@ -1,6 +1,7 @@
 import EditDynamicWarehouseForm from "./components/EditDynamicWarehouseForm/EditDynamicWarehouseForm";
 import NoWarehouses from "../../components/NoWarehouses/NoWarehouses";
 import { getTargetWarehouse } from "./services/getTargetWarehouse";
+import { WarehouseProvider } from "./context/WarehouseContext";
 
 async function EditDynamicWarehousesPage({ params }) {
   const id = decodeURIComponent(params.id);
@@ -15,11 +16,11 @@ async function EditDynamicWarehousesPage({ params }) {
     return <NoWarehouses message={message} />;
   }
 
-  console.log(targetWarehouse);
-
   return (
     <>
-      <EditDynamicWarehouseForm targetWarehouse={targetWarehouse} />
+      <WarehouseProvider targetWarehouse={targetWarehouse}>
+        <EditDynamicWarehouseForm targetWarehouse={targetWarehouse} />
+      </WarehouseProvider>
     </>
   );
 }
