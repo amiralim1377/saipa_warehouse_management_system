@@ -1,12 +1,25 @@
 import InventoryOutboundSearch from "./components/InventoryOutboundSearch/InventoryOutboundSearch";
+import NoProducts from "./components/NoProductsFound/NoProductsFound";
 import NoWarehouses from "./components/NoWarehouses/NoWarehouses";
 import OutboundResultList from "./components/OutboundResultList/OutboundResultList";
 import { InventoryOutboundProvider } from "./context/InventoryOutboundProvider";
 import { getCategories } from "./services/getCategories";
+import { getSearchProducts } from "./services/getSearchProducts";
 import getWarehouses from "./services/getWarehouses";
 import { QueryClientProviderWrapper } from "@/providers/QueryClientProviderWrapper";
 
-async function InventoryOutboundPage() {
+async function InventoryOutboundPage({ searchParams }) {
+  const {
+    query = "",
+    warehouse = "",
+    zone = "",
+    aisle = "",
+    rack = "",
+    shelf = "",
+    category = "",
+    subcategory = "",
+  } = searchParams || {};
+
   const {
     message: warehouseMessage,
     success: warehouseSuccess,
@@ -23,6 +36,23 @@ async function InventoryOutboundPage() {
     return <NoWarehouses message={warehouseMessage} />;
   }
 
+  const searchFilters = {
+    query,
+    warehouse,
+    zone,
+    aisle,
+    rack,
+    shelf,
+    category,
+    subcategory,
+  };
+
+  const {
+    data: searchResults,
+    message,
+    success,
+  } = await getSearchProducts(searchFilters, warehouses);
+
   return (
     <>
       <QueryClientProviderWrapper>
@@ -31,7 +61,11 @@ async function InventoryOutboundPage() {
           categories={categories}
         >
           <InventoryOutboundSearch />
-          <OutboundResultList />
+          {searchResults && searchResults.length > 0 ? (
+            <OutboundResultList results={searchResults} />
+          ) : (
+            <NoProducts message={message || "هیچ محصولی یافت نشد."} />
+          )}
         </InventoryOutboundProvider>
       </QueryClientProviderWrapper>
     </>
