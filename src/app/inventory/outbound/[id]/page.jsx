@@ -1,9 +1,20 @@
+import { getTargetProduct } from "./services/getTargetProduct";
+import NoProducts from "./components/NoProducts/NoProducts";
+import OutboundForm from "./components/OutboundForm/OutboundForm";
+
 export default async function OutboundDetailPage({ params }) {
-  const { id } = params;
+  const { id: productId } = params;
+  const { message, product, success } = await getTargetProduct(productId);
+
+  console.log(product);
+
+  if (!success || !product) {
+    return <NoProducts message={message || "محصول مورد نظر یافت نشد."} />;
+  }
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">فرم خروجی</h1>
+      <OutboundForm product={product} />
     </div>
   );
 }
