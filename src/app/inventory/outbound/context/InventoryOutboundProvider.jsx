@@ -6,10 +6,15 @@ const InventoryOutboundContext = createContext();
 export function InventoryOutboundProvider({
   children,
   warehouses: initialWarehouses,
+  categories: initialCategories,
 }) {
   const [warehouses, setWarehouses] = useState(initialWarehouses);
+  const [categories, setCategories] = useState(initialCategories);
+
   return (
-    <InventoryOutboundContext.Provider value={{ warehouses, setWarehouses }}>
+    <InventoryOutboundContext.Provider
+      value={{ warehouses, setWarehouses, categories, setCategories }}
+    >
       {children}
     </InventoryOutboundContext.Provider>
   );

@@ -1,10 +1,11 @@
 "use client";
-
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import TextInputField from "@/components/Form/TextInputField/TextInputField";
 import SelectField from "@/components/Form/SelectField/SelectField";
 import { useInventoryOutbound } from "../../context/InventoryOutboundProvider";
+import { useWarehouseStructure } from "@/hooks/useWarehouseStructure/useWarehouseStructure";
+import { useSubcategories } from "@/app/inventory/inbound/hook/useSubcategories";
 
 function InventoryOutboundSearch() {
   const {
@@ -12,8 +13,24 @@ function InventoryOutboundSearch() {
     handleSubmit,
     formState: { errors, isSubmitting },
     register,
+    watch,
   } = useForm();
-  const { warehouses } = useInventoryOutbound();
+
+  const { warehouses, categories } = useInventoryOutbound();
+
+  const {
+    zones,
+    zonesLoading,
+    aisles,
+    aislesLoading,
+    racks,
+    racksLoading,
+    shelves,
+    shelvesLoading,
+  } = useWarehouseStructure(control);
+
+  const { data: subcategories, isLoading, error } = useSubcategories(control);
+  const selectedCategory = watch("category");
 
   const onSubmit = (data) => {
     console.log("Search Params:", data);
@@ -25,10 +42,11 @@ function InventoryOutboundSearch() {
       className="space-y-4 mx-auto p-6"
       dir="rtl"
     >
-      <h1 className="text-2xl font-semibold text-[var(--color-foreground)] mb-6">
+      <h1 className="text-2xl font-semibold text-foreground mb-6">
         جستجوی قطعه
       </h1>
 
+      {/* فیلد جستجو */}
       <TextInputField
         id="query"
         label="نام قطعه یا کد فنی"
@@ -42,94 +60,127 @@ function InventoryOutboundSearch() {
         errors={errors}
       />
 
+      {/* بخش فیلتر موقعیت */}
       <h2 className="text-lg font-medium mt-6 mb-2">فیلتر موقعیت</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        {/* انبار */}
         <SelectField
           name="warehouse"
           label="انبار"
           control={control}
           rules={{ required: "انتخاب انبار الزامی است" }}
-          options={warehouses.map((w) => ({
-            value: String(w.id),
-            label: w.name,
-          }))}
+          options={
+            warehouses?.map((w) => ({
+              value: String(w.id),
+              label: w.name,
+            })) ?? []
+          }
+          placeholder="انتخاب انبار"
           errors={errors}
         />
 
+        {/* زون */}
         <SelectField
           name="zone"
           label="زون"
           control={control}
           placeholder="انتخاب زون"
           rules={{ required: "انتخاب زون الزامی است" }}
-          options={[
-            { value: "all", label: "همه زون‌ها" },
-            { value: "Z1", label: "زون 1" },
-            { value: "Z2", label: "زون 2" },
-          ]}
+          loading={zonesLoading}
+          options={
+            zones?.length
+              ? zones.map((z) => ({
+                  value: String(z.id),
+                  label: z.name,
+                }))
+              : []
+          }
           errors={errors}
+          disabled={!watch("warehouse")}
         />
 
+        {/* راهرو */}
         <SelectField
           name="aisle"
           label="راهرو"
           control={control}
           placeholder="انتخاب راهرو"
           rules={{ required: "انتخاب راهرو الزامی است" }}
-          options={[
-            { value: "all", label: "همه راهروها" },
-            { value: "A1", label: "راهرو 1" },
-            { value: "A2", label: "راهرو 2" },
-            { value: "A3", label: "راهرو 3" },
-          ]}
+          loading={aislesLoading}
+          options={
+            aisles?.length
+              ? aisles.map((a) => ({
+                  value: String(a.id),
+                  label: a.name,
+                }))
+              : []
+          }
           errors={errors}
+          disabled={!watch("zone")}
         />
+
+        {/* رک */}
         <SelectField
           name="rack"
           label="رک"
           control={control}
           placeholder="انتخاب رک"
           rules={{ required: "انتخاب رک الزامی است" }}
-          options={[
-            { value: "all", label: "همه رک‌ها" },
-            { value: "R1", label: "رک 1" },
-            { value: "R2", label: "رک 2" },
-          ]}
+          loading={racksLoading}
+          options={
+            racks?.length
+              ? racks.map((r) => ({
+                  value: String(r.id),
+                  label: r.name,
+                }))
+              : []
+          }
           errors={errors}
+          disabled={!watch("aisle")}
         />
 
+        {/* طبقه */}
         <SelectField
           name="shelf"
           label="طبقه"
           control={control}
           placeholder="انتخاب طبقه"
           rules={{ required: "انتخاب طبقه الزامی است" }}
-          options={[
-            { value: "all", label: "همه طبقات" },
-            { value: "L1", label: "طبقه 1" },
-            { value: "L2", label: "طبقه 2" },
-          ]}
+          loading={shelvesLoading}
+          options={
+            shelves?.length
+              ? shelves.map((s) => ({
+                  value: String(s.id),
+                  label: s.name,
+                }))
+              : []
+          }
           errors={errors}
+          disabled={!watch("rack")}
         />
       </div>
 
+      {/* دسته‌بندی و زیر‌دسته  */}
       <SelectField
         name="category"
         label="دسته‌بندی قطعه"
         control={control}
         placeholder="انتخاب دسته‌بندی"
         rules={{ required: "انتخاب دسته‌بندی الزامی است" }}
-        options={[
-          { value: "all", label: "انتخاب کنید..." },
-          { value: "موتوری", label: "موتوری" },
-          { value: "برقی", label: "برقی" },
-          { value: "بدنه", label: "بدنه" },
-          { value: "ابزار", label: "ابزار" },
-          { value: "زنجیر", label: "زنجیر" },
-          { value: "سایر", label: "سایر" },
-        ]}
+        options={
+          categories?.length
+            ? [
+                { value: "all", label: "همه دسته‌بندی‌ها" },
+                ...categories.map((c) => ({
+                  value: String(c.id),
+                  label: c.name_fa || c.name,
+                })),
+              ]
+            : []
+        }
         errors={errors}
       />
+      {/*   زیر‌دسته  */}
 
       <SelectField
         name="subcategory"
@@ -137,16 +188,18 @@ function InventoryOutboundSearch() {
         control={control}
         placeholder="انتخاب زیر‌دسته"
         rules={{ required: "انتخاب زیر‌دسته الزامی است" }}
-        options={[
-          { value: "all", label: "انتخاب کنید..." },
-          { value: "فیلتر", label: "فیلتر" },
-          { value: "پمپ", label: "پمپ" },
-          { value: "سنسور", label: "سنسور" },
-          { value: "پیچ و مهره", label: "پیچ و مهره" },
-          { value: "واشر", label: "واشر" },
-          { value: "سایر", label: "سایر" },
-        ]}
-        errors={errors}
+        options={
+          subcategories?.length
+            ? [
+                { value: "all", label: "همه زیر‌دسته‌ها" },
+                ...subcategories.map((s) => ({
+                  value: s.id,
+                  label: s.name,
+                })),
+              ]
+            : [{ value: "none", label: "ابتدا دسته‌بندی را انتخاب کنید" }]
+        }
+        disabled={!selectedCategory || isLoading}
       />
 
       <Button

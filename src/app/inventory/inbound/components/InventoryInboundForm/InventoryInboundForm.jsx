@@ -70,6 +70,7 @@ export default function InventoryInboundForm() {
   });
 
   const { data: subcategories, isLoading, error } = useSubcategories(control);
+
   const { zones, zonesLoading } = useWarehouseZones({ control });
   const {
     selectedZoneId,
