@@ -8,7 +8,7 @@ export const useShelvesByRack = (control) => {
   const query = useQuery({
     queryKey: ["shelves", selectedRackId],
     queryFn: () => getShelvesByRack(selectedRackId),
-    enabled: !!selectedRackId,
+    enabled: !!selectedRackId && selectedRackId !== "all",
     placeholderData: [],
   });
 

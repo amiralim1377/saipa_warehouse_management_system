@@ -8,7 +8,7 @@ export const useRacksByAisle = (control) => {
   const query = useQuery({
     queryKey: ["racks", selectedAisleId],
     queryFn: () => getRacksByAisle(selectedAisleId),
-    enabled: !!selectedAisleId,
+    enabled: !!selectedAisleId && selectedAisleId !== "all",
     placeholderData: [],
   });
 

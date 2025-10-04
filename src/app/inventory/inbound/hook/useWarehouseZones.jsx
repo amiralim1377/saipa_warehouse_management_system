@@ -8,7 +8,7 @@ export const useWarehouseZones = ({ control }) => {
   const zonesQuery = useQuery({
     queryKey: ["zones", selectedWarehouseId],
     queryFn: () => getZonesByWarehouse(selectedWarehouseId),
-    enabled: !!selectedWarehouseId,
+    enabled: !!selectedWarehouseId && selectedWarehouseId !== "all",
   });
 
   return {

@@ -8,7 +8,7 @@ export const useAislesByZone = (control) => {
   const query = useQuery({
     queryKey: ["aisles", selectedZoneId],
     queryFn: () => getAislesByZone(selectedZoneId),
-    enabled: !!selectedZoneId,
+    enabled: !!selectedZoneId && selectedZoneId !== "all",
   });
 
   return { selectedZoneId, ...query };

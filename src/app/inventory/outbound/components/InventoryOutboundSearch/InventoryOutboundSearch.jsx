@@ -6,8 +6,10 @@ import SelectField from "@/components/Form/SelectField/SelectField";
 import { useInventoryOutbound } from "../../context/InventoryOutboundProvider";
 import { useWarehouseStructure } from "@/hooks/useWarehouseStructure/useWarehouseStructure";
 import { useSubcategories } from "@/app/inventory/inbound/hook/useSubcategories";
+import { useRouter } from "next/navigation";
 
 function InventoryOutboundSearch() {
+  const router = useRouter();
   const {
     control,
     handleSubmit,
@@ -33,7 +35,21 @@ function InventoryOutboundSearch() {
   const selectedCategory = watch("category");
 
   const onSubmit = (data) => {
-    console.log("Search Params:", data);
+    const params = new URLSearchParams();
+
+    // همه فیلدهایی که مقدار دارند رو اضافه می‌کنیم، حتی "all"
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        params.append(key, String(value));
+      }
+    });
+
+    const url = `/inventory/outbound?${params.toString()}`;
+
+    console.log("Generated URL:", url);
+
+    // مثلا ریدایرکت یا fetch
+    router.push(url);
   };
 
   return (
@@ -70,10 +86,15 @@ function InventoryOutboundSearch() {
           control={control}
           rules={{ required: "انتخاب انبار الزامی است" }}
           options={
-            warehouses?.map((w) => ({
-              value: String(w.id),
-              label: w.name,
-            })) ?? []
+            warehouses?.length
+              ? [
+                  { value: "all", label: "همه انبارها" },
+                  ...warehouses.map((w) => ({
+                    value: String(w.id),
+                    label: w.name,
+                  })),
+                ]
+              : []
           }
           placeholder="انتخاب انبار"
           errors={errors}
@@ -85,18 +106,26 @@ function InventoryOutboundSearch() {
           label="زون"
           control={control}
           placeholder="انتخاب زون"
-          rules={{ required: "انتخاب زون الزامی است" }}
+          rules={{
+            required:
+              watch("warehouse") && watch("warehouse") !== "all"
+                ? "انتخاب زون الزامی است"
+                : false,
+          }}
           loading={zonesLoading}
           options={
             zones?.length
-              ? zones.map((z) => ({
-                  value: String(z.id),
-                  label: z.name,
-                }))
+              ? [
+                  { value: "all", label: "همه زون‌ها" },
+                  ...zones.map((z) => ({
+                    value: String(z.id),
+                    label: z.name,
+                  })),
+                ]
               : []
           }
           errors={errors}
-          disabled={!watch("warehouse")}
+          disabled={!watch("warehouse") || watch("warehouse") === "all"}
         />
 
         {/* راهرو */}
@@ -105,18 +134,26 @@ function InventoryOutboundSearch() {
           label="راهرو"
           control={control}
           placeholder="انتخاب راهرو"
-          rules={{ required: "انتخاب راهرو الزامی است" }}
+          rules={{
+            required:
+              watch("zone") && watch("zone") !== "all"
+                ? "انتخاب راهرو الزامی است"
+                : false,
+          }}
           loading={aislesLoading}
           options={
             aisles?.length
-              ? aisles.map((a) => ({
-                  value: String(a.id),
-                  label: a.name,
-                }))
+              ? [
+                  { value: "all", label: "همه راهروها" },
+                  ...aisles.map((a) => ({
+                    value: String(a.id),
+                    label: a.name,
+                  })),
+                ]
               : []
           }
           errors={errors}
-          disabled={!watch("zone")}
+          disabled={!watch("zone") || watch("zone") === "all"}
         />
 
         {/* رک */}
@@ -125,18 +162,26 @@ function InventoryOutboundSearch() {
           label="رک"
           control={control}
           placeholder="انتخاب رک"
-          rules={{ required: "انتخاب رک الزامی است" }}
+          rules={{
+            required:
+              watch("aisle") && watch("aisle") !== "all"
+                ? "انتخاب رک الزامی است"
+                : false,
+          }}
           loading={racksLoading}
           options={
             racks?.length
-              ? racks.map((r) => ({
-                  value: String(r.id),
-                  label: r.name,
-                }))
+              ? [
+                  { value: "all", label: "همه رک‌ها" },
+                  ...racks.map((r) => ({
+                    value: String(r.id),
+                    label: r.name,
+                  })),
+                ]
               : []
           }
           errors={errors}
-          disabled={!watch("aisle")}
+          disabled={!watch("aisle") || watch("aisle") === "all"}
         />
 
         {/* طبقه */}
@@ -145,18 +190,26 @@ function InventoryOutboundSearch() {
           label="طبقه"
           control={control}
           placeholder="انتخاب طبقه"
-          rules={{ required: "انتخاب طبقه الزامی است" }}
+          rules={{
+            required:
+              watch("rack") && watch("rack") !== "all"
+                ? "انتخاب طبقه الزامی است"
+                : false,
+          }}
           loading={shelvesLoading}
           options={
             shelves?.length
-              ? shelves.map((s) => ({
-                  value: String(s.id),
-                  label: s.name,
-                }))
+              ? [
+                  { value: "all", label: "همه طبقات" },
+                  ...shelves.map((s) => ({
+                    value: String(s.id),
+                    label: s.name,
+                  })),
+                ]
               : []
           }
           errors={errors}
-          disabled={!watch("rack")}
+          disabled={!watch("rack") || watch("rack") === "all"}
         />
       </div>
 
@@ -187,7 +240,11 @@ function InventoryOutboundSearch() {
         label="زیر‌دسته"
         control={control}
         placeholder="انتخاب زیر‌دسته"
-        rules={{ required: "انتخاب زیر‌دسته الزامی است" }}
+        rules={
+          selectedCategory && selectedCategory !== "all"
+            ? { required: "انتخاب زیر‌دسته الزامی است" }
+            : {}
+        }
         options={
           subcategories?.length
             ? [
@@ -197,9 +254,15 @@ function InventoryOutboundSearch() {
                   label: s.name,
                 })),
               ]
-            : [{ value: "none", label: "ابتدا دسته‌بندی را انتخاب کنید" }]
+            : [
+                {
+                  value: "placeholder",
+                  label: "ابتدا دسته‌بندی را انتخاب کنید",
+                  disabled: true,
+                },
+              ]
         }
-        disabled={!selectedCategory || isLoading}
+        disabled={!selectedCategory || selectedCategory === "all" || isLoading}
       />
 
       <Button

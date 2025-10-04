@@ -8,7 +8,7 @@ export const useSubcategories = (control) => {
   const query = useQuery({
     queryKey: ["subcategories", selectedCategoryId],
     queryFn: () => getSubcategories(selectedCategoryId),
-    enabled: !!selectedCategoryId,
+    enabled: !!selectedCategoryId && selectedCategoryId !== "all",
   });
 
   return { selectedCategoryId, ...query };
