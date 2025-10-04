@@ -1,3 +1,4 @@
+import { useFormContext, useFieldArray } from "react-hook-form";
 import {
   Card,
   CardHeader,
@@ -9,10 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import NoZone from "../NoZone/NoZone";
 import { ZoneItem } from "../ZoneItem/ZoneItem";
-import { useWarehouse } from "../../context/WarehouseContext";
 
 function ZonesManagement() {
-  const { zones } = useWarehouse();
+  const { control } = useFormContext();
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "zones",
+  });
 
   return (
     <Card className="w-full">
@@ -25,7 +30,10 @@ function ZonesManagement() {
               طبقات
             </CardDescription>
           </div>
-          <Button>
+          <Button
+            type="button"
+            onClick={() => append({ name: "", aisles: [] })}
+          >
             <Plus className="h-4 w-4 mr-2" />
             افزودن زون
           </Button>
@@ -33,10 +41,17 @@ function ZonesManagement() {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {zones.length === 0 ? (
+        {fields.length === 0 ? (
           <NoZone />
         ) : (
-          zones.map((zone) => <ZoneItem key={zone.id} zone={zone} />)
+          fields.map((zone, index) => (
+            <ZoneItem
+              key={zone.id || index}
+              zone={zone}
+              zoneIndex={index}
+              removeZone={remove}
+            />
+          ))
         )}
       </CardContent>
     </Card>

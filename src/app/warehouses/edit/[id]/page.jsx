@@ -19,7 +19,7 @@ async function EditDynamicWarehousesPage({ params }) {
   return (
     <>
       <WarehouseProvider targetWarehouse={targetWarehouse}>
-        <EditDynamicWarehouseForm targetWarehouse={targetWarehouse} />
+        <EditDynamicWarehouseForm />
       </WarehouseProvider>
     </>
   );
