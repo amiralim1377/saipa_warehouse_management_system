@@ -1,10 +1,10 @@
+import { getSearchProducts } from "@/services/getSearchProducts";
 import InventoryOutboundSearch from "./components/InventoryOutboundSearch/InventoryOutboundSearch";
 import NoProducts from "./components/NoProductsFound/NoProductsFound";
 import NoWarehouses from "./components/NoWarehouses/NoWarehouses";
 import OutboundResultList from "./components/OutboundResultList/OutboundResultList";
 import { InventoryOutboundProvider } from "./context/InventoryOutboundProvider";
 import { getCategories } from "./services/getCategories";
-import { getSearchProducts } from "./services/getSearchProducts";
 import getWarehouses from "./services/getWarehouses";
 import { QueryClientProviderWrapper } from "@/providers/QueryClientProviderWrapper";
 
