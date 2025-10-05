@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 const OrderContext = createContext();
 
@@ -10,6 +11,8 @@ export function OrderProvider({
 }) {
   const [warehouses, setWarehouses] = useState(initialWarehouses);
   const [categories, setCategories] = useState(initialCategories);
+  const [searchResults, setSearchResults] = useState([]);
+  console.log(searchResults);
 
   const [order, setOrder] = useState({
     items: [], // محصولات انتخاب شده
@@ -25,6 +28,7 @@ export function OrderProvider({
       ...prev,
       items: [...prev.items, item],
     }));
+    toast.success("محصول به لیست فروش اضافه شد");
   };
 
   const removeItem = (id) => {
@@ -46,6 +50,8 @@ export function OrderProvider({
       value={{
         warehouses,
         categories,
+        searchResults,
+        setSearchResults,
         order,
         addItem,
         removeItem,

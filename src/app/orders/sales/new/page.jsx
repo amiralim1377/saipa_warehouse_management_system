@@ -5,8 +5,10 @@ import { fetchWarehouses } from "./services/fetchWarehouses";
 import { fetchCategories } from "./services/fetchCategories";
 
 export default async function OrderSalesPage() {
-  const warehouses = await fetchWarehouses();
+  const { message, success, warehouses, error } = await fetchWarehouses();
+
   const categories = await fetchCategories();
+
   return (
     <QueryClientProviderWrapper>
       <OrderProvider warehouses={warehouses} categories={categories}>

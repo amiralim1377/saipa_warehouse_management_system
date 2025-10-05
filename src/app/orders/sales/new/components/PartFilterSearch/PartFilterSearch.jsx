@@ -5,8 +5,10 @@ import { useForm } from "react-hook-form";
 import { useWarehouseStructure } from "@/hooks/useWarehouseStructure/useWarehouseStructure";
 import { useOrder } from "../../context/OrderContext";
 import { useSubcategories } from "@/hooks/useSubcategories/useSubcategories";
+import { useRouter } from "next/navigation";
 
 function PartFilterSearch() {
+  const router = useRouter();
   const {
     control,
     handleSubmit,
@@ -31,7 +33,21 @@ function PartFilterSearch() {
   const { data: subcategories, isLoading, error } = useSubcategories(control);
 
   const onSubmit = (data) => {
-    console.log(data);
+    const params = new URLSearchParams();
+
+    // همه فیلدهایی که مقدار دارند رو اضافه می‌کنیم، حتی "all"
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        params.append(key, String(value));
+      }
+    });
+
+    const url = `/orders/sales/new?${params.toString()}`;
+
+    console.log("Generated URL:", url);
+
+    // مثلا ریدایرکت یا fetch
+    router.push(url);
   };
 
   return (
@@ -64,10 +80,10 @@ function PartFilterSearch() {
           control={control}
           rules={{ required: "انتخاب انبار الزامی است" }}
           options={
-            warehouses?.warehouses?.length
+            warehouses?.length
               ? [
                   { value: "all", label: "همه انبارها" },
-                  ...warehouses?.warehouses.map((w) => ({
+                  ...warehouses.map((w) => ({
                     value: String(w.id),
                     label: w.name,
                   })),

@@ -17,7 +17,7 @@ export async function fetchWarehouses() {
     return {
       success: false,
       message: "❌ خطا در دریافت لیست انبارها",
-      warehouses: undefined,
+      warehouses: [],
       error: err.message,
     };
   }

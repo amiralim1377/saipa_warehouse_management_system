@@ -2,6 +2,8 @@
 import { useState } from "react";
 import OrderFormProvider from "../../provider/OrderFormProvider";
 import WizardContent from "../WizardContent/WizardContent";
+import { useOrder } from "../../context/OrderContext";
+import { getSearchProducts } from "@/services/getSearchProducts";
 
 export default function OrderWizard() {
   const [step, setStep] = useState(1);

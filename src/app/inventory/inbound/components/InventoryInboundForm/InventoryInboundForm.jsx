@@ -1,5 +1,5 @@
 "use client";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import CategorySelect from "../CategorySelect/CategorySelect";
 import { useInventoryInbound } from "../../context/InventoryInboundProvider";
@@ -17,7 +17,6 @@ import UnitPriceInput from "../UnitPriceInput/UnitPriceInput";
 import DescriptionTextarea from "../DescriptionTextarea/DescriptionTextarea";
 import { useSubcategories } from "../../../../../hooks/useSubcategories/useSubcategories";
 import SupplierSelect from "../SupplierSelect/SupplierSelect";
-import { useWarehouseZones } from "../../../../../hooks/useWarehouseZones";
 import { ZoneSelect } from "../ZoneSelect/ZoneSelect";
 import { AisleSelect } from "../AisleSelect/AisleSelect";
 import { useAislesByZone } from "../../../../../hooks/useAislesByZone/useAislesByZone";
@@ -29,6 +28,7 @@ import { v4 as uuidv4 } from "uuid";
 import { addPart } from "../../actions/addPart";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useWarehouseZones } from "@/hooks/useWarehouseZones/useWarehouseZones";
 export default function InventoryInboundForm() {
   const router = useRouter();
   const {
@@ -40,6 +40,8 @@ export default function InventoryInboundForm() {
     setInboundType,
     suppliers,
   } = useInventoryInbound();
+
+  console.log(categories);
 
   const {
     register,
@@ -186,7 +188,7 @@ export default function InventoryInboundForm() {
         <CategorySelect
           control={control}
           errors={errors}
-          categories={categories}
+          categories={categories.data}
           rules={{ required: "دسته‌بندی الزامی است" }}
           placeholder="لطفاً یک دسته‌بندی انتخاب کنید"
         />

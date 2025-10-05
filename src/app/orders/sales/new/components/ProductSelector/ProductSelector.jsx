@@ -1,4 +1,3 @@
-import { useOrder } from "../../context/OrderContext";
 import PartFilterSearch from "../PartFilterSearch/PartFilterSearch";
 
 function ProductSelector() {
