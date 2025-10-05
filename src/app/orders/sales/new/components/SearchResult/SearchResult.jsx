@@ -8,6 +8,7 @@ import { Spinner } from "@/components/ui/spinner";
 export default function SearchResult() {
   const { searchResults, addItem } = useOrder();
   const [quantities, setQuantities] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { isLoading, error } = useSearchParts();
 
@@ -22,9 +23,17 @@ export default function SearchResult() {
 
   const handleAddToOrder = (item) => {
     const quantity = Number(quantities[item.id] || 1);
+
+    if (quantity > item.stock) {
+      setErrorMessage(
+        `مقدار وارد شده برای "${item.part_name}" بیشتر از موجودی است.`
+      );
+      return;
+    }
+
+    setErrorMessage("");
     addItem({ ...item, quantity });
   };
-
   return (
     <div className="overflow-x-auto rounded-lg my-6">
       <table className="min-w-full  border border-border rounded-lg text-sm bg-card text-card-foreground">
@@ -90,6 +99,9 @@ export default function SearchResult() {
           ))}
         </tbody>
       </table>
+      {errorMessage && (
+        <div className="my-2 text-red-500 font-medium">{errorMessage}</div>
+      )}
     </div>
   );
 }
