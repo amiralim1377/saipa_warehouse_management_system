@@ -3,7 +3,14 @@ import { createContext, useContext, useState } from "react";
 
 const OrderContext = createContext();
 
-export function OrderProvider({ children }) {
+export function OrderProvider({
+  children,
+  warehouses: initialWarehouses,
+  categories: initialCategories,
+}) {
+  const [warehouses, setWarehouses] = useState(initialWarehouses);
+  const [categories, setCategories] = useState(initialCategories);
+
   const [order, setOrder] = useState({
     items: [], // محصولات انتخاب شده
     customer: {
@@ -36,7 +43,14 @@ export function OrderProvider({ children }) {
 
   return (
     <OrderContext.Provider
-      value={{ order, addItem, removeItem, updateCustomer }}
+      value={{
+        warehouses,
+        categories,
+        order,
+        addItem,
+        removeItem,
+        updateCustomer,
+      }}
     >
       {children}
     </OrderContext.Provider>

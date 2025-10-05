@@ -1,6 +1,6 @@
+import { getShelvesByRack } from "@/services/getShelvesByRack";
 import { useQuery } from "@tanstack/react-query";
 import { useWatch } from "react-hook-form";
-import { getShelvesByRack } from "../services/getShelvesByRack";
 
 export const useShelvesByRack = (control) => {
   const selectedRackId = useWatch({ control, name: "rack" }) || null;

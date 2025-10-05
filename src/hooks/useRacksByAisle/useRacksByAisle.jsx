@@ -1,6 +1,6 @@
+import { getRacksByAisle } from "@/services/getRacksByAisle";
 import { useQuery } from "@tanstack/react-query";
 import { useWatch } from "react-hook-form";
-import { getRacksByAisle } from "../services/getRacksByAisle";
 
 export const useRacksByAisle = (control) => {
   const selectedAisleId = useWatch({ control, name: "aisle" }) || null;

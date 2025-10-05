@@ -1,7 +1,7 @@
-import { useAislesByZone } from "@/app/inventory/inbound/hook/useAislesByZone";
-import { useRacksByAisle } from "@/app/inventory/inbound/hook/useRacksByAisle";
-import { useShelvesByRack } from "@/app/inventory/inbound/hook/useShelvesByRack";
-import { useWarehouseZones } from "@/app/inventory/inbound/hook/useWarehouseZones";
+import { useAislesByZone } from "../useAislesByZone/useAislesByZone";
+import { useRacksByAisle } from "../useRacksByAisle/useRacksByAisle";
+import { useShelvesByRack } from "../useShelvesByRack/useShelvesByRack";
+import { useWarehouseZones } from "../useWarehouseZones/useWarehouseZones";
 
 export function useWarehouseStructure(control) {
   const { zones, zonesLoading } = useWarehouseZones({ control });

@@ -1,15 +1,12 @@
-"use client";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import TextInputField from "@/components/Form/TextInputField/TextInputField";
 import SelectField from "@/components/Form/SelectField/SelectField";
-import { useInventoryOutbound } from "../../context/InventoryOutboundProvider";
+import TextInputField from "@/components/Form/TextInputField/TextInputField";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
 import { useWarehouseStructure } from "@/hooks/useWarehouseStructure/useWarehouseStructure";
+import { useOrder } from "../../context/OrderContext";
 import { useSubcategories } from "@/hooks/useSubcategories/useSubcategories";
-import { useRouter } from "next/navigation";
 
-function InventoryOutboundSearch() {
-  const router = useRouter();
+function PartFilterSearch() {
   const {
     control,
     handleSubmit,
@@ -18,7 +15,8 @@ function InventoryOutboundSearch() {
     watch,
   } = useForm();
 
-  const { warehouses, categories } = useInventoryOutbound();
+  const { warehouses, categories } = useOrder();
+  const selectedCategory = watch("category");
 
   const {
     zones,
@@ -30,26 +28,10 @@ function InventoryOutboundSearch() {
     shelves,
     shelvesLoading,
   } = useWarehouseStructure(control);
-
   const { data: subcategories, isLoading, error } = useSubcategories(control);
-  const selectedCategory = watch("category");
 
   const onSubmit = (data) => {
-    const params = new URLSearchParams();
-
-    // همه فیلدهایی که مقدار دارند رو اضافه می‌کنیم، حتی "all"
-    Object.entries(data).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        params.append(key, String(value));
-      }
-    });
-
-    const url = `/inventory/outbound?${params.toString()}`;
-
-    console.log("Generated URL:", url);
-
-    // مثلا ریدایرکت یا fetch
-    router.push(url);
+    console.log(data);
   };
 
   return (
@@ -58,10 +40,6 @@ function InventoryOutboundSearch() {
       className="space-y-4 mx-auto p-6"
       dir="rtl"
     >
-      <h1 className="text-2xl font-semibold text-foreground mb-6">
-        جستجوی قطعه
-      </h1>
-
       {/* فیلد جستجو */}
       <TextInputField
         id="query"
@@ -86,10 +64,10 @@ function InventoryOutboundSearch() {
           control={control}
           rules={{ required: "انتخاب انبار الزامی است" }}
           options={
-            warehouses?.length
+            warehouses?.warehouses?.length
               ? [
                   { value: "all", label: "همه انبارها" },
-                  ...warehouses.map((w) => ({
+                  ...warehouses?.warehouses.map((w) => ({
                     value: String(w.id),
                     label: w.name,
                   })),
@@ -221,10 +199,10 @@ function InventoryOutboundSearch() {
         placeholder="انتخاب دسته‌بندی"
         rules={{ required: "انتخاب دسته‌بندی الزامی است" }}
         options={
-          categories?.length
+          categories?.categories?.length
             ? [
                 { value: "all", label: "همه دسته‌بندی‌ها" },
-                ...categories.map((c) => ({
+                ...categories?.categories.map((c) => ({
                   value: String(c.id),
                   label: c.name_fa || c.name,
                 })),
@@ -238,6 +216,7 @@ function InventoryOutboundSearch() {
       <SelectField
         name="subcategory"
         label="زیر‌دسته"
+        ص
         control={control}
         placeholder="انتخاب زیر‌دسته"
         rules={
@@ -276,4 +255,4 @@ function InventoryOutboundSearch() {
   );
 }
 
-export default InventoryOutboundSearch;
+export default PartFilterSearch;
