@@ -35,7 +35,6 @@ function PartFilterSearch() {
   const onSubmit = (data) => {
     const params = new URLSearchParams();
 
-    // همه فیلدهایی که مقدار دارند رو اضافه می‌کنیم، حتی "all"
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
         params.append(key, String(value));
@@ -51,11 +50,7 @@ function PartFilterSearch() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4 mx-auto p-6"
-      dir="rtl"
-    >
+    <div className="space-y-4 mx-auto p-6" dir="rtl">
       {/* فیلد جستجو */}
       <TextInputField
         id="query"
@@ -232,7 +227,6 @@ function PartFilterSearch() {
       <SelectField
         name="subcategory"
         label="زیر‌دسته"
-        ص
         control={control}
         placeholder="انتخاب زیر‌دسته"
         rules={
@@ -261,13 +255,14 @@ function PartFilterSearch() {
       />
 
       <Button
-        type="submit"
         className="bg-primary text-primary-foreground"
         disabled={isSubmitting}
+        type="button"
+        onClick={handleSubmit(onSubmit)}
       >
         {isSubmitting ? "در حال جستجو..." : "جست‌وجو"}
       </Button>
-    </form>
+    </div>
   );
 }
 
