@@ -6,7 +6,7 @@ import OutboundResultList from "./components/OutboundResultList/OutboundResultLi
 import { InventoryOutboundProvider } from "./context/InventoryOutboundProvider";
 import { getCategories } from "./services/getCategories";
 import getWarehouses from "./services/getWarehouses";
-import { QueryClientProviderWrapper } from "@/providers/QueryClientProviderWrapper";
+import { QueryClientProviderWrapper } from "@/providers/QueryClientProviderWrapper/QueryClientProviderWrapper";
 
 async function InventoryOutboundPage({ searchParams }) {
   const {

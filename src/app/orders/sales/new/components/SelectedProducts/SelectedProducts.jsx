@@ -20,9 +20,9 @@ function SelectedProducts() {
         محصولات انتخاب شده
       </h3>
       <ul className="space-y-2 max-h-64 overflow-y-auto">
-        {order.items.map((i) => (
+        {order.items.map((i, k) => (
           <li
-            key={i.part_id}
+            key={k + 1}
             className="flex justify-between items-center p-2 rounded-md shadow-sm transition bg-muted text-muted-foreground"
           >
             <div>

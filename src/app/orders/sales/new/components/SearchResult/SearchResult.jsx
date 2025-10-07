@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useFormContext, useFieldArray } from "react-hook-form";
 import { useOrder } from "../../context/OrderContext";
 import NoProducts from "../NoProducts/NoProducts";
 import useSearchParts from "../../hook/useSearchParts/useSearchParts";
@@ -10,11 +11,13 @@ export default function SearchResult() {
   const [quantities, setQuantities] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
 
+  const { control } = useFormContext();
+  const { fields, append } = useFieldArray({ control, name: "items" });
+
   const { isLoading, error } = useSearchParts();
 
   if (isLoading) return <Spinner />;
   if (error) return <div className="text-red-500">خطا در بارگذاری داده‌ها</div>;
-
   if (!searchResults || searchResults.length === 0) return <NoProducts />;
 
   const handleQuantityChange = (id, value) => {
@@ -23,20 +26,29 @@ export default function SearchResult() {
 
   const handleAddToOrder = (item) => {
     const quantity = Number(quantities[item.id] || 1);
-
     if (quantity > item.stock) {
       setErrorMessage(
         `مقدار وارد شده برای "${item.part_name}" بیشتر از موجودی است.`
       );
       return;
     }
-
-    setErrorMessage("");
     addItem({ ...item, quantity });
+    setErrorMessage("");
+    append({
+      part_id: item.id,
+      part_code: item.part_code,
+      part_name: item.part_name,
+      warehouse_name: item.warehouse_name,
+      stock: item.stock,
+      unit_price: item.unit_price,
+      location: item.location,
+      quantity,
+    });
   };
+
   return (
     <div className="overflow-x-auto rounded-lg my-6">
-      <table className="min-w-full  border border-border rounded-lg text-sm bg-card text-card-foreground">
+      <table className="min-w-full border border-border rounded-lg text-sm bg-card text-card-foreground">
         <thead className="bg-muted text-muted-foreground">
           <tr>
             <th className="px-4 py-2 border border-border">کد قطعه</th>
@@ -88,6 +100,7 @@ export default function SearchResult() {
                     className="w-16 border border-border rounded-md text-center p-1 text-sm focus:ring-1 focus:ring-primary"
                   />
                   <button
+                    type="button"
                     onClick={() => handleAddToOrder(item)}
                     className="bg-primary text-primary-foreground px-3 py-1 rounded-md text-sm hover:bg-primary/80 transition"
                   >

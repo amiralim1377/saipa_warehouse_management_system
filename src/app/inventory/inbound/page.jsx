@@ -1,7 +1,7 @@
 import { getCategories } from "@/services/getCategories";
 import { InventoryInboundProvider } from "./context/InventoryInboundProvider";
 import InventoryInboundForm from "./components/InventoryInboundForm/InventoryInboundForm";
-import { QueryClientProviderWrapper } from "@/providers/QueryClientProviderWrapper";
+import { QueryClientProviderWrapper } from "@/providers/QueryClientProviderWrapper/QueryClientProviderWrapper";
 import { getWarehouse } from "./services/getWarehouse";
 import { getSuppliers } from "./services/getsuppliers";
 

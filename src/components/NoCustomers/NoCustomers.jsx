@@ -10,7 +10,7 @@ function NoCustomers() {
         <p className="text-lg font-medium text-muted-foreground mb-6">
           هیچ مشتری یافت نشد 🚫
         </p>
-        <Link href="/suppliers/new">
+        <Link href="/customers/new">
           <Button className="bg-primary text-primary-foreground hover:opacity-90 transition">
             ایجاد مشتری جدید
           </Button>
@@ -20,4 +20,4 @@ function NoCustomers() {
   );
 }
 
-export default NoSuppliers;
+export default NoCustomers;

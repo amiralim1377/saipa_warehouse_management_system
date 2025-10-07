@@ -38,8 +38,8 @@ export default function SelectField({
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
-              {options.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>
+              {options.map((opt, i) => (
+                <SelectItem key={i + 1} value={opt.value}>
                   {opt.label}
                 </SelectItem>
               ))}

@@ -7,14 +7,14 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 export default function OrderWizard() {
   const { step, nextStep, prevStep } = useWizard(3);
 
-  const handleSubmit = () => {
+  const handleSubmit = (data) => {
     console.log("سفارش با موفقیت ثبت شد!");
+    console.log(data);
   };
 
   return (
     <OrderFormProvider>
       <ProgressBar step={step} totalSteps={3} />
-
       <WizardContent
         step={step}
         nextStep={nextStep}

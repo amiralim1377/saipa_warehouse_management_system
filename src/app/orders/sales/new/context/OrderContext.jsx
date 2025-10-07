@@ -12,10 +12,10 @@ export function OrderProvider({
   const [warehouses, setWarehouses] = useState(initialWarehouses);
   const [categories, setCategories] = useState(initialCategories);
   const [searchResults, setSearchResults] = useState([]);
-  console.log(searchResults);
+  const [customers, setCustomers] = useState([]);
 
   const [order, setOrder] = useState({
-    items: [], // محصولات انتخاب شده
+    items: [],
     customer: {
       name: "",
       email: "",
@@ -38,13 +38,6 @@ export function OrderProvider({
     }));
   };
 
-  const updateCustomer = (data) => {
-    setOrder((prev) => ({
-      ...prev,
-      customer: { ...prev.customer, ...data },
-    }));
-  };
-
   return (
     <OrderContext.Provider
       value={{
@@ -55,7 +48,8 @@ export function OrderProvider({
         order,
         addItem,
         removeItem,
-        updateCustomer,
+        customers,
+        setCustomers,
       }}
     >
       {children}
