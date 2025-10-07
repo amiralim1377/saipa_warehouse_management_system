@@ -1,16 +1,15 @@
 "use client";
 import { useFormContext } from "react-hook-form";
 
-export default function CustomerInformationPage() {
+export default function CustomerInformationStep() {
   const {
     register,
     formState: { errors },
-  } = useFormContext(); // گرفتن context فرم
+  } = useFormContext();
 
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">👤 اطلاعات مشتری</h2>
-
       {/* نام مشتری */}
       <div className="mb-2">
         <input
@@ -25,7 +24,6 @@ export default function CustomerInformationPage() {
           </p>
         )}
       </div>
-
       {/* ایمیل */}
       <div className="mb-2">
         <input
@@ -46,7 +44,6 @@ export default function CustomerInformationPage() {
           </p>
         )}
       </div>
-
       {/* تلفن */}
       <div className="mb-2">
         <input

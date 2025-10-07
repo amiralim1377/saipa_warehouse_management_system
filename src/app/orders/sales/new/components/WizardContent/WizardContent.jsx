@@ -1,16 +1,16 @@
 import { useFormContext } from "react-hook-form";
-import CustomerInformationPage from "../../customer/page";
-import SelectProductsPage from "../../products/page";
-import SalesOrderSummaryPage from "../../summary/page";
+import CustomerInformationStep from "../steps/CustomerInformationStep/CustomerInformationStep";
+import SelectProductsStep from "../steps/SelectProductsStep/SelectProductsStep";
+import SalesOrderSummarStep from "../steps/SalesOrderSummarStep/SalesOrderSummarStep";
 
 function WizardContent({ step, nextStep, prevStep, onSubmit }) {
   const { trigger } = useFormContext();
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      {step === 1 && <SelectProductsPage />}
-      {step === 2 && <CustomerInformationPage />}
-      {step === 3 && <SalesOrderSummaryPage />}
+      {step === 1 && <SelectProductsStep />}
+      {step === 2 && <CustomerInformationStep />}
+      {step === 3 && <SalesOrderSummarStep />}
 
       <div className="flex justify-start gap-3 mt-10">
         {step > 1 && (

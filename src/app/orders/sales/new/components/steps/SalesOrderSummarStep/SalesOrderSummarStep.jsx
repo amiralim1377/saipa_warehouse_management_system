@@ -1,7 +1,8 @@
 "use client";
-import { useOrder } from "../context/OrderContext";
 
-export default function SalesOrderSummaryPage() {
+import { useOrder } from "../../../context/OrderContext";
+
+export default function SalesOrderSummarStep() {
   const { order } = useOrder();
 
   return (
