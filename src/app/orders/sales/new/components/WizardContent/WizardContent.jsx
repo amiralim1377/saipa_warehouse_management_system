@@ -4,7 +4,8 @@ import SelectProductsStep from "../steps/SelectProductsStep/SelectProductsStep";
 import SalesOrderSummarStep from "../steps/SalesOrderSummarStep/SalesOrderSummarStep";
 
 function WizardContent({ step, nextStep, prevStep, onSubmit }) {
-  const { trigger, handleSubmit } = useFormContext();
+  const { trigger, handleSubmit, formState } = useFormContext();
+  const { isSubmitting } = formState;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -16,6 +17,7 @@ function WizardContent({ step, nextStep, prevStep, onSubmit }) {
         <div className="flex justify-start gap-3 mt-10">
           {step > 1 && (
             <button
+              type="button"
               onClick={prevStep}
               className="px-6 py-2 rounded-lg border border-[var(--color-border)] text-[var(--color-foreground)] bg-transparent hover:bg-[var(--color-muted)] hover:text-[var(--color-muted-foreground)] shadow-sm transition-all duration-200"
             >
@@ -25,6 +27,7 @@ function WizardContent({ step, nextStep, prevStep, onSubmit }) {
 
           {step < 3 && (
             <button
+              type="button"
               onClick={async () => {
                 const valid = await trigger();
                 if (valid) nextStep();
@@ -34,18 +37,18 @@ function WizardContent({ step, nextStep, prevStep, onSubmit }) {
               مرحله بعد◀
             </button>
           )}
-
           {step === 3 && (
             <button
-              onClick={async () => {
-                const valid = await trigger();
-                if (valid && onSubmit) {
-                  onSubmit();
-                }
-              }}
-              className="px-6 py-2 rounded-lg border border-[var(--color-primary)] bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:bg-transparent hover:text-[var(--color-primary)] shadow-md transition-all duration-200"
+              type="submit"
+              disabled={isSubmitting}
+              className={`px-6 py-2 rounded-lg border border-[var(--color-primary)] shadow-md transition-all duration-200
+                ${
+                  isSubmitting
+                    ? "bg-gray-400 text-white cursor-not-allowed"
+                    : "bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:bg-transparent hover:text-[var(--color-primary)]"
+                }`}
             >
-              ✅ ثبت سفارش
+              {isSubmitting ? "⏳ در حال ثبت..." : "✅ ثبت سفارش"}
             </button>
           )}
         </div>
