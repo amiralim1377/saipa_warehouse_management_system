@@ -1,6 +1,6 @@
 "use server";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider/ThemeProvider";
 import { yekanbakh } from "../fonts/fonts";
 import SideBar from "@/components/SideBar/SideBar";
 import Header from "@/components/Header/Header";
