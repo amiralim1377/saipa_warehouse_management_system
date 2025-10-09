@@ -1,8 +1,8 @@
 import OrdersAction from "@/components/OrdersAction/OrdersAction";
 import OrdersStats from "@/components/OrdersStats/OrdersStats";
-import OrdersTable from "@/components/OrdersTable/OrdersTable";
+import OrdersTable from "@/app/orders/components/OrdersTable/OrdersTable";
 
-function OrdersPage() {
+async function OrdersPage() {
   return (
     <div className="p-6">
       {/* آمار سفارش‌ها */}
