@@ -30,13 +30,16 @@ function WizardContent({ step, nextStep, prevStep, onSubmit }) {
               type="button"
               onClick={async () => {
                 const valid = await trigger();
-                if (valid) nextStep();
+                if (valid) {
+                  nextStep();
+                }
               }}
               className="px-6 py-2 rounded-lg border border-[var(--color-primary)] bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:bg-transparent hover:text-[var(--color-primary)] shadow-md transition-all duration-200"
             >
-              مرحله بعد◀
+              مرحله بعد ◀
             </button>
           )}
+
           {step === 3 && (
             <button
               type="submit"

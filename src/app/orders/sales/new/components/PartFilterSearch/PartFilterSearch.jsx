@@ -1,7 +1,7 @@
 import SelectField from "@/components/Form/SelectField/SelectField";
 import TextInputField from "@/components/Form/TextInputField/TextInputField";
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { useWarehouseStructure } from "@/hooks/useWarehouseStructure/useWarehouseStructure";
 import { useOrder } from "../../context/OrderContext";
 import { useSubcategories } from "@/hooks/useSubcategories/useSubcategories";
@@ -11,11 +11,12 @@ function PartFilterSearch() {
   const router = useRouter();
   const {
     control,
-    handleSubmit,
-    formState: { errors, isSubmitting },
     register,
     watch,
-  } = useForm();
+    trigger,
+    formState: { errors, isSubmitting },
+    getValues,
+  } = useFormContext();
 
   const { warehouses, categories } = useOrder();
   const selectedCategory = watch("category");
@@ -71,6 +72,7 @@ function PartFilterSearch() {
         {/* انبار */}
         <SelectField
           name="warehouse"
+          id="warehouse"
           label="انبار"
           control={control}
           rules={{ required: "انتخاب انبار الزامی است" }}
@@ -205,6 +207,7 @@ function PartFilterSearch() {
       {/* دسته‌بندی و زیر‌دسته  */}
       <SelectField
         name="category"
+        id="category"
         label="دسته‌بندی قطعه"
         control={control}
         placeholder="انتخاب دسته‌بندی"
@@ -255,12 +258,16 @@ function PartFilterSearch() {
       />
 
       <Button
-        className="bg-primary text-primary-foreground"
-        disabled={isSubmitting}
         type="button"
-        onClick={handleSubmit(onSubmit)}
+        onClick={async () => {
+          const valid = await trigger(["query", "warehouse", "category"]);
+          if (valid) {
+            const data = getValues();
+            onSubmit(data);
+          }
+        }}
       >
-        {isSubmitting ? "در حال جستجو..." : "جست‌وجو"}
+        {isSubmitting ? "در حال جست و جو" : "جست و جو"}
       </Button>
     </div>
   );
