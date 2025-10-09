@@ -14,7 +14,9 @@ const NumberInputField = ({
 }) => {
   return (
     <div>
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id} className={"mb-1 block"}>
+        {label}
+      </Label>
       <Input
         id={id}
         type="number"

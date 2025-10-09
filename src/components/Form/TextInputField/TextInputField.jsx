@@ -15,7 +15,9 @@ export default function TextInputField({
 }) {
   return (
     <div>
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id} className={"mb-1 block"}>
+        {label}
+      </Label>
       <Input id={id} placeholder={placeholder} {...register(id, rules)} />
       {errors?.[id] && (
         <p className="text-destructive text-sm mt-1">

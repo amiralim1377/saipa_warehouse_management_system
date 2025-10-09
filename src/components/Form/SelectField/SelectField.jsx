@@ -22,7 +22,9 @@ export default function SelectField({
 }) {
   return (
     <div>
-      <Label htmlFor={name}>{label}</Label>
+      <Label htmlFor={name} className={"mb-1 block"}>
+        {label}
+      </Label>
 
       <Controller
         name={name}
