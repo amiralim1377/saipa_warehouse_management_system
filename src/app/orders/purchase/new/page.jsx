@@ -1,4 +1,4 @@
-import OrderPurchaseForm from "../components/OrderPurchaseForm/OrderPurchaseForm";
+import OrderPurchaseForm from "./components/OrderPurchaseForm/OrderPurchaseForm";
 import NoSuppliers from "./components/NoSuppliers/NoSuppliers";
 import { getSuppliers } from "./services/getSuppliers";
 

@@ -11,8 +11,8 @@ import TextInputFieldNested from "@/components/Form/TextInputFieldNested/TextInp
 import NumberInputFieldNested from "@/components/Form/NumberInputFieldNested/NumberInputFieldNested";
 import SelectFieldNested from "@/components/Form/SelectFieldNested/SelectFieldNested";
 import TextareaFieldNested from "@/components/Form/TextareaFieldNested/TextareaFieldNested";
-import useTotalAmount from "../../new/hook/useTotalAmount/useTotalAmount";
-import { createPurchaseOrderDraft } from "../../new/actions/createPurchaseOrderDraft";
+import useTotalAmount from "../../hook/useTotalAmount/useTotalAmount";
+import { createPurchaseOrderDraft } from "../../actions/createPurchaseOrderDraft";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
