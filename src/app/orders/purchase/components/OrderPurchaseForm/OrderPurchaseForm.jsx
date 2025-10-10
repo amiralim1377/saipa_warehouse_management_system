@@ -1,34 +1,69 @@
 "use client";
-import React from "react";
-import { Button } from "@/components/ui/button";
 
+import React from "react";
+import { useForm, useFieldArray } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import SelectField from "@/components/Form/SelectField/SelectField";
-import { useForm } from "react-hook-form";
 import DateInput from "@/components/Form/DateInput/DateInput";
-import TextInputField from "@/components/Form/TextInputField/TextInputField";
-import NumberInputField from "@/components/Form/NumberInputField/NumberInputField";
 import TextareaField from "@/components/Form/TextareaField/TextareaField";
 import { UNITS } from "@/data/units";
+import TextInputFieldNested from "@/components/Form/TextInputFieldNested/TextInputFieldNested";
+import NumberInputFieldNested from "@/components/Form/NumberInputFieldNested/NumberInputFieldNested";
+import SelectFieldNested from "@/components/Form/SelectFieldNested/SelectFieldNested";
+import TextareaFieldNested from "@/components/Form/TextareaFieldNested/TextareaFieldNested";
 
-function OrderPurchaseForm({ suppliers }) {
-  const handleAddItem = () => {};
-
+export default function OrderPurchaseForm({ suppliers }) {
+  // مقداردهی اولیه فرم
   const {
     control,
     handleSubmit,
     formState: { errors },
     register,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      supplier: "",
+      orderDate: "",
+      description: "",
+      items: [
+        {
+          productName: "",
+          quantity: "",
+          unit: "",
+          unitPrice: "",
+          description: "",
+        },
+      ],
+    },
+  });
 
+  // مدیریت فیلدهای تکرارشونده (محصولات)
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "items",
+  });
+
+  // افزودن یک ردیف جدید
+  const handleAddItem = () => {
+    append({
+      productName: "",
+      quantity: "",
+      unit: "",
+      unitPrice: "",
+      description: "",
+    });
+  };
+
+  // ارسال فرم
   const onSubmit = (data) => {
-    console.log("ثبت سفارش با داده‌ها:", data);
+    console.log("📦 داده‌های سفارش:", data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="p-6 max-w-4xl mx-auto" dir="rtl">
+      <div className="p-6 max-w-5xl mx-auto" dir="rtl">
         <h1 className="text-2xl font-semibold mb-6">ثبت سفارش خرید</h1>
 
+        {/* تامین‌کننده */}
         <div className="mb-6">
           <SelectField
             name="supplier"
@@ -36,9 +71,11 @@ function OrderPurchaseForm({ suppliers }) {
             control={control}
             errors={errors}
             options={suppliers.map((s) => ({ value: s.id, label: s.name }))}
+            rules={{ required: "انتخاب تامین‌کننده الزامی است" }}
           />
         </div>
 
+        {/* تاریخ ثبت سفارش */}
         <div className="mb-6">
           <DateInput
             name="orderDate"
@@ -49,63 +86,85 @@ function OrderPurchaseForm({ suppliers }) {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end mb-6">
-          <div>
-            <TextInputField
-              id="productName"
-              label="نام کالا"
-              placeholder="نام کالا"
-              register={register}
-              rules={{ required: "نام کالا را وارد کنید" }}
-              errors={errors}
-            />
+        {/* لیست کالاها */}
+        {fields.map((item, index) => (
+          <div
+            key={item.id}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end mb-6 border rounded-xl p-4"
+          >
+            <div className="w-full">
+              <TextInputFieldNested
+                id={`items.${index}.productName`}
+                label="نام کالا"
+                placeholder="نام کالا"
+                register={register}
+                rules={{ required: "نام کالا را وارد کنید" }}
+                errors={errors}
+              />
+            </div>
+
+            <div className="w-full">
+              <NumberInputFieldNested
+                id={`items.${index}.quantity`}
+                label="تعداد"
+                placeholder="تعداد"
+                register={register}
+                rules={{ required: "تعداد را وارد کنید" }}
+                errors={errors}
+                className="w-full"
+              />
+            </div>
+
+            <div className="w-full">
+              <SelectFieldNested
+                name={`items.${index}.unit`}
+                label="واحد"
+                control={control}
+                rules={{ required: "واحد را انتخاب کنید" }}
+                errors={errors}
+                options={UNITS}
+                className="w-full"
+              />
+            </div>
+
+            <div className="w-full">
+              <NumberInputFieldNested
+                id={`items.${index}.unitPrice`}
+                label="قیمت واحد (تومان)"
+                placeholder="قیمت واحد"
+                register={register}
+                rules={{ required: "قیمت واحد را وارد کنید" }}
+                errors={errors}
+                className="w-full"
+              />
+            </div>
+
+            <div className="col-span-1 sm:col-span-2 lg:col-span-4 mt-4">
+              <TextareaFieldNested
+                id={`items.${index}.description`}
+                label="توضیحات کالا"
+                placeholder="توضیحات مربوط به این کالا را وارد کنید"
+                register={register}
+                errors={errors}
+                className="w-full"
+              />
+            </div>
+
+            <div className="col-span-1 sm:col-span-2 lg:col-span-4 flex justify-end mt-2">
+              {fields.length > 1 && (
+                <Button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm rounded-lg"
+                >
+                  حذف ردیف
+                </Button>
+              )}
+            </div>
           </div>
+        ))}
 
-          <div>
-            <NumberInputField
-              id="quantity"
-              label="تعداد"
-              placeholder="تعداد"
-              register={register}
-              rules={{ required: "تعداد را وارد کنید" }}
-              errors={errors}
-            />
-          </div>
-
-          <div>
-            <SelectField
-              name="unit"
-              label="واحد"
-              control={control}
-              rules={{ required: "واحد را انتخاب کنید" }}
-              errors={errors}
-              options={UNITS}
-            />
-          </div>
-
-          <div>
-            <NumberInputField
-              id="unitPrice"
-              label="قیمت واحد (تومان)"
-              placeholder="قیمت واحد"
-              register={register}
-              rules={{ required: "قیمت واحد را وارد کنید" }}
-              errors={errors}
-            />
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <TextareaField
-            id="description"
-            label="توضیحات سفارش"
-            placeholder="توضیحات کلی سفارش را وارد کنید"
-            register={register}
-            rules={{ required: "وارد کردن توضیحات الزامی است" }}
-            errors={errors}
-          />
-        </div>
-
+        {/* افزودن کالا */}
         <div className="mb-6">
           <Button
             type="button"
@@ -116,6 +175,18 @@ function OrderPurchaseForm({ suppliers }) {
           </Button>
         </div>
 
+        {/* توضیحات سفارش */}
+        <div className="mb-6">
+          <TextareaField
+            id="description"
+            label="توضیحات کلی سفارش"
+            placeholder="توضیحات کلی سفارش را وارد کنید"
+            register={register}
+            errors={errors}
+          />
+        </div>
+
+        {/* ثبت سفارش */}
         <div>
           <Button
             type="submit"
@@ -128,5 +199,3 @@ function OrderPurchaseForm({ suppliers }) {
     </form>
   );
 }
-
-export default OrderPurchaseForm;
