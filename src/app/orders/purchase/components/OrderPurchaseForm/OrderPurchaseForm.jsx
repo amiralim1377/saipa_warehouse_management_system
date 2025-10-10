@@ -11,14 +11,20 @@ import TextInputFieldNested from "@/components/Form/TextInputFieldNested/TextInp
 import NumberInputFieldNested from "@/components/Form/NumberInputFieldNested/NumberInputFieldNested";
 import SelectFieldNested from "@/components/Form/SelectFieldNested/SelectFieldNested";
 import TextareaFieldNested from "@/components/Form/TextareaFieldNested/TextareaFieldNested";
+import useTotalAmount from "../../new/hook/useTotalAmount/useTotalAmount";
+import { createPurchaseOrderDraft } from "../../new/actions/createPurchaseOrderDraft";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function OrderPurchaseForm({ suppliers }) {
-  // مقداردهی اولیه فرم
+  const router = useRouter();
+
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     register,
+    reset,
   } = useForm({
     defaultValues: {
       supplier: "",
@@ -36,13 +42,11 @@ export default function OrderPurchaseForm({ suppliers }) {
     },
   });
 
-  // مدیریت فیلدهای تکرارشونده (محصولات)
   const { fields, append, remove } = useFieldArray({
     control,
     name: "items",
   });
 
-  // افزودن یک ردیف جدید
   const handleAddItem = () => {
     append({
       productName: "",
@@ -53,17 +57,35 @@ export default function OrderPurchaseForm({ suppliers }) {
     });
   };
 
-  // ارسال فرم
-  const onSubmit = (data) => {
-    console.log("📦 داده‌های سفارش:", data);
+  const totalAmount = useTotalAmount(control);
+
+  const onSubmit = async (data) => {
+    console.log("داده‌های ارسال شده:", data);
+    try {
+      const result = await createPurchaseOrderDraft(data);
+
+      if (result.success) {
+        console.log("✅ سفارش ثبت شد:", result.data);
+        toast.success(result.message);
+        reset();
+        router.replace("/orders");
+      } else {
+        console.warn("⚠️ خطا در ثبت سفارش:", result.message);
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.error("❌ خطای سرور:", error);
+      toast.error("خطای سرور رخ داد");
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="p-6 max-w-5xl mx-auto" dir="rtl">
-        <h1 className="text-2xl font-semibold mb-6">ثبت سفارش خرید</h1>
+        <h1 className="text-2xl font-semibold mb-6 text-foreground">
+          ثبت سفارش خرید
+        </h1>
 
-        {/* تامین‌کننده */}
         <div className="mb-6">
           <SelectField
             name="supplier"
@@ -75,7 +97,6 @@ export default function OrderPurchaseForm({ suppliers }) {
           />
         </div>
 
-        {/* تاریخ ثبت سفارش */}
         <div className="mb-6">
           <DateInput
             name="orderDate"
@@ -86,11 +107,10 @@ export default function OrderPurchaseForm({ suppliers }) {
           />
         </div>
 
-        {/* لیست کالاها */}
         {fields.map((item, index) => (
           <div
             key={item.id}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end mb-6 border rounded-xl p-4"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end mb-6 border rounded-xl p-4 bg-card text-card-foreground"
           >
             <div className="w-full">
               <TextInputFieldNested
@@ -111,7 +131,6 @@ export default function OrderPurchaseForm({ suppliers }) {
                 register={register}
                 rules={{ required: "تعداد را وارد کنید" }}
                 errors={errors}
-                className="w-full"
               />
             </div>
 
@@ -123,7 +142,6 @@ export default function OrderPurchaseForm({ suppliers }) {
                 rules={{ required: "واحد را انتخاب کنید" }}
                 errors={errors}
                 options={UNITS}
-                className="w-full"
               />
             </div>
 
@@ -135,7 +153,6 @@ export default function OrderPurchaseForm({ suppliers }) {
                 register={register}
                 rules={{ required: "قیمت واحد را وارد کنید" }}
                 errors={errors}
-                className="w-full"
               />
             </div>
 
@@ -146,7 +163,6 @@ export default function OrderPurchaseForm({ suppliers }) {
                 placeholder="توضیحات مربوط به این کالا را وارد کنید"
                 register={register}
                 errors={errors}
-                className="w-full"
               />
             </div>
 
@@ -155,7 +171,7 @@ export default function OrderPurchaseForm({ suppliers }) {
                 <Button
                   type="button"
                   onClick={() => remove(index)}
-                  className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm rounded-lg"
+                  className="bg-destructive text-destructive-foreground px-3 py-2 text-sm rounded-lg hover:bg-destructive-dark transition"
                 >
                   حذف ردیف
                 </Button>
@@ -164,7 +180,6 @@ export default function OrderPurchaseForm({ suppliers }) {
           </div>
         ))}
 
-        {/* افزودن کالا */}
         <div className="mb-6">
           <Button
             type="button"
@@ -175,7 +190,6 @@ export default function OrderPurchaseForm({ suppliers }) {
           </Button>
         </div>
 
-        {/* توضیحات سفارش */}
         <div className="mb-6">
           <TextareaField
             id="description"
@@ -186,13 +200,23 @@ export default function OrderPurchaseForm({ suppliers }) {
           />
         </div>
 
-        {/* ثبت سفارش */}
+        {totalAmount > 0 && (
+          <div className="mb-6 text-lg font-semibold text-foreground">
+            مبلغ کل سفارش: {totalAmount.toLocaleString()} تومان
+          </div>
+        )}
+
         <div>
           <Button
             type="submit"
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition"
+            disabled={isSubmitting}
+            className={
+              isSubmitting
+                ? "px-6 py-3 rounded-lg transition text-primary-foreground bg-muted cursor-not-allowed shadow-none"
+                : "px-6 py-3 rounded-lg transition text-primary-foreground bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg"
+            }
           >
-            ثبت سفارش
+            {isSubmitting ? "در حال ارسال..." : "ثبت سفارش"}
           </Button>
         </div>
       </div>
