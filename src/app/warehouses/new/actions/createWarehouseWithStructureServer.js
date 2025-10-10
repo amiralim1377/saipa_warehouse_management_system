@@ -1,3 +1,4 @@
+"use server";
 import { supabase } from "@/lib/supabaseClient";
 
 export async function createWarehouseWithStructureServer(warehouse) {

@@ -1,7 +1,8 @@
-// app/inventory/actions/fetchProducts.js
+"use server";
+
 import { supabase } from "@/lib/supabaseClient";
 
-export const fetchProducts = async () => {
+export async function fetchProducts() {
   try {
     const { data, error } = await supabase
       .from("parts_inventory")
@@ -10,9 +11,9 @@ export const fetchProducts = async () => {
 
     if (error) throw new Error(error.message);
 
-    return data || [];
+    return { data, status: "success" };
   } catch (err) {
-    console.error("Failed to fetch products:", err);
-    return [];
+    console.error("❌ Failed to fetch products:", err);
+    return { data: [], status: "error", message: err.message };
   }
-};
+}

@@ -1,3 +1,5 @@
+"use server";
+
 import { supabase } from "@/lib/supabaseClient";
 
 export async function createCustomer(data) {
@@ -6,15 +8,15 @@ export async function createCustomer(data) {
     if (error) throw error;
 
     return {
-      status: 200,
+      status: "success",
       message: "مشتری با موفقیت ثبت شد!",
     };
   } catch (err) {
-    console.error("خطا در ثبت مشتری:", err);
+    console.error("❌ خطا در ثبت مشتری:", err);
 
     return {
-      status: 500,
-      message: `حذف مشتری با خطا مواجه شد: ${err.message}`,
+      status: "error",
+      message: `ثبت مشتری با خطا مواجه شد: ${err.message}`,
     };
   }
 }
