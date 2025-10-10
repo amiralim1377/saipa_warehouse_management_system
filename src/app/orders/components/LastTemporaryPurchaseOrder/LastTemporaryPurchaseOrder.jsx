@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from "react";
 import { PackageOpen, FileDown } from "lucide-react";
 import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
-import { OrdersPDFDocument } from "../OrdersPDFDocument/OrdersPDFDocument";
+import OrdersPDFDocument from "../OrdersPDFDocument/OrdersPDFDocument";
 import {
   formatNumberFa,
   formatDateFa,
@@ -11,6 +11,11 @@ import {
   toPersianDigits,
   shortId,
 } from "../../utils/pdfFormatters";
+import DeleteItemButton from "@/components/Form/DeleteItemButton/DeleteItemButton";
+import { deletePurchaseOrder } from "../../actions/deletePurchaseOrder";
+import TableRowActions from "../TableRowActions/TableRowActions";
+import ApproveItemButton from "@/components/Form/ApproveItemButton/ApproveItemButton";
+import { approvePurchaseOrder } from "../../actions/approvePurchaseOrder";
 
 const statusMap = {
   draft: "پیش‌نویس",
@@ -35,11 +40,16 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
 
   if (!hasOrders) {
     return (
-      <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
-        <PackageOpen className="w-12 h-12 mb-3 text-muted" />
-        <p className="text-lg font-medium">
-          هنوز هیچ سفارش خرید موقتی ثبت نشده است.
-        </p>
+      <div className="overflow-x-auto bg-background p-4 rounded-lg shadow-md">
+        <div className="w-full bg-card border border-border rounded-lg p-8 flex flex-col items-center justify-center text-muted-foreground">
+          <PackageOpen className="w-12 h-12 mb-3 text-muted" />
+          <p className="text-lg font-medium mb-2">
+            هنوز هیچ سفارش خرید موقتی ثبت نشده است.
+          </p>
+          <p className="text-sm text-muted-foreground/80">
+            اینجا جدول سفارش‌ها نمایش داده می‌شود.
+          </p>
+        </div>
       </div>
     );
   }
@@ -91,6 +101,7 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
               <th className="px-4 py-2 border border-border">تاریخ ایجاد</th>
               <th className="px-4 py-2 border border-border">وضعیت</th>
               <th className="px-4 py-2 border border-border">PDF</th>
+              <th className="px-4 py-2 border border-border">اقدامات</th>
             </tr>
           </thead>
 
@@ -126,8 +137,6 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
                 <td className="px-4 py-2 border border-border">
                   {statusMap[order.status] || order.status}
                 </td>
-
-                {/* دانلود PDF تک سفارش */}
                 <td className="px-4 py-2 border border-border">
                   <PDFDownloadLink
                     document={
@@ -143,6 +152,24 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
                   >
                     دانلود
                   </PDFDownloadLink>
+                </td>
+
+                {/* ستون اقدامات */}
+                <td className="px-4 py-2 border border-border">
+                  <TableRowActions rowId={order.id}>
+                    <DeleteItemButton
+                      itemId={order.id}
+                      itemType="سفارش"
+                      deleteFunction={deletePurchaseOrder}
+                      onDeleted={() => console.log("Deleted!")}
+                    />
+                    <ApproveItemButton
+                      itemId={order.id}
+                      itemType="سفارش"
+                      approveFunction={approvePurchaseOrder}
+                      onApproved={() => console.log("Approved!")}
+                    />
+                  </TableRowActions>
                 </td>
               </tr>
             ))}

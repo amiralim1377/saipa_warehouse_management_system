@@ -1,3 +1,4 @@
+"use client";
 import { Document, Page, Text, View } from "@react-pdf/renderer";
 import { styles } from "../pdf/BasePDFStyles";
 import {
@@ -62,7 +63,7 @@ const OrderSection = ({ order }) => {
   );
 };
 
-export const OrdersPDFDocument = ({ orders, title = "گزارش سفارش‌ها" }) => (
+const OrdersPDFDocument = ({ orders, title = "گزارش سفارش‌ها" }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>{title}</Text>
@@ -72,3 +73,5 @@ export const OrdersPDFDocument = ({ orders, title = "گزارش سفارش‌ه�
     </Page>
   </Document>
 );
+
+export default OrdersPDFDocument;

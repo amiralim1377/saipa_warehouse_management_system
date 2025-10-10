@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import DeleteItemButton from "@/components/DeleteItemButton/DeleteItemButton";
+import DeleteItemButton from "@/components/Form/DeleteItemButton/DeleteItemButton";
 import { deleteSupplier } from "../../actions/deleteSupplier";
 
 function SuppliersListView({ initialSuppliers = [] }) {

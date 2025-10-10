@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import DeleteItemButton from "@/components/DeleteItemButton/DeleteItemButton";
+import DeleteItemButton from "@/components/Form/DeleteItemButton/DeleteItemButton";
 import deleteCustomer from "../../actions/deleteCustomers";
 import { useRouter } from "next/navigation";
 

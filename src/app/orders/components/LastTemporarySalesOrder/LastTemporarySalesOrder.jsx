@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from "react";
 import { PackageOpen, FileDown } from "lucide-react";
 import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
-import { OrdersPDFDocument } from "../OrdersPDFDocument/OrdersPDFDocument";
+import OrdersPDFDocument from "../OrdersPDFDocument/OrdersPDFDocument";
 import {
   formatNumberFa,
   formatDateFa,
@@ -57,12 +57,31 @@ function LastTemporarySalesOrder({ orders = [] }) {
 
       {/* حالت بدون سفارش */}
       {!hasOrders ? (
-        <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
-          <PackageOpen className="w-12 h-12 mb-3 text-muted" />
-          <p className="text-lg font-medium">
-            هنوز هیچ سفارش فروش موقتی ثبت نشده است.
-          </p>
-        </div>
+        <table className="min-w-full border border-border text-foreground">
+          <thead className="bg-primary text-primary-foreground">
+            <tr>
+              <th className="px-4 py-2 border border-border">شناسه سفارش</th>
+              <th className="px-4 py-2 border border-border">
+                نام مشتری/تامین‌کننده
+              </th>
+              <th className="px-4 py-2 border border-border">جزئیات سفارش</th>
+              <th className="px-4 py-2 border border-border">جمع مبلغ</th>
+              <th className="px-4 py-2 border border-border">تاریخ ایجاد</th>
+              <th className="px-4 py-2 border border-border">وضعیت</th>
+              <th className="px-4 py-2 border border-border">اقدامات</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="text-center bg-card text-card-foreground">
+              <td
+                className="px-4 py-6 border border-border text-muted-foreground"
+                colSpan={7}
+              >
+                هنوز هیچ سفارش فروش موقتی ثبت نشده است.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       ) : showPDF ? (
         // نمایش آنلاین PDF
         <div className="w-full h-[600px] border rounded-md overflow-hidden">
