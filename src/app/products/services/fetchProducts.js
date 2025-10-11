@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 export async function fetchProducts() {
   try {
     const { data, error } = await supabase
-      .from("parts_inventory")
+      .from("v_parts_inventory")
       .select("*")
       .order("entry_date", { ascending: false });
 

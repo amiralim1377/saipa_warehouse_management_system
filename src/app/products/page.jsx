@@ -5,7 +5,7 @@ async function Productspage() {
   const products = await fetchProducts();
   return (
     <div className="w-full space-y-2 overflow-x-auto">
-      <WarehousePartsTable />
+      <WarehousePartsTable products={products.data} />
     </div>
   );
 }

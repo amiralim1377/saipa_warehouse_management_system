@@ -29,6 +29,7 @@ import { addPart } from "../../actions/addPart";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useWarehouseZones } from "@/hooks/useWarehouseZones/useWarehouseZones";
+import NumberInputField from "@/components/Form/NumberInputField/NumberInputField";
 export default function InventoryInboundForm() {
   const router = useRouter();
   const {
@@ -46,7 +47,7 @@ export default function InventoryInboundForm() {
     handleSubmit,
     control,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       inboundType,
@@ -83,6 +84,7 @@ export default function InventoryInboundForm() {
   const { shelves, isLoading: shelvesLoading } = useShelvesByRack(control);
 
   const onSubmit = async (data) => {
+    console.log(data);
     try {
       const id = uuidv4();
 
@@ -114,6 +116,7 @@ export default function InventoryInboundForm() {
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         batch_number: uuidv4(),
+        min_stock: data.min_stock,
       };
 
       const result = await addPart(parts_inventory);
@@ -282,6 +285,19 @@ export default function InventoryInboundForm() {
           }}
         />
 
+        <NumberInputField
+          id="min_stock"
+          label="حداقل موجودی"
+          placeholder="مثلاً 10"
+          register={register}
+          rules={{
+            required: "حداقل موجودی الزامی است",
+            min: { value: 0, message: "مقدار نمی‌تواند منفی باشد" },
+            valueAsNumber: true,
+          }}
+          errors={errors}
+        />
+
         {/* توضیحات */}
         <DescriptionTextarea
           control={control}
@@ -295,9 +311,11 @@ export default function InventoryInboundForm() {
           <Button
             type="submit"
             className="bg-primary text-primary-foreground px-6 py-3 rounded-lg"
+            disabled={isSubmitting}
           >
-            ثبت
+            {isSubmitting ? "در حال ارسال..." : "ثبت"}
           </Button>
+
           <Button
             type="button"
             className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg"

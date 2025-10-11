@@ -2,15 +2,12 @@
 
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/lib/supabaseClient";
-import { useState } from "react";
 
 function OutboundForm({ product }) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     watch,
     reset,
   } = useForm({

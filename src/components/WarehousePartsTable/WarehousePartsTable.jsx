@@ -10,22 +10,22 @@ import {
 } from "@/components/ui/table";
 
 const tableHeadContent = [
-  { key: "code", label: "کد قطعه", always: true },
-  { key: "name", label: "نام قطعه", always: true },
-  { key: "stock", label: "موجودی", always: true },
-  { key: "status", label: "وضعیت", always: true },
-  { key: "category", label: "دسته‌بندی" },
-  { key: "subcategory", label: "زیرمجموعه" },
+  { key: "part_code", label: "کد قطعه" },
+  { key: "part_name", label: "نام قطعه" },
+  { key: "stock", label: "موجودی" },
+  { key: "status", label: "وضعیت" },
+  { key: "category_name", label: "دسته‌بندی" },
+  { key: "subcategory_name", label: "زیرمجموعه" },
   { key: "unit", label: "واحد" },
   { key: "location", label: "مکان انبار" },
-  { key: "supplier", label: "تأمین‌کننده" },
-  { key: "lastReceived", label: "تاریخ ورود" },
+  { key: "supplier_name", label: "تأمین‌کننده" },
+  { key: "entry_date", label: "تاریخ ورود" },
   { key: "lastIssued", label: "تاریخ خروج" },
-  { key: "unitPrice", label: "قیمت واحد" },
-  { key: "totalValue", label: "ارزش کل" },
+  { key: "unit_price", label: "قیمت واحد" },
+  { key: "total_value", label: "ارزش کل" },
 ];
 
-export default function WarehousePartsTable() {
+export default function WarehousePartsTable({ products = [] }) {
   return (
     <div className="w-full overflow-x-auto rounded-md border">
       <Table className="w-full table-auto">
@@ -38,27 +38,25 @@ export default function WarehousePartsTable() {
         </TableHeader>
 
         <TableBody>
-          <TableRow>
-            <TableCell className="whitespace-normal break-words">
-              INV001
-            </TableCell>
-            <TableCell className="whitespace-normal break-words">
-              قطعه تستی خیلی طولانی
-            </TableCell>
-            <TableCell>120</TableCell>
-            <TableCell>موجود</TableCell>
-            <TableCell className="hidden md:table-cell">دسته A</TableCell>
-            <TableCell className="hidden md:table-cell">زیرمجموعه 1</TableCell>
-            <TableCell className="hidden md:table-cell">عدد</TableCell>
-            <TableCell className="hidden md:table-cell">انبار 3</TableCell>
-            <TableCell className="hidden md:table-cell">
-              تأمین‌کننده X
-            </TableCell>
-            <TableCell className="hidden md:table-cell">1402/05/01</TableCell>
-            <TableCell className="hidden md:table-cell">1402/05/10</TableCell>
-            <TableCell className="hidden md:table-cell">500,000</TableCell>
-            <TableCell className="hidden md:table-cell">60,000,000</TableCell>
-          </TableRow>
+          {products.map((product) => (
+            <TableRow key={product.id}>
+              <TableCell>{product.part_code}</TableCell>
+              <TableCell>{product.part_name}</TableCell>
+              <TableCell>{product.stock}</TableCell>
+              <TableCell>{product.status}</TableCell>
+              <TableCell>{product.category_name}</TableCell>
+              <TableCell>{product.subcategory_name}</TableCell>
+              <TableCell>{product.unit}</TableCell>
+              <TableCell>{product.location}</TableCell>
+              <TableCell>{product.supplier_name}</TableCell>
+              <TableCell>
+                {new Date(product.entry_date).toLocaleDateString("fa-IR")}
+              </TableCell>
+              <TableCell>{product.lastIssued || "-"}</TableCell>
+              <TableCell>{product.unit_price.toLocaleString()}</TableCell>
+              <TableCell>{product.total_value.toLocaleString()}</TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>
