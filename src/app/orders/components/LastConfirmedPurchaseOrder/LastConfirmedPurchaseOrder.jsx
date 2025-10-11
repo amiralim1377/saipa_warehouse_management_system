@@ -1,4 +1,5 @@
 import React from "react";
+import { shortId, toPersianDigits } from "../../utils/pdfFormatters";
 
 const statusMap = {
   draft: "پیش‌نویس",
@@ -41,7 +42,9 @@ function LastConfirmedPurchaseOrder({ orders = [] }) {
                 key={order.id}
                 className="text-center bg-card text-card-foreground"
               >
-                <td className="px-4 py-2 border border-border">{order.id}</td>
+                <td className="px-4 py-2 border border-border">
+                  {toPersianDigits(shortId(order.id))}
+                </td>
                 <td className="px-4 py-2 border border-border">
                   {order.supplier_name || order.supplier_id}
                 </td>
