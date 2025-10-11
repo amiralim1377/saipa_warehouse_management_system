@@ -1,5 +1,4 @@
 import UserProfile from "@/components/UserProfile/UserProfile";
-import { Separator } from "../ui/separator";
 import ModeToggle from "../ModeToggle/ModeToggle";
 
 export default function Header() {

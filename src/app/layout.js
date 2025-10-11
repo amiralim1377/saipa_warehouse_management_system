@@ -28,9 +28,9 @@ export default async function RootLayout({ children }) {
             closeButton={CustomCloseButton}
           />
           <SideBar />
-          <section className=" w-full">
+          <section className="w-full min-h-screen flex flex-col">
             <Header />
-            <main>{children}</main>
+            <main className="max-w-9xl mx-auto w-full p-6">{children}</main>
           </section>
         </ThemeProvider>
       </body>
