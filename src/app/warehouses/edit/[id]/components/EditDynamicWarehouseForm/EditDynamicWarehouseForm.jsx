@@ -34,7 +34,6 @@ function EditDynamicWarehouseForm() {
 
   const onSubmit = async (data) => {
     try {
-      console.log("📦 داده‌ی فرم:", data);
       const payload = { ...data, id };
 
       const result = await updateWarehouseWithStructureServer(payload);

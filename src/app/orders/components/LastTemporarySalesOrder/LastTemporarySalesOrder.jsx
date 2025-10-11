@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useMemo } from "react";
+
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { PackageOpen, FileDown } from "lucide-react";
 import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
 import OrdersPDFDocument from "../OrdersPDFDocument/OrdersPDFDocument";
@@ -12,8 +13,8 @@ import {
 } from "../../utils/pdfFormatters";
 
 const statusMap = {
-  pending: "در انتظار",
   draft: "پیش‌نویس",
+  pending: "در انتظار",
   confirmed: "تایید شده",
   cancelled: "لغو شده",
 };
@@ -22,10 +23,36 @@ function LastTemporarySalesOrder({ orders = [] }) {
   const hasOrders = orders.length > 0;
   const [showPDF, setShowPDF] = useState(false);
 
-  const allOrdersDoc = useMemo(
-    () => <OrdersPDFDocument orders={orders} title="گزارش همه سفارش‌ها" />,
-    [orders]
-  );
+  const renderCount = useRef(0);
+  useEffect(() => {
+    renderCount.current++;
+  }, [orders]);
+
+  const allOrdersDoc = useMemo(() => {
+    if (!orders || orders.length === 0) return null;
+    return (
+      <OrdersPDFDocument
+        orders={orders}
+        title="گزارش همه سفارش‌های فروش موقت"
+      />
+    );
+  }, [orders]);
+
+  if (!hasOrders) {
+    return (
+      <div className="overflow-x-auto bg-background p-4 rounded-lg shadow-md">
+        <div className="w-full bg-card border border-border rounded-lg p-8 flex flex-col items-center justify-center text-muted-foreground">
+          <PackageOpen className="w-12 h-12 mb-3 text-muted" />
+          <p className="text-lg font-medium mb-2">
+            هنوز هیچ سفارش فروش موقتی ثبت نشده است.
+          </p>
+          <p className="text-sm text-muted-foreground/80">
+            اینجا جدول سفارش‌ها نمایش داده می‌شود.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-x-auto bg-background p-4 rounded-lg shadow-md">
@@ -34,7 +61,6 @@ function LastTemporarySalesOrder({ orders = [] }) {
 
         {hasOrders && (
           <div className="flex items-center gap-2">
-            {/* دکمه نمایش PDF */}
             <button
               onClick={() => setShowPDF(!showPDF)}
               className="flex items-center gap-2 bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 transition-colors"
@@ -43,54 +69,29 @@ function LastTemporarySalesOrder({ orders = [] }) {
               <span>مشاهده PDF</span>
             </button>
 
-            {/* دانلود همه سفارش‌ها */}
-            <PDFDownloadLink
-              document={allOrdersDoc}
-              fileName="temporary-sales-orders.pdf"
-              className="flex items-center gap-2 bg-primary text-primary-foreground px-3 py-2 rounded-md hover:opacity-90"
-            >
-              {({ loading }) => (loading ? "در حال ساخت PDF..." : "دانلود PDF")}
-            </PDFDownloadLink>
+            {allOrdersDoc && (
+              <PDFDownloadLink
+                key={renderCount.current}
+                document={allOrdersDoc}
+                fileName="temporary-sales-orders.pdf"
+                className="flex items-center gap-2 bg-primary text-primary-foreground px-3 py-2 rounded-md hover:opacity-90"
+              >
+                {({ loading }) =>
+                  loading ? "در حال ساخت PDF..." : "دانلود PDF"
+                }
+              </PDFDownloadLink>
+            )}
           </div>
         )}
       </div>
 
-      {/* حالت بدون سفارش */}
-      {!hasOrders ? (
-        <table className="min-w-full border border-border text-foreground">
-          <thead className="bg-primary text-primary-foreground">
-            <tr>
-              <th className="px-4 py-2 border border-border">شناسه سفارش</th>
-              <th className="px-4 py-2 border border-border">
-                نام مشتری/تامین‌کننده
-              </th>
-              <th className="px-4 py-2 border border-border">جزئیات سفارش</th>
-              <th className="px-4 py-2 border border-border">جمع مبلغ</th>
-              <th className="px-4 py-2 border border-border">تاریخ ایجاد</th>
-              <th className="px-4 py-2 border border-border">وضعیت</th>
-              <th className="px-4 py-2 border border-border">اقدامات</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="text-center bg-card text-card-foreground">
-              <td
-                className="px-4 py-6 border border-border text-muted-foreground"
-                colSpan={7}
-              >
-                هنوز هیچ سفارش فروش موقتی ثبت نشده است.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      ) : showPDF ? (
-        // نمایش آنلاین PDF
+      {showPDF ? (
         <div className="w-full h-[600px] border rounded-md overflow-hidden">
-          <PDFViewer width="100%" height="100%">
+          <PDFViewer key={renderCount.current} width="100%" height="100%">
             {allOrdersDoc}
           </PDFViewer>
         </div>
       ) : (
-        // جدول سفارش‌ها
         <table className="min-w-full border border-border text-foreground">
           <thead className="bg-primary text-primary-foreground">
             <tr>
@@ -114,7 +115,7 @@ function LastTemporarySalesOrder({ orders = [] }) {
                   {toPersianDigits(shortId(order.id))}
                 </td>
                 <td className="px-4 py-2 border border-border">
-                  {order.customer_name}
+                  {order.customer_name || "[نامشخص]"}
                 </td>
                 <td className="px-4 py-2 border border-border text-right">
                   {order.items?.map((item, idx) => (
@@ -136,10 +137,9 @@ function LastTemporarySalesOrder({ orders = [] }) {
                 <td className="px-4 py-2 border border-border">
                   {statusMap[order.status] || order.status}
                 </td>
-
-                {/* دانلود PDF تک سفارش */}
                 <td className="px-4 py-2 border border-border">
                   <PDFDownloadLink
+                    key={order.id + "-" + renderCount.current}
                     document={
                       <OrdersPDFDocument
                         orders={[order]}
@@ -148,8 +148,8 @@ function LastTemporarySalesOrder({ orders = [] }) {
                         )}`}
                       />
                     }
-                    fileName={`order-${order.id}.pdf`}
-                    className="flex items-center justify-center  gap-1 bg-primary text-primary-foreground px-2 py-1 rounded-md hover:opacity-90 cursor-pointer"
+                    fileName={`sales-order-${order.id}.pdf`}
+                    className="flex items-center justify-center gap-1 bg-primary text-primary-foreground px-2 py-1 rounded-md hover:opacity-90 cursor-pointer"
                   >
                     دانلود
                   </PDFDownloadLink>

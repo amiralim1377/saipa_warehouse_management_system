@@ -46,8 +46,6 @@ function InventoryOutboundSearch() {
 
     const url = `/inventory/outbound?${params.toString()}`;
 
-    console.log("Generated URL:", url);
-
     // مثلا ریدایرکت یا fetch
     router.push(url);
   };

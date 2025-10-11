@@ -12,7 +12,6 @@ export default function useCustomers() {
     queryFn: fetchCustomers,
   });
 
-  console.log(data);
 
   useEffect(() => {
     if (data && data.success) {

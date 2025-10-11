@@ -13,8 +13,6 @@ async function EditDynamicCustomerPage({ params }) {
     return <NoTargetCustomer />;
   }
 
-  console.log(targetCustomer);
-
   return (
     <>
       <EditDynamicCustomerForm targetCustomer={targetCustomer} />

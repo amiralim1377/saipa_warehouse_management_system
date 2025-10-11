@@ -60,15 +60,13 @@ export default function OrderPurchaseForm({ suppliers }) {
   const totalAmount = useTotalAmount(control);
 
   const onSubmit = async (data) => {
-    console.log("داده‌های ارسال شده:", data);
     try {
       const result = await createPurchaseOrderDraft(data);
 
       if (result.success) {
-        console.log("✅ سفارش ثبت شد:", result.data);
-        toast.success(result.message);
         reset();
         router.replace("/orders");
+        toast.success(result.message);
       } else {
         console.warn("⚠️ خطا در ثبت سفارش:", result.message);
         toast.error(result.message);

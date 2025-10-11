@@ -41,8 +41,6 @@ export default function InventoryInboundForm() {
     suppliers,
   } = useInventoryInbound();
 
-  console.log(categories);
-
   const {
     register,
     handleSubmit,
@@ -117,8 +115,6 @@ export default function InventoryInboundForm() {
         updated_at: new Date().toISOString(),
         batch_number: uuidv4(),
       };
-
-      console.log("Prepared parts_inventory:", parts_inventory);
 
       const result = await addPart(parts_inventory);
       toast.success("محصول با موفقیت وارد انبار شد!");

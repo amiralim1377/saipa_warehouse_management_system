@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { PackageOpen, FileDown } from "lucide-react";
 import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
 import OrdersPDFDocument from "../OrdersPDFDocument/OrdersPDFDocument";
@@ -28,15 +28,20 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
   const hasOrders = orders.length > 0;
   const [showPDF, setShowPDF] = useState(false);
 
-  const allOrdersDoc = useMemo(
-    () => (
+  const renderCount = useRef(0);
+  useEffect(() => {
+    renderCount.current++;
+  }, [orders]);
+
+  const allOrdersDoc = useMemo(() => {
+    if (!orders || orders.length === 0) return null;
+    return (
       <OrdersPDFDocument
         orders={orders}
         title="گزارش همه سفارش‌های خرید موقت"
       />
-    ),
-    [orders]
-  );
+    );
+  }, [orders]);
 
   if (!hasOrders) {
     return (
@@ -61,7 +66,6 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
 
         {hasOrders && (
           <div className="flex items-center gap-2">
-            {/* نمایش PDF آنلاین */}
             <button
               onClick={() => setShowPDF(!showPDF)}
               className="flex items-center gap-2 bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 transition-colors"
@@ -70,21 +74,25 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
               <span>مشاهده PDF</span>
             </button>
 
-            {/* دانلود PDF کل سفارش‌ها */}
-            <PDFDownloadLink
-              document={allOrdersDoc}
-              fileName="temporary-purchase-orders.pdf"
-              className="flex items-center gap-2 bg-primary text-primary-foreground px-3 py-2 rounded-md hover:opacity-90"
-            >
-              {({ loading }) => (loading ? "در حال ساخت PDF..." : "دانلود PDF")}
-            </PDFDownloadLink>
+            {allOrdersDoc && (
+              <PDFDownloadLink
+                key={renderCount.current}
+                document={allOrdersDoc}
+                fileName="temporary-purchase-orders.pdf"
+                className="flex items-center gap-2 bg-primary text-primary-foreground px-3 py-2 rounded-md hover:opacity-90"
+              >
+                {({ loading }) =>
+                  loading ? "در حال ساخت PDF..." : "دانلود PDF"
+                }
+              </PDFDownloadLink>
+            )}
           </div>
         )}
       </div>
 
       {showPDF ? (
         <div className="w-full h-[600px] border rounded-md overflow-hidden">
-          <PDFViewer width="100%" height="100%">
+          <PDFViewer key={renderCount.current} width="100%" height="100%">
             {allOrdersDoc}
           </PDFViewer>
         </div>
@@ -120,8 +128,9 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
                 <td className="px-4 py-2 border border-border text-right">
                   {order.items?.map((item, idx) => (
                     <div key={idx}>
-                      {item.name} - تعداد: {formatNumberFa(item.quantity)} -
-                      قیمت: {formatNumberFa(item.unitPrice)}
+                      {item.productName} - تعداد:{" "}
+                      {formatNumberFa(item.quantity)} - قیمت:{" "}
+                      {formatNumberFa(item.unitPrice)}
                     </div>
                   ))}
                 </td>
@@ -139,6 +148,7 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
                 </td>
                 <td className="px-4 py-2 border border-border">
                   <PDFDownloadLink
+                    key={order.id + "-" + renderCount.current}
                     document={
                       <OrdersPDFDocument
                         orders={[order]}
@@ -153,8 +163,6 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
                     دانلود
                   </PDFDownloadLink>
                 </td>
-
-                {/* ستون اقدامات */}
                 <td className="px-4 py-2 border border-border">
                   <TableRowActions rowId={order.id}>
                     <DeleteItemButton

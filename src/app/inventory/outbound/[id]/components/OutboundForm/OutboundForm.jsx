@@ -29,8 +29,6 @@ function OutboundForm({ product }) {
       alert(`⚠️ تعداد خروجی نمی‌تواند بیشتر از موجودی (${stock}) باشد!`);
       return;
     }
-
-    console.log(data);
   };
 
   return (

@@ -18,8 +18,6 @@ async function OrdersTable() {
     status: purchaseStatus,
   } = await getPurchaseOrdersDraft();
 
-  console.log(myTemporaryPurchaseOrders);
-
   return (
     <div className="space-y-6">
       <LastConfirmedSalesOrder />

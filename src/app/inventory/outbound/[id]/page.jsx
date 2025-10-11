@@ -6,8 +6,6 @@ export default async function OutboundDetailPage({ params }) {
   const { id: productId } = params;
   const { message, product, success } = await getTargetProduct(productId);
 
-  console.log(product);
-
   if (!success || !product) {
     return <NoProducts message={message || "محصول مورد نظر یافت نشد."} />;
   }
