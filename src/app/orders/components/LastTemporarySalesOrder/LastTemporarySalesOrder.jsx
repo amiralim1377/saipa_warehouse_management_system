@@ -11,6 +11,11 @@ import {
   toPersianDigits,
   shortId,
 } from "../../utils/pdfFormatters";
+import DeleteItemButton from "@/components/Form/DeleteItemButton/DeleteItemButton";
+import { deleteSalesOrder } from "../../actions/deleteSalesOrder";
+import TableRowActions from "../TableRowActions/TableRowActions";
+import ApproveItemButton from "@/components/Form/ApproveItemButton/ApproveItemButton";
+import { approveSalesOrder } from "../../actions/approveSalesOrder";
 
 const statusMap = {
   draft: "پیش‌نویس",
@@ -102,6 +107,7 @@ function LastTemporarySalesOrder({ orders = [] }) {
               <th className="px-4 py-2 border border-border">تاریخ ایجاد</th>
               <th className="px-4 py-2 border border-border">وضعیت</th>
               <th className="px-4 py-2 border border-border">PDF</th>
+              <th className="px-4 py-2 border border-border">اقدامات</th>
             </tr>
           </thead>
 
@@ -153,6 +159,22 @@ function LastTemporarySalesOrder({ orders = [] }) {
                   >
                     دانلود
                   </PDFDownloadLink>
+                </td>
+                <td className="px-4 py-2 border border-border">
+                  <TableRowActions rowId={order.id}>
+                    <DeleteItemButton
+                      itemId={order.id}
+                      itemType="سفارش"
+                      deleteFunction={deleteSalesOrder}
+                      onDeleted={() => console.log("Deleted!")}
+                    />
+                    <ApproveItemButton
+                      itemId={order.id}
+                      itemType="سفارش"
+                      approveFunction={approveSalesOrder}
+                      onApproved={() => console.log("Approved!")}
+                    />
+                  </TableRowActions>
                 </td>
               </tr>
             ))}

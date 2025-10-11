@@ -6,6 +6,7 @@ import CustomerDetailsCard from "../../CustomerDetailsCard/CustomerDetailsCard";
 
 export default function SalesOrderSummaryStep() {
   const { customers, order } = useOrder();
+
   const { control } = useFormContext();
 
   // 👇 گرفتن id مشتری انتخاب‌شده از فرم
@@ -44,7 +45,7 @@ export default function SalesOrderSummaryStep() {
           <tbody>
             {order.items.map((item, index) => (
               <tr
-                key={item.part_id}
+                key={index}
                 className="hover:bg-accent hover:text-accent-foreground"
               >
                 <td className="px-4 py-2 border-b border-border whitespace-nowrap">
