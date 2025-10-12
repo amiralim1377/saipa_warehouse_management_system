@@ -1,13 +1,15 @@
 import InventoryAction from "@/components/InventoryAction/InventoryAction";
 import InventoryAlertsTable from "@/components/InventoryAlertsTable/InventoryAlertsTable";
-import InventoryStats from "@/components/InventoryStats/InventoryStats";
-import { getCategories } from "@/services/getCategories";
+import InventoryStats from "./components/InventoryStats/InventoryStats";
+import { getInventoryStats } from "./services/getInventoryStats";
 
 export default async function InventoryPage() {
+  const { data: inventoryStats, message, success } = await getInventoryStats();
+
   return (
     <div className="p-6 space-y-8">
       {/* بخش آمار موجودی */}
-      <InventoryStats />
+      <InventoryStats inventoryStats={inventoryStats} />
 
       {/* بخش عملیات اصلی */}
       <div>
