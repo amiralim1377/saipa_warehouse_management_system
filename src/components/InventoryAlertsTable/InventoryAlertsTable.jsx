@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Table,
@@ -8,70 +10,77 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const products = [
-  { id: "1", name: "کالا ۱", quantity: 5, min: 10, max: 100 },
-  { id: "2", name: "کالا ۲", quantity: 50, min: 10, max: 100 },
-  { id: "3", name: "کالا ۳", quantity: 120, min: 10, max: 100 },
-];
-
-function InventoryAlertsTable() {
+function InventoryAlertsTable({ lowStockAlerts }) {
   const getProgressColor = (product) => {
-    if (product.quantity < product.min) return "bg-destructive"; // قرمز
-    if (product.quantity > product.max) return "bg-accent"; // زرد
-    return "bg-primary"; // نرمال
+    if (product.stock < product.min_stock) return "bg-destructive";
+    return "bg-primary";
   };
 
   const getProgressWidth = (product) => {
-    const ratio = Math.min(product.quantity / product.max, 1);
+    const ratio = Math.min(product.stock / product.min_stock, 1);
     return `${ratio * 100}%`;
   };
 
-  const getStatusText = (product) => {
-    if (product.quantity < product.min) return "کم‌تر از حداقل";
-    if (product.quantity > product.max) return "بیش از حداکثر";
-    return "نرمال";
-  };
-
   const getStatusColor = (product) => {
-    if (product.quantity < product.min) return "text-destructive";
-    if (product.quantity > product.max) return "text-accent";
+    if (product.stock < product.min_stock) return "text-destructive";
     return "text-muted-foreground";
   };
 
+  const getStatusContent = (product) => {
+    if (product.stock < product.min_stock) {
+      return (
+        <span className="flex items-center justify-center gap-2">
+          <span className="relative flex items-center gap-2">
+            <span className="absolute inline-flex h-3 w-3 rounded-full bg-red-500 opacity-75 animate-ping"></span>
+            <span className="relative inline-flex h-3 w-3 rounded-full bg-red-500"></span>
+            <span>کم‌تر از حداقل</span>
+          </span>
+        </span>
+      );
+    }
+    return <span>نرمال</span>;
+  };
+
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-4 text-[var(--color-foreground)]">
+    <div className="p-6 mx-auto ">
+      <h2 className="text-2xl font-semibold mb-4 text-foreground">
         هشدار موجودی انبار
       </h2>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>کالا</TableHead>
-            <TableHead>موجودی</TableHead>
-            <TableHead>حداقل</TableHead>
-            <TableHead>حداکثر</TableHead>
-            <TableHead>وضعیت</TableHead>
+            <TableHead className="text-center">کد کالا</TableHead>
+            <TableHead className="text-center">نام کالا</TableHead>
+            <TableHead className="text-center">موجودی</TableHead>
+            <TableHead className="text-center">حداقل موجودی</TableHead>
+            <TableHead className="text-center">کمبود</TableHead>
+            <TableHead className="text-center">وضعیت</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.map((product) => (
-            <TableRow key={product.id}>
-              <TableCell>{product.name}</TableCell>
+          {lowStockAlerts.map((product) => (
+            <TableRow key={product.part_id} className="text-center">
+              <TableCell>{product.part_code}</TableCell>
+              <TableCell className="text-start">{product.part_name}</TableCell>
 
-              <TableCell className="w-48">
-                <div className="relative h-4 bg-muted rounded-full overflow-hidden">
-                  <div
-                    className={`${getProgressColor(product)} h-4 rounded-full`}
-                    style={{ width: getProgressWidth(product) }}
-                  ></div>
+              <TableCell>
+                <div className="flex flex-col items-center">
+                  <span className="text-sm mb-1">{product.stock}</span>
+                  <div className="relative w-full h-4 bg-muted rounded-full overflow-hidden">
+                    <div
+                      className={`${getProgressColor(
+                        product
+                      )} h-4 rounded-full`}
+                      style={{ width: getProgressWidth(product) }}
+                    ></div>
+                  </div>
                 </div>
-                <span className="text-sm mt-1 block">{product.quantity}</span>
               </TableCell>
 
-              <TableCell>{product.min}</TableCell>
-              <TableCell>{product.max}</TableCell>
+              <TableCell>{product.min_stock}</TableCell>
+              <TableCell>{product.shortage}</TableCell>
               <TableCell className={getStatusColor(product)}>
-                {getStatusText(product)}
+                {getStatusContent(product)}
               </TableCell>
             </TableRow>
           ))}
