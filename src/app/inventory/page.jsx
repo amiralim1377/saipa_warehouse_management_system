@@ -16,8 +16,6 @@ export default async function InventoryPage() {
     success: alertsSuccess,
   } = await getLowStockAlerts();
 
-  console.log(lowStockAlerts);
-
   return (
     <div className="p-6 space-y-8">
       {/* بخش آمار موجودی */}

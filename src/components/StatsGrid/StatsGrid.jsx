@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function StatsGrid({ stats }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 sm:p-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6 p-4 sm:p-6">
       {stats.map((stat, i) => (
         <Card
           key={stat.id ?? i}
@@ -13,7 +13,9 @@ export default function StatsGrid({ stats }) {
         >
           <CardContent className="grid gap-1">
             <p className="text-2xl sm:text-3xl md:text-4xl font-semibold truncate">
-              {stat.value}
+              {typeof stat.value === "number"
+                ? stat.value.toLocaleString()
+                : stat.value}
             </p>
             <p className="text-gray-400 text-xs sm:text-sm md:text-base truncate">
               {stat.label}
