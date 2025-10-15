@@ -1,4 +1,6 @@
-import DeleteWarehouseButton from "../DeleteWarehouseButton/DeleteWarehouseButton";
+"use client";
+import DeleteItemButton from "@/components/Form/DeleteItemButton/DeleteItemButton";
+import deleteWarehouse from "../../actions/deleteWarehouse";
 
 function WarehouseListView({ warehouses }) {
   return (
@@ -36,7 +38,14 @@ function WarehouseListView({ warehouses }) {
                   {new Date(wh.created_at).toLocaleDateString("fa-IR")}
                 </td>
                 <td className="p-2 border-b">
-                  <DeleteWarehouseButton warehouseId={wh.id} />
+                  {/* <DeleteWarehouseButton warehouseId={wh.id} /> */}
+
+                  <DeleteItemButton
+                    itemId={wh.id}
+                    itemType="انبار"
+                    deleteFunction={deleteWarehouse}
+                    onDeleted={() => console.log("انبار حذف شد")}
+                  />
                 </td>
               </tr>
             ))}

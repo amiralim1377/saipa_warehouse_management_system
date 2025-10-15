@@ -11,7 +11,8 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import deleteWarehouse from "../../action/deleteWarehouse";
+import deleteWarehouse from "../../actions/deleteWarehouse";
+import { toast } from "react-toastify";
 
 function DeleteWarehouseButton({ warehouseId }) {
   const router = useRouter();
@@ -20,13 +21,20 @@ function DeleteWarehouseButton({ warehouseId }) {
 
   const handleDelete = async () => {
     try {
-      await deleteWarehouse(warehouseId);
-      setOpen(false);
-      startTransition(() => {
-        router.refresh();
-      });
+      const result = await deleteWarehouse(warehouseId);
+
+      if (result.status === "success") {
+        toast.success(result.message);
+        setOpen(false);
+        startTransition(() => {
+          router.refresh();
+        });
+      } else {
+        toast.error(result.message);
+      }
     } catch (err) {
       console.error("حذف انبار با خطا مواجه شد:", err);
+      toast.error("مشکلی در حذف انبار پیش آمد. لطفاً دوباره تلاش کنید.");
     }
   };
 
