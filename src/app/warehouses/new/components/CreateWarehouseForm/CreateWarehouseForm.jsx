@@ -4,12 +4,12 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import useWarehouseCapacity from "../../hook/useWarehouseCapacity";
 import buildWarehousePayload from "../../utils/buildWarehousePayload";
-import { createWarehouseWithStructureServer } from "../../actions/createWarehouseWithStructureServer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import NumberInputField from "@/components/Form/NumberInputField/NumberInputField";
 import TextareaField from "@/components/Form/TextareaField/TextareaField";
 import TextInputField from "@/components/Form/TextInputField/TextInputField";
+import { createWarehouseWithStructureServer } from "../../actions/createWarehouseWithStructureServer";
 
 export default function CreateWarehouseForm() {
   const router = useRouter();
@@ -24,11 +24,10 @@ export default function CreateWarehouseForm() {
   const { totalCapacity, isCapacityEqual } = useWarehouseCapacity(watch);
 
   const onSubmit = async (data) => {
+    console.log(data);
     try {
-      const payload = buildWarehousePayload(data);
-      const createdWarehouse = await createWarehouseWithStructureServer(
-        payload
-      );
+      // const payload = buildWarehousePayload(data);
+      const createdWarehouse = await createWarehouseWithStructureServer(data);
 
       toast.success("انبار با موفقیت ایجاد شد!");
       reset();
