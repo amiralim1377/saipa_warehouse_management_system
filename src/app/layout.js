@@ -10,6 +10,9 @@ import CustomCloseButton from "@/components/CustomCloseButton/CustomCloseButton"
 export default async function RootLayout({ children }) {
   return (
     <html dir="rtl" lang="fa" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       <body className={`  ${yekanbakh.variable} flex`}>
         <ThemeProvider
           attribute="class"

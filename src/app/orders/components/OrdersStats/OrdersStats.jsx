@@ -7,7 +7,6 @@ export default function OrdersStats({
   confirmedOrdersStats,
   draftOrdersStats,
 }) {
-  console.log(confirmedOrdersStats);
   // آمار سفارش‌های تایید شده
   const confirmedStats = [
     {

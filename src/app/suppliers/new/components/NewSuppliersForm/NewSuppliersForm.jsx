@@ -21,8 +21,12 @@ function NewSuppliersForm() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    const formattedData = {
+      ...data,
+      status: data.status === "true" ? true : false,
+    };
     try {
-      const res = await createSupplier(data);
+      const res = await createSupplier(formattedData);
 
       if (res.status === 201) {
         toast.success(res.message);
