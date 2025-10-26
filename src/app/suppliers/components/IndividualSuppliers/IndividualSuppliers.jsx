@@ -1,39 +1,10 @@
 "use client";
+import DeleteItemButton from "@/components/Form/DeleteItemButton/DeleteItemButton";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { deleteSupplier } from "../../actions/deleteSupplier";
 
-function IndividualSuppliers() {
-  // نمونه داده‌ها: تأمین‌کنندگان حقیقی
-  const suppliers = [
-    {
-      id: 1,
-      name: "تأمین‌کننده حقیقی ۱",
-      phone: "09123456789",
-      email: "ind1@example.com",
-      status: "فعال",
-      lastOrder: "2025-09-20",
-    },
-    {
-      id: 2,
-      name: "تأمین‌کننده حقیقی ۲",
-      phone: "09122334455",
-      email: "ind2@example.com",
-      status: "غیرفعال",
-      lastOrder: "2025-09-18",
-    },
-    {
-      id: 3,
-      name: "تأمین‌کننده حقیقی ۳",
-      phone: "09129876543",
-      email: "ind3@example.com",
-      status: "فعال",
-      lastOrder: "2025-09-22",
-    },
-  ];
-
-  const handleDelete = (id) => {
-    console.log("حذف تأمین‌کننده با id:", id);
-  };
-
+function IndividualSuppliers({ suppliers }) {
   return (
     <div className="mt-6 overflow-x-auto">
       <h2 className="text-lg font-semibold text-[var(--color-foreground)] mb-3">
@@ -44,9 +15,9 @@ function IndividualSuppliers() {
           <tr>
             <th className="p-2 border-b">نام</th>
             <th className="p-2 border-b">شماره تماس</th>
-            <th className="p-2 border-b">ایمیل</th>
+            <th className="p-2 border-b">ایمیل / وب‌سایت</th>
             <th className="p-2 border-b">وضعیت</th>
-            <th className="p-2 border-b">آخرین سفارش</th>
+            <th className="p-2 border-b">تاریخ ثبت</th>
             <th className="p-2 border-b">اقدامات</th>
           </tr>
         </thead>
@@ -55,22 +26,35 @@ function IndividualSuppliers() {
             <tr key={sup.id}>
               <td className="p-2 border-b">{sup.name}</td>
               <td className="p-2 border-b">{sup.phone}</td>
-              <td className="p-2 border-b">{sup.email}</td>
-              <td className="p-2 border-b">{sup.status}</td>
-              <td className="p-2 border-b">{sup.lastOrder}</td>
+              <td className="p-2 border-b">
+                {sup.email || sup.website || "-"}
+              </td>
+              <td className="p-2 border-b">
+                {sup.status ? "فعال" : "غیرفعال"}
+              </td>
+              <td className="p-2 border-b">
+                {sup.created_at
+                  ? new Date(sup.created_at).toLocaleDateString("fa-IR")
+                  : "-"}
+              </td>
               <td className="p-2 border-b flex gap-2 flex-wrap">
-                <Button className="bg-accent text-accent-foreground px-3 py-1 rounded-lg">
-                  ویرایش
-                </Button>
-                <Button
-                  className="bg-destructive text-destructive-foreground px-3 py-1 rounded-lg"
-                  onClick={() => handleDelete(sup.id)}
-                >
-                  حذف
-                </Button>
-                <Button className="bg-muted text-muted-foreground px-3 py-1 rounded-lg">
-                  جزئیات
-                </Button>
+                <Link href={`/suppliers/edit/${sup.id}`}>
+                  <Button className="bg-accent text-accent-foreground px-3 py-1 rounded-lg">
+                    ویرایش
+                  </Button>
+                </Link>
+                <DeleteItemButton
+                  itemId={sup.id}
+                  itemType="تأمین‌کننده"
+                  deleteFunction={deleteSupplier}
+                  onDeleted={() => {}}
+                />
+
+                <Link href={`/suppliers/details/${sup.id}`}>
+                  <Button className="bg-muted hover:text-black  text-muted-foreground px-3 py-1 rounded-lg">
+                    جزئیات
+                  </Button>
+                </Link>
               </td>
             </tr>
           ))}

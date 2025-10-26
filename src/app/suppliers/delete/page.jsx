@@ -1,4 +1,4 @@
-import NoCustomers from "@/app/customers/delete/components/NoCustomers/NoCustomers";
+import NoSuppliers from "../details/components/SuppliersList/NoSuppliers/NoSuppliers";
 import SuppliersCustomerListView from "./components/SuppliersCustomerListView/SuppliersCustomerListView";
 import { getSuppliers } from "./services/getSuppliers";
 
@@ -10,7 +10,7 @@ async function DeleteSuppliersPage() {
       {suppliers?.length > 0 ? (
         <SuppliersCustomerListView initialSuppliers={suppliers} />
       ) : (
-        <NoCustomers />
+        <NoSuppliers />
       )}
     </>
   );

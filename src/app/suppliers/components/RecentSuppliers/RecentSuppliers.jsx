@@ -61,8 +61,8 @@ function RecentSuppliers({ newestSuppliersData }) {
                     onDeleted={() => {}}
                   />
                   <Link
-                    href={`/suppliers/${sup.id}`}
-                    className="bg-muted text-muted-foreground px-3 py-1 rounded-lg"
+                    href={`/suppliers/details/${sup.id}`}
+                    className="bg-muted hover:text-black text-muted-foreground px-3 py-1 rounded-lg"
                   >
                     جزئیات
                   </Link>
