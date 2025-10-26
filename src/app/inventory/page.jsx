@@ -3,6 +3,7 @@ import InventoryAlertsTable from "@/components/InventoryAlertsTable/InventoryAle
 import InventoryStats from "./components/InventoryStats/InventoryStats";
 import { getInventoryStats } from "./services/getInventoryStats";
 import { getLowStockAlerts } from "./services/getLowStockAlerts";
+import NoProducts from "../products/components/NoProducts";
 
 export default async function InventoryPage() {
   const {
@@ -34,7 +35,12 @@ export default async function InventoryPage() {
         <h2 className="text-xl font-semibold text-[var(--color-foreground)] mb-2">
           هشدارهای موجودی
         </h2>
-        <InventoryAlertsTable lowStockAlerts={lowStockAlerts} />
+
+        {lowStockAlerts.length > 0 ? (
+          <InventoryAlertsTable lowStockAlerts={lowStockAlerts} />
+        ) : (
+          <NoProducts />
+        )}
       </div>
     </div>
   );

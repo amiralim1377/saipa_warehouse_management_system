@@ -23,8 +23,8 @@ function SuppliersActions() {
       </Link>
 
       <Link href="/suppliers/details">
-        <Button className="bg-muted text-muted-foreground px-6 py-3 rounded-lg">
-          مشاهده جزئیات
+        <Button className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg">
+          اطلاعات تامین کنندگان{" "}
         </Button>
       </Link>
     </div>

@@ -43,9 +43,6 @@ function InventoryAlertsTable({ lowStockAlerts }) {
 
   return (
     <div className="p-6 mx-auto ">
-      <h2 className="text-2xl font-semibold mb-4 text-foreground">
-        هشدار موجودی انبار
-      </h2>
       <Table>
         <TableHeader>
           <TableRow>

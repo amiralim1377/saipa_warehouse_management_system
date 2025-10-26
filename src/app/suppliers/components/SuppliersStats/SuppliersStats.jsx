@@ -1,47 +1,37 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-function SuppliersStats() {
+function SuppliersStats({ SuppliersStatsData }) {
+  const stats = [
+    {
+      title: "تعداد کل تأمین‌کنندگان",
+      value: SuppliersStatsData.total_suppliers,
+    },
+    {
+      title: "تعداد تأمین‌کنندگان فعال",
+      value: SuppliersStatsData.active_suppliers,
+    },
+    {
+      title: "تعداد تأمین‌کنندگان جدید (ماه جاری)",
+      value: SuppliersStatsData.new_suppliers_this_month,
+    },
+    {
+      title: "تعداد تأمین‌کنندگان غیرفعال",
+      value: SuppliersStatsData.inactive_suppliers,
+    },
+  ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-6">
-      {/* تعداد کل تأمین‌کنندگان */}
-      <Card>
-        <CardHeader>
-          <CardTitle>تعداد تأمین‌کنندگان</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold">120</p>
-        </CardContent>
-      </Card>
-
-      {/* تأمین‌کنندگان فعال */}
-      <Card>
-        <CardHeader>
-          <CardTitle>تأمین‌کنندگان فعال</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold">95</p>
-        </CardContent>
-      </Card>
-
-      {/* تأمین‌کنندگان جدید */}
-      <Card>
-        <CardHeader>
-          <CardTitle>تأمین‌کنندگان جدید (ماه جاری)</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold">12</p>
-        </CardContent>
-      </Card>
-
-      {/* مجموع تراکنش‌ها */}
-      <Card>
-        <CardHeader>
-          <CardTitle>مجموع تراکنش‌ها</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold">780</p>
-        </CardContent>
-      </Card>
+      {stats.map((item, index) => (
+        <Card key={index}>
+          <CardHeader>
+            <CardTitle>{item.title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">{item.value}</p>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }

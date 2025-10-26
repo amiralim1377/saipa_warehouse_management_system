@@ -1,14 +1,25 @@
-import SupplierPartsTable from "@/components/SupplierPartsTable/SupplierPartsTable";
-import SuppliersActions from "@/components/SuppliersActions/SuppliersActions";
-import SuppliersTable from "@/components/SuppliersTable/SuppliersTable";
 import SuppliersStats from "./components/SuppliersStats/SuppliersStats";
+import SuppliersActions from "./components/SuppliersActions/SuppliersActions";
+import SupplierPartsTable from "./components/SupplierPartsTable/SupplierPartsTable";
+import getSuppliersStats from "./services/getSuppliersStats";
+import SuppliersByType from "./components/SuppliersByType/SuppliersByType";
+import RecentSuppliers from "./components/RecentSuppliers/RecentSuppliers";
+import newestSuppliers from "./services/newestSuppliers";
 
-function SuppliersPage() {
+async function SuppliersPage() {
+  const SuppliersStatsData = await getSuppliersStats();
+  const {
+    data: newestSuppliersData,
+    message,
+    status,
+  } = await newestSuppliers();
+
   return (
     <div>
-      <SuppliersStats />
+      <SuppliersStats SuppliersStatsData={SuppliersStatsData} />
       <SuppliersActions />
-      <SuppliersTable />
+      <RecentSuppliers newestSuppliersData={newestSuppliersData} />
+      <SuppliersByType />
       <SupplierPartsTable />
     </div>
   );
