@@ -1,10 +1,19 @@
-"use client";
-import DeleteItemButton from "@/components/Form/DeleteItemButton/DeleteItemButton";
 import Link from "next/link";
-import { deleteSupplier } from "../../actions/deleteSupplier";
+import { getSuppliers } from "../services/getSuppliers";
 
-function RecentSuppliers({ newestSuppliersData }) {
-  const suppliers = newestSuppliersData || [];
+export default async function SuppliersDetailsPage() {
+  const { status, message, suppliers: suppliersData } = await getSuppliers();
+
+  const suppliers = suppliersData.map((sup) => ({
+    id: sup.id,
+    name: sup.name,
+    phone: sup.phone,
+    email: sup.email || "",
+    website: sup.website || "",
+    status: sup.status,
+    created_at: sup.created_at ? new Date(sup.created_at).toISOString() : null,
+    type: sup.supplier_type === "company" ? "حقوقی" : "حقیقی",
+  }));
 
   if (!suppliers.length) {
     return (
@@ -17,15 +26,16 @@ function RecentSuppliers({ newestSuppliersData }) {
   return (
     <div className="mt-6">
       <h2 className="text-lg font-semibold text-foreground mb-3">
-        لیست آخرین تأمین‌کنندگان
+        لیست تأمین‌کنندگان
       </h2>
       <div className="overflow-x-auto">
-        <table className="min-w-[600px] w-full text-right border border-border rounded-lg">
+        <table className="min-w-[700px] w-full text-right border border-border rounded-lg">
           <thead className="bg-muted text-muted-foreground">
             <tr>
               <th className="p-2 border-b">نام</th>
               <th className="p-2 border-b">شماره تماس</th>
               <th className="p-2 border-b">ایمیل / وب‌سایت</th>
+              <th className="p-2 border-b">نوع تأمین‌کننده</th>
               <th className="p-2 border-b">وضعیت</th>
               <th className="p-2 border-b">تاریخ ثبت</th>
               <th className="p-2 border-b">اقدامات</th>
@@ -37,8 +47,9 @@ function RecentSuppliers({ newestSuppliersData }) {
                 <td className="p-2 border-b">{sup.name}</td>
                 <td className="p-2 border-b">{sup.phone}</td>
                 <td className="p-2 border-b">
-                  {sup.email ? sup.email : sup.website || "-"}
+                  {sup.email || sup.website || "-"}
                 </td>
+                <td className="p-2 border-b">{sup.type}</td>
                 <td className="p-2 border-b">
                   {sup.status ? "فعال" : "غیرفعال"}
                 </td>
@@ -47,21 +58,9 @@ function RecentSuppliers({ newestSuppliersData }) {
                     ? new Date(sup.created_at).toLocaleDateString("fa-IR")
                     : "-"}
                 </td>
-                <td className="p-2 border-b flex gap-2 flex-wrap">
+                <td className="p-2 border-b">
                   <Link
-                    href={`/suppliers/edit/${sup.id}`}
-                    className="bg-accent text-accent-foreground px-3 py-1 rounded-lg"
-                  >
-                    ویرایش
-                  </Link>
-                  <DeleteItemButton
-                    itemId={sup.id}
-                    itemType="تأمین‌کننده"
-                    deleteFunction={deleteSupplier}
-                    onDeleted={() => {}}
-                  />
-                  <Link
-                    href={`/suppliers/${sup.id}`}
+                    href={`/suppliers/details/${sup.id}`}
                     className="bg-muted text-muted-foreground px-3 py-1 rounded-lg"
                   >
                     جزئیات
@@ -75,5 +74,3 @@ function RecentSuppliers({ newestSuppliersData }) {
     </div>
   );
 }
-
-export default RecentSuppliers;
