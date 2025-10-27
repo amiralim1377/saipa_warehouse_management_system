@@ -40,8 +40,6 @@ export async function getDraftOrdersStats() {
 
     const stats = result[0];
 
-    console.log(stats);
-
     const normalizedStats = {
       total_draft_sales: stats.total_draft_sales
         ? Number(stats.total_draft_sales)
