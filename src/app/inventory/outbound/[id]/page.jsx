@@ -3,7 +3,7 @@ import NoProducts from "./components/NoProducts/NoProducts";
 import OutboundForm from "./components/OutboundForm/OutboundForm";
 
 export default async function OutboundDetailPage({ params }) {
-  const { id: productId } = params;
+  const { id: productId } = await params;
   const { message, product, success } = await getTargetProduct(productId);
 
   if (!success || !product) {

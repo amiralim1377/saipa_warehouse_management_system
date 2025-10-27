@@ -63,10 +63,12 @@ export const getTargetProduct = async (id) => {
 
     if (!product) throw new Error("محصولی با این شناسه پیدا نشد.");
 
+    const data = JSON.parse(JSON.stringify(product));
+
     return {
       success: true,
       message: `✅ محصول «${product.part_name}» با موفقیت دریافت شد.`,
-      product,
+      product: data,
     };
   } catch (err) {
     console.error("❌ خطا در دریافت محصول:", err.message);

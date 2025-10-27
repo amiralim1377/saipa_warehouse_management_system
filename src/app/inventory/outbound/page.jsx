@@ -9,6 +9,7 @@ import getWarehouses from "./services/getWarehouses";
 import { QueryClientProviderWrapper } from "@/providers/QueryClientProviderWrapper/QueryClientProviderWrapper";
 
 async function InventoryOutboundPage({ searchParams }) {
+  const params = await searchParams;
   const {
     query = "",
     warehouse = "",
@@ -18,7 +19,7 @@ async function InventoryOutboundPage({ searchParams }) {
     shelf = "",
     category = "",
     subcategory = "",
-  } = searchParams || {};
+  } = params || {};
 
   const {
     message: warehouseMessage,
