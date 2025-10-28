@@ -1,22 +1,38 @@
-function WarehousesStats() {
+"use client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+function WarehousesStats({ warehouseStats }) {
+  const stats = [
+    {
+      title: "تعداد انبارها",
+      value: warehouseStats.totalWarehouses,
+    },
+    {
+      title: "ظرفیت کل انبارها",
+      value: warehouseStats.totalCapacity,
+    },
+    {
+      title: "میانگین ظرفیت انبارها",
+      value: Math.round(Number(warehouseStats.avgCapacity)),
+    },
+    {
+      title: "انبارهای بحرانی",
+      value: warehouseStats.criticalWarehouses,
+    },
+  ];
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div className="bg-card text-card-foreground p-4 rounded-lg shadow-sm">
-        <p className="text-sm">تعداد انبارها</p>
-        <h3 className="text-2xl font-bold">5</h3>
-      </div>
-      <div className="bg-card text-card-foreground p-4 rounded-lg shadow-sm">
-        <p className="text-sm">تعداد کل قطعات</p>
-        <h3 className="text-2xl font-bold">1,200</h3>
-      </div>
-      <div className="bg-card text-card-foreground p-4 rounded-lg shadow-sm">
-        <p className="text-sm">میانگین موجودی هر انبار</p>
-        <h3 className="text-2xl font-bold">240</h3>
-      </div>
-      <div className="bg-card text-card-foreground p-4 rounded-lg shadow-sm">
-        <p className="text-sm">انبارهای دارای موجودی کم</p>
-        <h3 className="text-2xl font-bold">2</h3>
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-6">
+      {stats.map((item, index) => (
+        <Card key={index}>
+          <CardHeader>
+            <CardTitle>{item.title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">{item.value}</p>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }
