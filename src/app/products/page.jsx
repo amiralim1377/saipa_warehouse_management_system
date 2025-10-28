@@ -1,7 +1,7 @@
-import WarehousePartsTable from "@/components/WarehousePartsTable/WarehousePartsTable";
 import { fetchProducts } from "./services/fetchProducts";
 import NoProducts from "./components/NoProducts";
 import Pagination from "@/components/Pagination/Pagination";
+import WarehousePartsTable from "./components/WarehousePartsTable/WarehousePartsTable";
 
 async function Productspage({ searchParams }) {
   const params = await searchParams;
