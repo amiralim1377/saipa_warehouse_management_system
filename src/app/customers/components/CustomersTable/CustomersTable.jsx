@@ -61,9 +61,11 @@ export default function CustomersTable({ customers }) {
                 </td>
                 <td className="px-3 py-2 text-center align-middle">
                   <div className="flex gap-2 justify-center">
-                    <Button size="sm" variant="secondary">
-                      <History className="w-4 h-4" />
-                    </Button>
+                    <Link href={`customers/orders/${c.id}`}>
+                      <Button size="sm" variant="secondary">
+                        <History className="w-4 h-4" />
+                      </Button>
+                    </Link>
                     <Link href={`customers/edit/${c.id}`}>
                       <Button size="sm" variant="outline">
                         <Pencil className="w-4 h-4" />
