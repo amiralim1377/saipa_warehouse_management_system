@@ -8,8 +8,6 @@ async function CustomersPage() {
   const CustomersData = await getCustomerStats();
   const customers = await getCustomers();
 
-  console.log(customers);
-
   return (
     <div className="p-6 space-y-6">
       {/* آمار مشتریان */}

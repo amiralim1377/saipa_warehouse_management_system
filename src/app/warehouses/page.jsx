@@ -1,6 +1,6 @@
-import WarehouseAlerts from "@/components/WarehouseAlerts/WarehouseAlerts";
-import WarehousesActions from "@/components/WarehousesActions/WarehousesActions";
-import WarehousesStats from "@/components/WarehousesStats/WarehousesStats";
+import WarehouseAlerts from "./components/WarehouseAlerts/WarehouseAlerts";
+import WarehousesActions from "./components/WarehousesActions/WarehousesActions";
+import WarehousesStats from "./components/WarehousesStats/WarehousesStats";
 
 function WarehousesPage() {
   return (
