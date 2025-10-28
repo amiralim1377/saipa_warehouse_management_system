@@ -1,13 +1,20 @@
-import CustomersActions from "@/components/CustomersActions/CustomersActions";
-import CustomersStats from "@/components/CustomersStats/CustomersStats";
-import CustomersTable from "@/components/CustomersTable/CustomersTable";
+import getCustomerStats from "./services/getCustomerStats";
+import getCustomers from "./services/getCustomers";
+import CustomersTable from "./components/CustomersTable/CustomersTable";
+import CustomersStats from "./components/CustomersStats/CustomersStats";
+import CustomersActions from "./components/CustomersActions/CustomersActions";
 
-function CustomersPage() {
+async function CustomersPage() {
+  const CustomersData = await getCustomerStats();
+  const customers = await getCustomers();
+
+  console.log(customers);
+
   return (
     <div className="p-6 space-y-6">
       {/* آمار مشتریان */}
       <section>
-        <CustomersStats />
+        <CustomersStats CustomersData={CustomersData} />
       </section>
 
       {/* دسترسی سریع */}
@@ -23,7 +30,7 @@ function CustomersPage() {
         <h2 className="text-lg font-semibold mb-2 text-[var(--color-foreground)]">
           لیست مشتریان
         </h2>
-        <CustomersTable />
+        <CustomersTable customers={customers} />
       </section>
     </div>
   );

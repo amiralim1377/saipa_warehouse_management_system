@@ -37,6 +37,8 @@ export async function getTargetWarehouse(id) {
       .eq("id", id)
       .single();
 
+    console.log(data);
+
     if (error) throw error;
 
     return {

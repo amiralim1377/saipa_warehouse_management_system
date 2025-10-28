@@ -4,9 +4,10 @@ import getTargetCustomer from "./services/getTargetCustomer";
 import NoTargetCustomer from "./components/NoTargetCustomer/NoTargetCustomer";
 
 async function EditDynamicCustomerPage({ params }) {
-  const id = decodeURIComponent(params.id);
+  const { id } = await params;
+  const decodedId = decodeURIComponent(id);
 
-  const targetCustomer = await getTargetCustomer(id);
+  const targetCustomer = await getTargetCustomer(decodedId);
 
   if (!targetCustomer) {
     toast.error("مشتری یافت نشد");

@@ -4,7 +4,9 @@ import { getTargetWarehouse } from "./services/getTargetWarehouse";
 import { WarehouseProvider } from "./context/WarehouseContext";
 
 async function EditDynamicWarehousesPage({ params }) {
-  const id = decodeURIComponent(params.id);
+  const { id } = await params;
+
+  console.log(id);
 
   const {
     warehouse: targetWarehouse,

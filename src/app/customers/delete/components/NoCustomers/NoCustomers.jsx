@@ -20,4 +20,4 @@ function NoCustomers() {
   );
 }
 
-export default NoSuppliers;
+export default NoCustomers;
