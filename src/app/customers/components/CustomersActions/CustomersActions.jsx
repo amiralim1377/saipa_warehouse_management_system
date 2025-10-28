@@ -10,23 +10,33 @@ function CustomersActions() {
       >
         <Link href="/customers/new">ثبت مشتری جدید</Link>
       </Button>
+
       <Button
         asChild
         className="bg-accent text-accent-foreground px-6 py-3 rounded-lg"
       >
         <Link href="/customers/edit">ویرایش مشتری</Link>
       </Button>
+
       <Button
         asChild
         className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg"
       >
         <Link href="/customers/delete">حذف مشتری</Link>
       </Button>
+
       <Button
         asChild
-        className="bg-muted text-muted-foreground px-6 py-3 rounded-lg"
+        className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg"
       >
-        <Link href="/customers/orders">سفارش‌های مشتری</Link>
+        <Link href="/customers/details">اطلاعات مشتریان</Link>
+      </Button>
+
+      <Button
+        asChild
+        className="bg-muted hover:text-white text-muted-foreground px-6 py-3 rounded-lg"
+      >
+        <Link href="/customers/orders">سفارش‌های مشتریان</Link>
       </Button>
     </div>
   );

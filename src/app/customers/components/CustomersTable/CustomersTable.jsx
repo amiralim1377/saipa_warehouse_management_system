@@ -43,7 +43,9 @@ export default function CustomersTable({ customers }) {
             customers.map((c) => (
               <tr key={c.id} className="hover:bg-[var(--color-muted)]/40">
                 <td className="px-3 py-2 align-middle">...{c.id.slice(-4)}</td>
-                <td className="px-3 py-2 align-middle">{c.customer_type}</td>
+                <td className="px-3 py-2 align-middle">
+                  {c.customer_type === "company" ? "حقوقی" : "حقیقی"}
+                </td>
                 <td className="px-3 py-2 font-medium align-middle">
                   {c.company_name || `${c.first_name} ${c.last_name}`}
                 </td>
