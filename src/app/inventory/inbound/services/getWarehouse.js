@@ -26,7 +26,9 @@ export const getWarehouse = async () => {
       },
     });
 
-    return data;
+    const safeData = JSON.parse(JSON.stringify(data));
+
+    return safeData;
   } catch (err) {
     console.error("خطا در دریافت انبارها:", err);
     return [];

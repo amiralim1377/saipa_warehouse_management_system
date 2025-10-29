@@ -8,6 +8,7 @@ import { updateWarehouseWithStructureServer } from "../../actions/updateWarehous
 import { useParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import calculateWarehouseCapacity from "../../utils/calculateWarehouseCapacity";
 
 function EditDynamicWarehouseForm() {
   const { warehouse, zones } = useWarehouse();
@@ -20,29 +21,35 @@ function EditDynamicWarehouseForm() {
       location: warehouse?.location || "",
       capacity: warehouse?.capacity || 0,
       min_stock: warehouse?.min_stock || 0,
-      notes: warehouse?.notes || "",
       zones: zones || [],
     },
   });
 
   const {
     handleSubmit,
-    register,
+
     reset,
     formState: { isSubmitting },
   } = methods;
 
   const onSubmit = async (data) => {
     try {
-      const payload = { ...data, id };
+      const totalCapacity = calculateWarehouseCapacity(data.zones);
+
+      const payload = { ...data, id, capacity: totalCapacity };
 
       const result = await updateWarehouseWithStructureServer(payload);
 
-      toast.success(result.message || "✅ انبار با موفقیت آپدیت شد");
-      router.replace("/warehouses");
+      if (result.success) {
+        toast.success(result.message || "انبار با موفقیت اپدیت شد");
+        router.replace("/warehouses");
+        reset();
+      } else {
+        throw new Error(result.message || "❌ Failed to update warehouse");
+      }
     } catch (error) {
       console.error("❌ خطا در آپدیت انبار:", error);
-      toast.error("❌ خطا در آپدیت انبار");
+      toast.error(error.message || "❌ خطا در آپدیت انبار");
     }
   };
 

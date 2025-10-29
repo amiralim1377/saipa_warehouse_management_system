@@ -39,6 +39,21 @@ export const ShelfItem = ({
             }
           </p>
         )}
+
+        {/* شماره طبقه (level) */}
+        <Input
+          type="number"
+          {...register(
+            `zones.${zoneIndex}.aisles.${aisleIndex}.racks.${rackIndex}.shelves.${shelfIndex}.level`,
+            {
+              min: { value: 1, message: "شماره طبقه باید مثبت باشد" },
+            }
+          )}
+          defaultValue={shelf?.level || ""}
+          placeholder="شماره طبقه"
+          className="h-8 w-28 text-sm font-medium"
+          min={1}
+        />
       </div>
 
       {/* دکمه حذف */}

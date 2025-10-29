@@ -30,7 +30,9 @@ export const getSuppliers = async () => {
       },
     });
 
-    return data;
+    const safeData = JSON.parse(JSON.stringify(data));
+
+    return safeData;
   } catch (err) {
     console.error("خطا در دریافت تأمین‌کننده‌ها:", err);
     return [];

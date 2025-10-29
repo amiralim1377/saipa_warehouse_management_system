@@ -24,10 +24,11 @@ export default function CreateWarehouseForm() {
   const { totalCapacity, isCapacityEqual } = useWarehouseCapacity(watch);
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
-      // const payload = buildWarehousePayload(data);
-      const createdWarehouse = await createWarehouseWithStructureServer(data);
+      const payload = await buildWarehousePayload(data);
+      const createdWarehouse = await createWarehouseWithStructureServer(
+        payload
+      );
 
       toast.success("انبار با موفقیت ایجاد شد!");
       reset();
