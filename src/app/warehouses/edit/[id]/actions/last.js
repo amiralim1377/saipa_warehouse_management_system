@@ -3,16 +3,14 @@ import { supabase } from "@/lib/supabaseClient";
 
 /**
  * آپدیت انبار و ساختار سلسله‌مراتبی آن (زون‌ها، راهروها، رک‌ها، طبقات)
- * @param {Object} warehouse - آبجکت انبار شامل zones → aisles → racks → shelves
+ * شامل منطق حذف رکوردهای حذف‌شده در هر سطح
  */
 export async function updateWarehouseWithStructureServer(warehouse) {
   try {
+    if (!warehouse?.id) throw new Error("❌ شناسه انبار یافت نشد");
+
     // 1️⃣ آپدیت اطلاعات انبار
-
-    console.log(warehouse);
-    debugger;
-    if (!warehouse.id) throw new Error("❌ Warehouse ID is missing");
-
+    // ⚠️ فقط ستون‌های واقعی جدول warehouses
     const { error: warehouseError } = await supabase
       .from("warehouses")
       .update({
@@ -20,86 +18,100 @@ export async function updateWarehouseWithStructureServer(warehouse) {
         location: warehouse.location,
         capacity: warehouse.capacity,
         min_stock: warehouse.min_stock,
+        updated_at: new Date().toISOString(),
       })
       .eq("id", warehouse.id);
 
     if (warehouseError) throw warehouseError;
 
-    // 2️⃣ آپدیت زون‌ها
-    for (const zone of warehouse.zones) {
-      if (zone.id) {
-        await supabase
-          .from("zones")
-          .update({ name: zone.name })
-          .eq("id", zone.id);
-      } else {
-        const { data, error } = await supabase
-          .from("zones")
-          .insert({ warehouse_id: warehouse.id, name: zone.name })
-          .select()
-          .single();
-        if (error) throw error;
-        zone.id = data.id;
+    // 📌 تابع کمکی برای حذف رکوردهای حذف‌شده و آپدیت/اینسرت
+    async function syncLevel({
+      table,
+      parentField,
+      parentId,
+      newItems,
+      subSync,
+      hasLevel = false, // اگر سطح دارد (مثل shelves)
+    }) {
+      const { data: existing, error: fetchError } = await supabase
+        .from(table)
+        .select("id")
+        .eq(parentField, parentId);
+
+      if (fetchError) throw fetchError;
+
+      const newIds = (newItems || []).filter((i) => i.id).map((i) => i.id);
+      const toDelete = existing.filter((e) => !newIds.includes(e.id));
+
+      if (toDelete.length > 0) {
+        const { error: deleteError } = await supabase
+          .from(table)
+          .delete()
+          .in(
+            "id",
+            toDelete.map((e) => e.id)
+          );
+        if (deleteError) throw deleteError;
       }
 
-      // 3️⃣ آپدیت راهروها
-      for (const aisle of zone.aisles) {
-        if (aisle.id) {
-          await supabase
-            .from("aisles")
-            .update({ name: aisle.name })
-            .eq("id", aisle.id);
+      for (const item of newItems || []) {
+        let itemId = item.id;
+        const payload = hasLevel
+          ? { name: item.name, level: item.level } // برای shelves
+          : { name: item.name }; // برای سایر جدول‌ها
+
+        if (itemId) {
+          const { error } = await supabase
+            .from(table)
+            .update(payload)
+            .eq("id", itemId);
+          if (error) throw error;
         } else {
           const { data, error } = await supabase
-            .from("aisles")
-            .insert({ zone_id: zone.id, name: aisle.name })
+            .from(table)
+            .insert({ [parentField]: parentId, ...payload })
             .select()
             .single();
           if (error) throw error;
-          aisle.id = data.id;
+          itemId = data.id;
         }
 
-        // 4️⃣ آپدیت رک‌ها
-        for (const rack of aisle.racks) {
-          if (rack.id) {
-            await supabase
-              .from("racks")
-              .update({ name: rack.name })
-              .eq("id", rack.id);
-          } else {
-            const { data, error } = await supabase
-              .from("racks")
-              .insert({ aisle_id: aisle.id, name: rack.name })
-              .select()
-              .single();
-            if (error) throw error;
-            rack.id = data.id;
-          }
-
-          // 5️⃣ آپدیت طبقات
-          for (const shelf of rack.shelves) {
-            if (shelf.id) {
-              await supabase
-                .from("shelves")
-                .update({ name: shelf.name, level: shelf.level })
-                .eq("id", shelf.id);
-            } else {
-              const { data, error } = await supabase
-                .from("shelves")
-                .insert({
-                  rack_id: rack.id,
-                  name: shelf.name,
-                  level: shelf.level,
-                })
-                .select()
-                .single();
-              if (error) throw error;
-              shelf.id = data.id; // 👈 اضافه شد
-            }
-          }
-        }
+        if (subSync) await subSync(item, itemId);
       }
     }
+
+    // 2️⃣ زون‌ها → راهروها → رک‌ها → طبقات
+    await syncLevel({
+      table: "zones",
+      parentField: "warehouse_id",
+      parentId: warehouse.id,
+      newItems: warehouse.zones,
+      subSync: async (zone, zoneId) => {
+        await syncLevel({
+          table: "aisles",
+          parentField: "zone_id",
+          parentId: zoneId,
+          newItems: zone.aisles,
+          subSync: async (aisle, aisleId) => {
+            await syncLevel({
+              table: "racks",
+              parentField: "aisle_id",
+              parentId: aisleId,
+              newItems: aisle.racks,
+              subSync: async (rack, rackId) => {
+                await syncLevel({
+                  table: "shelves",
+                  parentField: "rack_id",
+                  parentId: rackId,
+                  newItems: rack.shelves,
+                  hasLevel: true, // مدیریت level برای طبقات
+                });
+              },
+            });
+          },
+        });
+      },
+    });
 
     return {
       success: true,
@@ -107,6 +119,9 @@ export async function updateWarehouseWithStructureServer(warehouse) {
     };
   } catch (err) {
     console.error("❌ Failed to update warehouse structure:", err);
-    return { success: false, message: `❌  ${err.message}خطا در آپدیت انبار` };
+    return {
+      success: false,
+      message: `❌ خطا در آپدیت انبار: ${err.message}`,
+    };
   }
 }

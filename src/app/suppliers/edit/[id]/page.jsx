@@ -3,13 +3,14 @@ import EditDynamicSupplierForm from "./components/EditDynamicSupplierForm/EditDy
 import { getTargetSupplier } from "./services/getTargetSuppliers";
 
 async function EditDynamicSuppliersPage({ params }) {
-  const id = decodeURIComponent(params.id);
+  const { id } = await params;
+  const decodedId = decodeURIComponent(id);
 
   const {
     supplier: targetSupplier,
     status,
     message,
-  } = await getTargetSupplier(id);
+  } = await getTargetSupplier(decodedId);
 
   if (!targetSupplier || status !== 200) {
     return <NoTargetSuppliers message={message} />;

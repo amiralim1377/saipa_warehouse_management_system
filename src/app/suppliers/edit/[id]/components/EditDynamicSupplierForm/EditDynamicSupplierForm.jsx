@@ -117,13 +117,13 @@ function EditDynamicSupplierForm({ targetSupplier }) {
       <TextInputField
         id="phone"
         label="شماره تماس"
-        placeholder="مثلاً 09123456789"
+        placeholder="مثلاً 09123456789 یا 02112345678"
         register={register}
         rules={{
           required: "شماره تماس الزامی است",
           pattern: {
-            value: /^09\d{9}$/,
-            message: "شماره موبایل معتبر وارد کنید",
+            value: /^(?:09\d{9}|0\d{2,3}\d{7})$/,
+            message: "شماره تماس معتبر وارد کنید",
           },
         }}
         errors={errors}

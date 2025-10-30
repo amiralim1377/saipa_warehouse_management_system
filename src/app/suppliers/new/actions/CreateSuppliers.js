@@ -37,7 +37,7 @@ export async function createSupplier(dataArray) {
 
     return {
       status: 201,
-      message: "تأمین‌کننده(ها) با موفقیت ایجاد شدند",
+      message: "تأمین‌کننده با موفقیت ایجاد شد",
     };
   } catch (err) {
     console.error("خطا در ایجاد تأمین‌کننده:", err);

@@ -9,15 +9,12 @@ function calculateWarehouseCapacity(zones) {
       const racks = aisle.racks || [];
       for (const rack of racks) {
         const shelves = rack.shelves || [];
-        // ظرفیت این رک = تعداد طبقات
         const rackCapacity = shelves.length;
-        // جمع کل انبار = ضرب رک در تعداد رک‌ها در این راهرو × راهرو × زون
         totalCapacity += rackCapacity;
       }
     }
   }
 
-  // حالا ضرب با تعداد رک‌ها و راهروها و زون‌ها به شکل ساده انجام شد
   return totalCapacity;
 }
 

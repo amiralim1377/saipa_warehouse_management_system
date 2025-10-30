@@ -37,7 +37,7 @@ function RecentSuppliers({ newestSuppliersData }) {
                 <td className="p-2 border-b">{sup.name}</td>
                 <td className="p-2 border-b">{sup.phone}</td>
                 <td className="p-2 border-b">
-                  {sup.email ? sup.email : sup.website || "-"}
+                  {sup.website ? sup.website : sup.email || "-"}
                 </td>
                 <td className="p-2 border-b">
                   {sup.status ? "فعال" : "غیرفعال"}

@@ -29,9 +29,9 @@ function NewSuppliersForm() {
       const res = await createSupplier(formattedData);
 
       if (res.status === 201) {
+        router.replace("/suppliers");
         toast.success(res.message);
         reset();
-        router.replace("/suppliers");
       } else {
         throw new Error(res.message);
       }
@@ -104,14 +104,26 @@ function NewSuppliersForm() {
       <TextInputField
         id="phone"
         label="شماره تماس"
-        placeholder="مثلاً 09123456789"
+        placeholder="مثلاً 09123456789 یا 02112345678"
         register={register}
         rules={{
           required: "شماره تماس الزامی است",
           pattern: {
-            value: /^09\d{9}$/,
-            message: "شماره موبایل معتبر وارد کنید",
+            value: /^(?:09\d{9}|0\d{2,3}\d{7})$/,
+            message: "شماره تماس معتبر وارد کنید",
           },
+        }}
+        errors={errors}
+      />
+
+      <TextareaField
+        id="address"
+        label="آدرس"
+        placeholder="آدرس تأمین‌کننده"
+        register={register}
+        rules={{
+          required: "آدرس الزامی است",
+          maxLength: { value: 500, message: "حداکثر ۵۰۰ کاراکتر مجاز است" },
         }}
         errors={errors}
       />
@@ -128,17 +140,6 @@ function NewSuppliersForm() {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
             message: "ایمیل وارد شده معتبر نیست",
           },
-        }}
-        errors={errors}
-      />
-      <TextareaField
-        id="address"
-        label="آدرس"
-        placeholder="آدرس تأمین‌کننده"
-        register={register}
-        rules={{
-          required: "آدرس الزامی است",
-          maxLength: { value: 500, message: "حداکثر ۵۰۰ کاراکتر مجاز است" },
         }}
         errors={errors}
       />
