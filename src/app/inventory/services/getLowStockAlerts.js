@@ -1,10 +1,34 @@
-import supabaseServer from "@/lib/supabaseServer";
+// import supabaseServer from "@/lib/supabaseServer";
+
+// export async function getLowStockAlerts() {
+//   try {
+//     const { data, error } = await supabaseServer.rpc("get_low_stock_alerts");
+
+//     if (error) throw new Error(error.message);
+
+//     return {
+//       success: true,
+//       message: "هشدار کمبود موجودی دریافت شد",
+//       data,
+//     };
+//   } catch (err) {
+//     return {
+//       success: false,
+//       message: err.message,
+//       data: null,
+//     };
+//   }
+// }
+
+"use server";
+
+import prisma from "@/lib/prismaClient";
 
 export async function getLowStockAlerts() {
   try {
-    const { data, error } = await supabaseServer.rpc("get_low_stock_alerts");
-
-    if (error) throw new Error(error.message);
+    const data = await prisma.$queryRaw`
+      SELECT * FROM public.get_low_stock_alerts();
+    `;
 
     return {
       success: true,
@@ -12,6 +36,7 @@ export async function getLowStockAlerts() {
       data,
     };
   } catch (err) {
+    console.log(err);
     return {
       success: false,
       message: err.message,
@@ -19,3 +44,5 @@ export async function getLowStockAlerts() {
     };
   }
 }
+
+export default getLowStockAlerts;
