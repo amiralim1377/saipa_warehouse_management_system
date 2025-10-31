@@ -33,11 +33,17 @@ export function ZoneSelect({
               <SelectValue placeholder="انتخاب زون" />
             </SelectTrigger>
             <SelectContent>
-              {zones.map((zone) => (
-                <SelectItem key={zone.id} value={zone.id}>
-                  {zone.name}
-                </SelectItem>
-              ))}
+              {[...zones]
+                .sort((a, b) => {
+                  const numA = parseInt(a.name.replace(/\D/g, ""), 10);
+                  const numB = parseInt(b.name.replace(/\D/g, ""), 10);
+                  return numA - numB;
+                })
+                .map((zone) => (
+                  <SelectItem key={zone.id} value={zone.id}>
+                    {zone.name}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
           {fieldState.error && (

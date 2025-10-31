@@ -33,11 +33,17 @@ export function RackSelect({
               <SelectValue placeholder="انتخاب رک" />
             </SelectTrigger>
             <SelectContent>
-              {racks?.map((rack) => (
-                <SelectItem key={rack.id} value={rack.id}>
-                  {rack.name}
-                </SelectItem>
-              ))}
+              {[...racks]
+                .sort((a, b) => {
+                  const numA = parseInt(a.name.replace(/\D/g, ""), 10);
+                  const numB = parseInt(b.name.replace(/\D/g, ""), 10);
+                  return numA - numB;
+                })
+                .map((rack) => (
+                  <SelectItem key={rack.id} value={rack.id}>
+                    {rack.name}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
           {fieldState.error && (

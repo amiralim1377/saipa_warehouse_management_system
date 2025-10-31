@@ -14,7 +14,7 @@ export default function StatsGrid({ stats }) {
           <CardContent className="grid gap-1">
             <p className="text-2xl sm:text-3xl md:text-4xl font-semibold truncate">
               {typeof stat.value === "number"
-                ? stat.value.toLocaleString()
+                ? stat.value.toLocaleString("fa-IR")
                 : stat.value}
             </p>
             <p className="text-gray-400 text-xs sm:text-sm md:text-base truncate">

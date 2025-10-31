@@ -6,17 +6,25 @@ import StatsGrid from "@/components/StatsGrid/StatsGrid";
 
 export default function InventoryStats({ inventoryStats }) {
   const statsData = [
-    { label: "مجموع تعداد کالاها در انبار", value: inventoryStats.total_stock },
+    {
+      label: "مجموع تعداد کالاها در انبار",
+      value: inventoryStats.get_parts_inventory_stats.total_stock,
+    },
     {
       label: "تعداد کالاهای کمبود موجودی",
-      value: inventoryStats.low_stock_count,
+      value: inventoryStats.get_parts_inventory_stats.low_stock_count,
       icon: AlertCircle,
       color: "bg-red-100 text-red-600",
     },
-    { label: "تعداد انواع کالاها", value: inventoryStats.total_items },
+    {
+      label: "تعداد انواع کالاها",
+      value: inventoryStats.get_parts_inventory_stats.total_items,
+    },
     {
       label: "ارزش کل موجودی انبار",
-      value: `${inventoryStats.total_value.toLocaleString()} تومان`,
+      value: `${inventoryStats.get_parts_inventory_stats.total_value.toLocaleString(
+        "fa-IR"
+      )} تومان`,
     },
   ];
 
