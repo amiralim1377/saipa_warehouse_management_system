@@ -30,10 +30,12 @@ export async function getLowStockAlerts() {
       SELECT * FROM public.get_low_stock_alerts();
     `;
 
+    const safeData = JSON.parse(JSON.stringify(data));
+
     return {
       success: true,
       message: "هشدار کمبود موجودی دریافت شد",
-      data,
+      data: safeData,
     };
   } catch (err) {
     console.log(err);

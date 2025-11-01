@@ -1,7 +1,6 @@
-import ReportsCharts from "@/components/ReportsCharts/ReportsCharts";
-import ReportsFilters from "@/components/ReportsFilters/ReportsFilters";
-import ReportsStats from "@/components/ReportsStats/ReportsStats";
-import ReportsTable from "@/components/ReportsTable/ReportsTable";
+import ReportsCharts from "./components/ReportsCharts/ReportsCharts";
+import ReportsStats from "./components/ReportsStats/ReportsStats";
+import ReportsTable from "./components/ReportsTable/ReportsTable";
 
 function ReportsPage() {
   return (
@@ -9,14 +8,6 @@ function ReportsPage() {
       {/* آمار کلیدی */}
       <section>
         <ReportsStats />
-      </section>
-
-      {/* فیلتر گزارش‌ها */}
-      <section>
-        <h2 className="text-lg font-semibold mb-2 text-[var(--color-foreground)]">
-          فیلتر گزارش‌ها
-        </h2>
-        <ReportsFilters />
       </section>
 
       {/* نمودارها و تحلیل‌ها */}

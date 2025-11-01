@@ -9,8 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
-function InventoryAlertsTable({ lowStockAlerts }) {
+function InventoryAlertsTable({ lowStockAlerts, onIncreaseStock }) {
   const getProgressColor = (product) => {
     if (product.stock < product.min_stock) return "bg-destructive";
     return "bg-primary";
@@ -42,7 +45,7 @@ function InventoryAlertsTable({ lowStockAlerts }) {
   };
 
   return (
-    <div className="p-6 mx-auto ">
+    <div className="p-6 mx-auto">
       <Table>
         <TableHeader>
           <TableRow>
@@ -52,6 +55,7 @@ function InventoryAlertsTable({ lowStockAlerts }) {
             <TableHead className="text-center">حداقل موجودی</TableHead>
             <TableHead className="text-center">کمبود</TableHead>
             <TableHead className="text-center">وضعیت</TableHead>
+            <TableHead className="text-center">اقدامات</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -78,6 +82,18 @@ function InventoryAlertsTable({ lowStockAlerts }) {
               <TableCell>{product.shortage}</TableCell>
               <TableCell className={getStatusColor(product)}>
                 {getStatusContent(product)}
+              </TableCell>
+
+              <TableCell>
+                <Link href={`/inventory/increase/${product.part_id}`}>
+                  <Button
+                    size="sm"
+                    className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white"
+                  >
+                    <Plus className="w-4 h-4" />
+                    افزایش
+                  </Button>
+                </Link>
               </TableCell>
             </TableRow>
           ))}

@@ -1,9 +1,9 @@
 import InventoryAction from "@/components/InventoryAction/InventoryAction";
-import InventoryAlertsTable from "@/components/InventoryAlertsTable/InventoryAlertsTable";
 import InventoryStats from "./components/InventoryStats/InventoryStats";
 import { getInventoryStats } from "./services/getInventoryStats";
 import { getLowStockAlerts } from "./services/getLowStockAlerts";
 import NoProducts from "../products/components/NoProducts";
+import InventoryAlertsTable from "@/components/InventoryAlertsTable/InventoryAlertsTable";
 
 export default async function InventoryPage() {
   const {
@@ -24,7 +24,7 @@ export default async function InventoryPage() {
 
       {/* بخش عملیات اصلی */}
       <div>
-        <h2 className="text-xl font-semibold text-[var(--color-foreground)] mb-2">
+        <h2 className="text-xl font-semibold text-foreground mb-2">
           عملیات سریع
         </h2>
         <InventoryAction />
@@ -32,7 +32,7 @@ export default async function InventoryPage() {
 
       {/* بخش هشدارهای موجودی */}
       <div>
-        <h2 className="text-xl font-semibold text-[var(--color-foreground)] mb-2">
+        <h2 className="text-xl font-semibold text-foreground mb-2">
           هشدارهای موجودی
         </h2>
 
