@@ -1,7 +1,7 @@
 import fetchProducts from "../services/fetchProducts";
-import InventoryDetailsList from "./components/InventoryDetailsList";
+import InventoryEditList from "./components/InventoryEditList";
 
-async function InventoryDetailsPage() {
+async function EditInventoryPage() {
   const { success, data, message } = await fetchProducts();
 
   if (!success) {
@@ -19,8 +19,11 @@ async function InventoryDetailsPage() {
       </div>
     );
   }
-
-  return <InventoryDetailsList data={data} />;
+  return (
+    <>
+      <InventoryEditList data={data} />
+    </>
+  );
 }
 
-export default InventoryDetailsPage;
+export default EditInventoryPage;

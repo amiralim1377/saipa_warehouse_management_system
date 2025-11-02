@@ -33,12 +33,6 @@ function InventoryActionLinks() {
           اطلاعات محصول
         </Button>
       </Link>
-
-      <Link href="/inventory/damage">
-        <Button className="bg-destructive text-card-foreground px-4 sm:px-6 py-2 sm:py-3 rounded-lg w-full sm:w-auto text-center flex-1 sm:flex-auto min-w-[150px]">
-          ثبت ضایعات و کسری
-        </Button>
-      </Link>
     </div>
   );
 }

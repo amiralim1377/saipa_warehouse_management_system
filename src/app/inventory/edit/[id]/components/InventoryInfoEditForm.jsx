@@ -1,37 +1,40 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import CategorySelect from "../CategorySelect/CategorySelect";
-import { useInventoryInbound } from "../../context/InventoryInboundProvider";
-import SubcategorySelect from "../SubcategorySelect/SubcategorySelect";
-import UnitSelect from "../UnitSelect/UnitSelect";
-import LocationInput from "../LocationInput/LocationInput";
-import WarehouseSelect from "../WarehouseSelect/WarehouseSelect";
-import InboundTypeSelect from "../InboundTypeSelect/InboundTypeSelect";
-import PartCodeInput from "../PartCodeInput/PartCodeInput";
-import PartNameInput from "../PartNameInput/PartNameInput";
-import StockInput from "../StockInput/StockInput";
-import StatusSelect from "../StatusSelect/StatusSelect";
-import EntryDateInput from "../EntryDateInput/EntryDateInput";
-import UnitPriceInput from "../UnitPriceInput/UnitPriceInput";
-import DescriptionTextarea from "../DescriptionTextarea/DescriptionTextarea";
-import { useSubcategories } from "../../../../../hooks/useSubcategories/useSubcategories";
-import SupplierSelect from "../SupplierSelect/SupplierSelect";
-import { ZoneSelect } from "../ZoneSelect/ZoneSelect";
-import { AisleSelect } from "../AisleSelect/AisleSelect";
-import { useAislesByZone } from "../../../../../hooks/useAislesByZone/useAislesByZone";
-import { useRacksByAisle } from "../../../../../hooks/useRacksByAisle/useRacksByAisle";
-import { RackSelect } from "../RackSelect/RackSelect";
-import { ShelfSelect } from "../ShelfSelect/ShelfSelect";
-import { useShelvesByRack } from "../../../../../hooks/useShelvesByRack/useShelvesByRack";
-import { v4 as uuidv4 } from "uuid";
-import { addPart } from "../../actions/addPart";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
-import { useWarehouseZones } from "@/hooks/useWarehouseZones/useWarehouseZones";
+
 import NumberInputField from "@/components/Form/NumberInputField/NumberInputField";
-export default function InventoryInboundForm() {
+import { useSubcategories } from "@/hooks/useSubcategories/useSubcategories";
+import { useWarehouseZones } from "@/hooks/useWarehouseZones/useWarehouseZones";
+import { useAislesByZone } from "@/hooks/useAislesByZone/useAislesByZone";
+import { useRacksByAisle } from "@/hooks/useRacksByAisle/useRacksByAisle";
+import { useShelvesByRack } from "@/hooks/useShelvesByRack/useShelvesByRack";
+import { useRouter } from "next/navigation";
+import CategorySelect from "@/app/inventory/inbound/components/CategorySelect/CategorySelect";
+import SubcategorySelect from "@/app/inventory/inbound/components/SubcategorySelect/SubcategorySelect";
+import UnitSelect from "@/app/inventory/inbound/components/UnitSelect/UnitSelect";
+import LocationInput from "@/app/inventory/inbound/components/LocationInput/LocationInput";
+import WarehouseSelect from "@/app/inventory/inbound/components/WarehouseSelect/WarehouseSelect";
+import { ZoneSelect } from "@/app/inventory/inbound/components/ZoneSelect/ZoneSelect";
+import { AisleSelect } from "@/app/inventory/inbound/components/AisleSelect/AisleSelect";
+import { RackSelect } from "@/app/inventory/inbound/components/RackSelect/RackSelect";
+import { ShelfSelect } from "@/app/inventory/inbound/components/ShelfSelect/ShelfSelect";
+import StatusSelect from "@/app/inventory/inbound/components/StatusSelect/StatusSelect";
+import SupplierSelect from "@/app/inventory/inbound/components/SupplierSelect/SupplierSelect";
+import EntryDateInput from "@/app/inventory/inbound/components/EntryDateInput/EntryDateInput";
+import UnitPriceInput from "@/app/inventory/inbound/components/UnitPriceInput/UnitPriceInput";
+import DescriptionTextarea from "@/app/inventory/inbound/components/DescriptionTextarea/DescriptionTextarea";
+import PartNameInput from "@/app/inventory/inbound/components/PartNameInput/PartNameInput";
+import StockInput from "@/app/inventory/inbound/components/StockInput/StockInput";
+import { useInventoryInbound } from "@/app/inventory/inbound/context/InventoryInboundProvider";
+import InboundTypeSelect from "@/app/inventory/inbound/components/InboundTypeSelect/InboundTypeSelect";
+import PartCodeInput from "@/app/inventory/inbound/components/PartCodeInput/PartCodeInput";
+
+export default function InventoryInfoEditForm({ partData }) {
+  console.log(partData[0].inbound_type);
+  const part = partData[0];
+
   const router = useRouter();
+
   const {
     categories,
     setCategories,
@@ -46,52 +49,45 @@ export default function InventoryInboundForm() {
     register,
     handleSubmit,
     control,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      inboundType,
-      partCode: "",
-      partName: "",
-      stock: 0,
-      status: "",
-      category: "",
-      subcategory: "",
-      unit: "",
-      location: "",
-      warehouse: "",
-      zone: "",
-      aisle: "",
-      rack: "",
-      supplier: "",
-      entryDate: "",
-      unitPrice: 0,
-      description: "",
+      inboundType: part.inbound_type,
+      partCode: part.part_code,
+      partName: part.part_name,
+      stock: part.stock,
+      status: part.status,
+      category: part.category_id,
+      subcategory: part.subcategory_id,
+      unit: part.unit,
+      warehouse: part.warehouse_id,
+      zone: part.zone_id,
+      aisle: part.aisle_id,
+      rack: part.rack_id,
+      shelf: part.shelf_id,
+      supplier: part.supplier_id,
+      location: part.location,
+      entryDate: part.entry_date
+        ? new Date(part.entry_date).toLocaleDateString("fa-IR")
+        : "",
+      unitPrice: part.unit_price,
+      min_stock: part.min_stock,
+      description: part.description || "",
     },
   });
 
   const { data: subcategories, isLoading, error } = useSubcategories(control);
 
   const { zones, zonesLoading } = useWarehouseZones({ control });
-  const {
-    selectedZoneId,
-    data: aisles,
-    isLoading: aislesLoading,
-  } = useAislesByZone(control);
-
+  const { data: aisles, isLoading: aislesLoading } = useAislesByZone(control);
   const { racks, isLoading: racksLoading } = useRacksByAisle(control);
-
   const { shelves, isLoading: shelvesLoading } = useShelvesByRack(control);
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
-      const id = uuidv4();
-
-      const total_value = Number(data.stock) * Number(data.unitPrice);
-
-      const parts_inventory = {
-        id,
+      const updatedPart = {
+        inbound_type: partData.inboundType,
+        id: partData.id,
         part_code: data.partCode,
         part_name: data.partName,
         stock: Number(data.stock),
@@ -106,35 +102,23 @@ export default function InventoryInboundForm() {
         shelf_id: data.shelf,
         supplier_id: data.supplier,
         location: data.location,
-        inbound_type: data.inboundType,
-        entry_date: data.entryDate
-          ? new Date(data.entryDate).toISOString()
-          : new Date().toISOString(),
+        entry_date: new Date(data.entryDate).toLocaleDateString("fa-IR"),
         unit_price: Number(data.unitPrice),
-        total_value,
+        min_stock: Number(data.min_stock),
         description: data.description || "",
-        created_at: new Date().toISOString(),
+        total_value: Number(data.stock) * Number(data.unitPrice),
         updated_at: new Date().toISOString(),
-        batch_number: uuidv4(),
-        min_stock: data.min_stock,
       };
-
-      const result = await addPart(parts_inventory);
-      toast.success("محصول با موفقیت وارد انبار شد!");
-      reset();
-      router.replace("/inventory");
-    } catch (error) {
-      console.error("Error adding part:", error);
-    }
+    } catch (error) {}
   };
 
   return (
     <div className="p-6 max-w-2xl mx-auto" dir="rtl">
       <h1 className="text-2xl font-semibold text-foreground mb-6">
-        ثبت ورودی کالا
+        ویرایش اطلاعات کالا
       </h1>
+
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        {/* نوع ورودی */}
         <InboundTypeSelect
           control={control}
           errors={errors}
@@ -145,21 +129,18 @@ export default function InventoryInboundForm() {
           ]}
           rules={{ required: "نوع ورودی الزامی است" }}
         />
-
         {/* کد قطعه */}
         <PartCodeInput
           register={register}
           errors={errors}
           rules={{ required: "کد قطعه الزامی است" }}
         />
-
         {/* نام قطعه */}
         <PartNameInput
           register={register}
           errors={errors}
           rules={{ required: "نام قطعه الزامی است" }}
         />
-
         {/* تعداد */}
         <StockInput
           register={register}
@@ -169,7 +150,6 @@ export default function InventoryInboundForm() {
             min: { value: 1, message: "تعداد باید حداقل 1 باشد" },
           }}
         />
-
         {/* وضعیت */}
         <StatusSelect
           control={control}
@@ -182,7 +162,6 @@ export default function InventoryInboundForm() {
             { value: "pending", label: "در انتظار بررسی" },
           ]}
         />
-
         {/* دسته‌بندی */}
         <CategorySelect
           control={control}
@@ -225,6 +204,7 @@ export default function InventoryInboundForm() {
           zonesLoading={zonesLoading}
           rules={{ required: "انتخاب زون الزامی است" }}
         />
+
         {/* راهرو */}
         <AisleSelect
           control={control}
@@ -232,6 +212,7 @@ export default function InventoryInboundForm() {
           aislesLoading={aislesLoading}
           rules={{ required: "انتخاب راهرو الزامی است" }}
         />
+
         {/* رک ها */}
         <RackSelect
           control={control}
@@ -239,7 +220,6 @@ export default function InventoryInboundForm() {
           racksLoading={racksLoading}
           rules={{ required: "انتخاب رک الزامی است" }}
         />
-
 
         {/* طبقه*/}
         <ShelfSelect
@@ -264,7 +244,7 @@ export default function InventoryInboundForm() {
         <SupplierSelect
           control={control}
           errors={errors}
-          suppliers={suppliers}
+          suppliers={suppliers.suppliers}
           rules={{ required: "انتخاب تامین‌کننده الزامی است" }}
         />
 
@@ -307,21 +287,22 @@ export default function InventoryInboundForm() {
           }}
         />
 
-        {/* دکمه‌ها */}
+        <DescriptionTextarea control={control} />
         <div className="flex gap-4 mt-4">
           <Button
             type="submit"
             className="bg-primary text-primary-foreground px-6 py-3 rounded-lg"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "در حال ارسال..." : "ثبت"}
+            {isSubmitting ? "در حال ذخیره..." : "ذخیره تغییرات"}
           </Button>
 
           <Button
             type="button"
             className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg"
+            onClick={() => router.back()}
           >
-            لغو
+            بازگشت
           </Button>
         </div>
       </form>
