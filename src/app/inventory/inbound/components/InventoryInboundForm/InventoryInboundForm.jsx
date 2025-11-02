@@ -84,7 +84,6 @@ export default function InventoryInboundForm() {
   const { shelves, isLoading: shelvesLoading } = useShelvesByRack(control);
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const id = uuidv4();
 
@@ -239,7 +238,6 @@ export default function InventoryInboundForm() {
           racksLoading={racksLoading}
           rules={{ required: "انتخاب رک الزامی است" }}
         />
-
 
         {/* طبقه*/}
         <ShelfSelect

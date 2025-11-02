@@ -8,7 +8,7 @@ import { useWarehouseZones } from "@/hooks/useWarehouseZones/useWarehouseZones";
 import { useAislesByZone } from "@/hooks/useAislesByZone/useAislesByZone";
 import { useRacksByAisle } from "@/hooks/useRacksByAisle/useRacksByAisle";
 import { useShelvesByRack } from "@/hooks/useShelvesByRack/useShelvesByRack";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import CategorySelect from "@/app/inventory/inbound/components/CategorySelect/CategorySelect";
 import SubcategorySelect from "@/app/inventory/inbound/components/SubcategorySelect/SubcategorySelect";
 import UnitSelect from "@/app/inventory/inbound/components/UnitSelect/UnitSelect";
@@ -28,12 +28,19 @@ import StockInput from "@/app/inventory/inbound/components/StockInput/StockInput
 import { useInventoryInbound } from "@/app/inventory/inbound/context/InventoryInboundProvider";
 import InboundTypeSelect from "@/app/inventory/inbound/components/InboundTypeSelect/InboundTypeSelect";
 import PartCodeInput from "@/app/inventory/inbound/components/PartCodeInput/PartCodeInput";
+import editProductDetails from "../actions/editProductDetails";
+import { toast } from "react-toastify";
+import convertJalaaliToISO from "@/utils/convertJalaaliToISO";
+import convertJalaaliToTehran from "@/utils/convertJalaaliToTehran";
+import formatJalaaliDate from "@/utils/formatJalaaliDate";
 
 export default function InventoryInfoEditForm({ partData }) {
-  console.log(partData[0].inbound_type);
   const part = partData[0];
 
+  console.log(part);
+
   const router = useRouter();
+  const params = useParams();
 
   const {
     categories,
@@ -67,9 +74,8 @@ export default function InventoryInfoEditForm({ partData }) {
       shelf: part.shelf_id,
       supplier: part.supplier_id,
       location: part.location,
-      entryDate: part.entry_date
-        ? new Date(part.entry_date).toLocaleDateString("fa-IR")
-        : "",
+      entryDate: part.entry_date ? formatJalaaliDate(part.entry_date) : "",
+
       unitPrice: part.unit_price,
       min_stock: part.min_stock,
       description: part.description || "",
@@ -83,33 +89,77 @@ export default function InventoryInfoEditForm({ partData }) {
   const { racks, isLoading: racksLoading } = useRacksByAisle(control);
   const { shelves, isLoading: shelvesLoading } = useShelvesByRack(control);
 
+  // const onSubmit = async (data) => {
+  //   try {
+  //     const updatedPart = {
+  //       inbound_type: data.inboundType,
+  //       id: partData.id,
+  //       part_code: data.partCode,
+  //       part_name: data.partName,
+  //       stock: Number(data.stock),
+  //       status: data.status,
+  //       category_id: data.category,
+  //       subcategory_id: data.subcategory,
+  //       unit: data.unit,
+  //       warehouse_id: data.warehouse,
+  //       zone_id: data.zone,
+  //       aisle_id: data.aisle,
+  //       rack_id: data.rack,
+  //       shelf_id: data.shelf,
+  //       supplier_id: data.supplier,
+  //       location: data.location,
+  //       entry_date: convertJalaaliToTehran(String(data.entryDate)),
+  //       unit_price: Number(data.unitPrice),
+  //       min_stock: Number(data.min_stock),
+  //       description: data.description || "",
+  //       total_value: Number(data.stock) * Number(data.unitPrice),
+  //       updated_at: new Date().toISOString(),
+  //     };
+
+  //     const result = await editProductDetails({
+  //       updatedPart,
+  //       id: params.id,
+  //     });
+
+  //     if (!result.success) {
+  //       toast.error(result.message);
+  //     } else {
+  //       toast.success(result.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("خطای غیرمنتظره:", error);
+  //     toast.error(error.message);
+  //   }
+  // };
+
   const onSubmit = async (data) => {
-    try {
-      const updatedPart = {
-        inbound_type: partData.inboundType,
-        id: partData.id,
-        part_code: data.partCode,
-        part_name: data.partName,
-        stock: Number(data.stock),
-        status: data.status,
-        category_id: data.category,
-        subcategory_id: data.subcategory,
-        unit: data.unit,
-        warehouse_id: data.warehouse,
-        zone_id: data.zone,
-        aisle_id: data.aisle,
-        rack_id: data.rack,
-        shelf_id: data.shelf,
-        supplier_id: data.supplier,
-        location: data.location,
-        entry_date: new Date(data.entryDate).toLocaleDateString("fa-IR"),
-        unit_price: Number(data.unitPrice),
-        min_stock: Number(data.min_stock),
-        description: data.description || "",
-        total_value: Number(data.stock) * Number(data.unitPrice),
-        updated_at: new Date().toISOString(),
-      };
-    } catch (error) {}
+    console.log(data);
+
+    const updatedPart = {
+      inbound_type: data.inboundType,
+      id: partData.id,
+      part_code: data.partCode,
+      part_name: data.partName,
+      stock: Number(data.stock),
+      status: data.status,
+      category_id: data.category,
+      subcategory_id: data.subcategory,
+      unit: data.unit,
+      warehouse_id: data.warehouse,
+      zone_id: data.zone,
+      aisle_id: data.aisle,
+      rack_id: data.rack,
+      shelf_id: data.shelf,
+      supplier_id: data.supplier,
+      location: data.location,
+      entry_date: convertJalaaliToISO(data.entryDate),
+      unit_price: Number(data.unitPrice),
+      min_stock: Number(data.min_stock),
+      description: data.description || "",
+      total_value: Number(data.stock) * Number(data.unitPrice),
+      updated_at: new Date().toISOString(),
+    };
+    console.log(updatedPart);
   };
 
   return (
@@ -287,7 +337,6 @@ export default function InventoryInfoEditForm({ partData }) {
           }}
         />
 
-        <DescriptionTextarea control={control} />
         <div className="flex gap-4 mt-4">
           <Button
             type="submit"

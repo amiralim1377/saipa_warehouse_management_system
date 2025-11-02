@@ -13,7 +13,13 @@ export const getTargetProducts = async (partId) => {
       },
     });
 
-    const data = JSON.parse(JSON.stringify(products));
+    // const data = JSON.parse(JSON.stringify(products));
+
+    const data = products.map((p) => ({
+      ...p,
+      unit_price: Number(p.unit_price),
+      total_value: Number(p.total_value),
+    }));
 
     return data;
   } catch (error) {
