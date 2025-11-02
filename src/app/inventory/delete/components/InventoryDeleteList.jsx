@@ -1,9 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import DeleteItemButton from "@/components/Form/DeleteItemButton/DeleteItemButton";
+import deleteProducts from "../actions/deleteProducts";
+import { useRouter } from "next/navigation";
 
-function InventoryDetailsList({ data }) {
+function InventoryDeleteList({ data }) {
+  const router = useRouter();
+
   if (!data || data.length === 0) {
     return (
       <div className="text-center text-muted-foreground py-6">
@@ -51,15 +54,14 @@ function InventoryDetailsList({ data }) {
                 {new Date(product.created_at).toLocaleDateString("fa-IR")}
               </td>
               <td className="px-4 py-2 border-b border-border text-center">
-                <Link href={`/inventory/info/${product.id}`}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-primary text-primary hover:bg-primary hover:text-white rounded-md"
-                  >
-                    مشاهده جزئیات
-                  </Button>
-                </Link>
+                <DeleteItemButton
+                  itemId={product.id}
+                  itemType="محصول"
+                  deleteFunction={deleteProducts}
+                  onDeleted={() => {
+                    router.push("/inventory");
+                  }}
+                />{" "}
               </td>
             </tr>
           ))}
@@ -69,4 +71,4 @@ function InventoryDetailsList({ data }) {
   );
 }
 
-export default InventoryDetailsList;
+export default InventoryDeleteList;

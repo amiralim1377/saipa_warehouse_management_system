@@ -37,8 +37,6 @@ import formatJalaaliDate from "@/utils/formatJalaaliDate";
 export default function InventoryInfoEditForm({ partData }) {
   const part = partData[0];
 
-  console.log(part);
-
   const router = useRouter();
   const params = useParams();
 

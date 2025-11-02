@@ -20,7 +20,7 @@ export async function fetchProducts() {
     return {
       success: false,
       data: [],
-      message: "خطا در دریافت اطلاعات موجودی انبار.",
+      message: "خطا در دریافت اطلاعات موجودی .",
     };
   }
 }
