@@ -2,14 +2,22 @@
 
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { useInventoryDynamicOutbound } from "../../context/InventoryDynamicOutboundProvider";
+import SelectField from "@/components/Form/SelectField/SelectField";
+import { toast } from "react-toastify";
+import { registerOutbound } from "../../actions/registerOutbound";
+import { useRouter } from "next/navigation";
 
 function OutboundForm({ product }) {
+  const { customersData } = useInventoryDynamicOutbound();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
     reset,
+    control,
   } = useForm({
     defaultValues: {
       quantity: 1,
@@ -23,8 +31,21 @@ function OutboundForm({ product }) {
 
   const onSubmit = async (data) => {
     if (data.quantity > stock) {
-      alert(`⚠️ تعداد خروجی نمی‌تواند بیشتر از موجودی (${stock}) باشد!`);
+      toast.error(`⚠️ تعداد خروجی نمی‌تواند بیشتر از موجودی (${stock}) باشد!`);
       return;
+    }
+
+    const result = await registerOutbound({
+      ...data,
+      customer: data.customer,
+    });
+
+    if (result.success) {
+      toast.success(result.message);
+      reset();
+      router.push("/inventory");
+    } else {
+      toast.error(result.message);
     }
   };
 
@@ -139,6 +160,24 @@ function OutboundForm({ product }) {
           <p className="text-destructive text-sm mt-1">این فیلد الزامی است</p>
         )}
       </div>
+
+      {/* انتخاب مشتری */}
+      <SelectField
+        name="customer"
+        label="انتخاب مشتری"
+        control={control}
+        options={
+          customersData?.map((c) => ({
+            value: c.id,
+            label: c.company_name
+              ? c.company_name
+              : `${c.first_name ?? ""} ${c.last_name ?? ""}`.trim(),
+          })) || []
+        }
+        rules={{ required: "انتخاب مشتری الزامی است" }}
+        errors={errors}
+        placeholder="انتخاب کنید"
+      />
 
       {/* شماره سفارش */}
       <div>

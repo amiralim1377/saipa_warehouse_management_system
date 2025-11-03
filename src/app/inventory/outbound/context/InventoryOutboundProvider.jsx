@@ -7,13 +7,22 @@ export function InventoryOutboundProvider({
   children,
   warehouses: initialWarehouses,
   categories: initialCategories,
+  customersData: initialcustomersData,
 }) {
   const [warehouses, setWarehouses] = useState(initialWarehouses);
   const [categories, setCategories] = useState(initialCategories);
+  const [customersData, setCustomersData] = useState(initialcustomersData);
 
   return (
     <InventoryOutboundContext.Provider
-      value={{ warehouses, setWarehouses, categories, setCategories }}
+      value={{
+        warehouses,
+        setWarehouses,
+        categories,
+        setCategories,
+        customersData,
+        setCustomersData,
+      }}
     >
       {children}
     </InventoryOutboundContext.Provider>

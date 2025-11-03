@@ -28,11 +28,10 @@ import StockInput from "@/app/inventory/inbound/components/StockInput/StockInput
 import { useInventoryInbound } from "@/app/inventory/inbound/context/InventoryInboundProvider";
 import InboundTypeSelect from "@/app/inventory/inbound/components/InboundTypeSelect/InboundTypeSelect";
 import PartCodeInput from "@/app/inventory/inbound/components/PartCodeInput/PartCodeInput";
-import editProductDetails from "../actions/editProductDetails";
 import { toast } from "react-toastify";
-import convertJalaaliToISO from "@/utils/convertJalaaliToISO";
-import convertJalaaliToTehran from "@/utils/convertJalaaliToTehran";
 import formatJalaaliDate from "@/utils/formatJalaaliDate";
+import convertJalaaliToTehran from "@/utils/convertJalaaliToTehran";
+import editProductDetails from "../actions/editProductDetails";
 
 export default function InventoryInfoEditForm({ partData }) {
   const part = partData[0];
@@ -73,7 +72,6 @@ export default function InventoryInfoEditForm({ partData }) {
       supplier: part.supplier_id,
       location: part.location,
       entryDate: part.entry_date ? formatJalaaliDate(part.entry_date) : "",
-
       unitPrice: part.unit_price,
       min_stock: part.min_stock,
       description: part.description || "",
@@ -87,77 +85,48 @@ export default function InventoryInfoEditForm({ partData }) {
   const { racks, isLoading: racksLoading } = useRacksByAisle(control);
   const { shelves, isLoading: shelvesLoading } = useShelvesByRack(control);
 
-  // const onSubmit = async (data) => {
-  //   try {
-  //     const updatedPart = {
-  //       inbound_type: data.inboundType,
-  //       id: partData.id,
-  //       part_code: data.partCode,
-  //       part_name: data.partName,
-  //       stock: Number(data.stock),
-  //       status: data.status,
-  //       category_id: data.category,
-  //       subcategory_id: data.subcategory,
-  //       unit: data.unit,
-  //       warehouse_id: data.warehouse,
-  //       zone_id: data.zone,
-  //       aisle_id: data.aisle,
-  //       rack_id: data.rack,
-  //       shelf_id: data.shelf,
-  //       supplier_id: data.supplier,
-  //       location: data.location,
-  //       entry_date: convertJalaaliToTehran(String(data.entryDate)),
-  //       unit_price: Number(data.unitPrice),
-  //       min_stock: Number(data.min_stock),
-  //       description: data.description || "",
-  //       total_value: Number(data.stock) * Number(data.unitPrice),
-  //       updated_at: new Date().toISOString(),
-  //     };
-
-  //     const result = await editProductDetails({
-  //       updatedPart,
-  //       id: params.id,
-  //     });
-
-  //     if (!result.success) {
-  //       toast.error(result.message);
-  //     } else {
-  //       toast.success(result.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("خطای غیرمنتظره:", error);
-  //     toast.error(error.message);
-  //   }
-  // };
-
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      const updatedPart = {
+        inbound_type: data.inboundType,
+        id: partData.id,
+        part_code: data.partCode,
+        part_name: data.partName,
+        stock: Number(data.stock),
+        status: data.status,
+        category_id: data.category,
+        subcategory_id: data.subcategory,
+        unit: data.unit,
+        warehouse_id: data.warehouse,
+        zone_id: data.zone,
+        aisle_id: data.aisle,
+        rack_id: data.rack,
+        shelf_id: data.shelf,
+        supplier_id: data.supplier,
+        location: data.location,
+        entry_date: convertJalaaliToTehran(String(data.entryDate)),
+        unit_price: Number(data.unitPrice),
+        min_stock: Number(data.min_stock),
+        description: data.description || "",
+        total_value: Number(data.stock) * Number(data.unitPrice),
+        updated_at: new Date().toISOString(),
+      };
 
-    const updatedPart = {
-      inbound_type: data.inboundType,
-      id: partData.id,
-      part_code: data.partCode,
-      part_name: data.partName,
-      stock: Number(data.stock),
-      status: data.status,
-      category_id: data.category,
-      subcategory_id: data.subcategory,
-      unit: data.unit,
-      warehouse_id: data.warehouse,
-      zone_id: data.zone,
-      aisle_id: data.aisle,
-      rack_id: data.rack,
-      shelf_id: data.shelf,
-      supplier_id: data.supplier,
-      location: data.location,
-      entry_date: convertJalaaliToISO(data.entryDate),
-      unit_price: Number(data.unitPrice),
-      min_stock: Number(data.min_stock),
-      description: data.description || "",
-      total_value: Number(data.stock) * Number(data.unitPrice),
-      updated_at: new Date().toISOString(),
-    };
-    console.log(updatedPart);
+      const result = await editProductDetails({
+        updatedPart,
+        id: params.id,
+      });
+
+      if (!result.success) {
+        toast.error(result.message);
+      } else {
+        toast.success(result.message);
+        router.replace("/inventory");
+      }
+    } catch (error) {
+      console.error("خطای غیرمنتظره:", error);
+      toast.error(error.message);
+    }
   };
 
   return (
