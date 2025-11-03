@@ -20,7 +20,7 @@ function DetailRow({ label, value, className }) {
 export default function CustomerDetailsCard({ customer }) {
   if (!customer) return null;
 
-  const isLegal = customer.customer_type === "حقوقی";
+  const isLegal = customer.customer_type === "company";
 
   return (
     <div className="mt-6 rounded-lg border bg-card shadow-md">

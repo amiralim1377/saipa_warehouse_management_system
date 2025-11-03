@@ -1,15 +1,17 @@
 "use client";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import TextInputField from "@/components/Form/TextInputField/TextInputField";
 import SelectField from "@/components/Form/SelectField/SelectField";
-import { useInventoryOutbound } from "../../context/InventoryOutboundProvider";
+import TextInputField from "@/components/Form/TextInputField/TextInputField";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { useWarehouseTrack } from "../context/WarehouseTrackProvider";
 import { useWarehouseStructure } from "@/hooks/useWarehouseStructure/useWarehouseStructure";
 import { useSubcategories } from "@/hooks/useSubcategories/useSubcategories";
-import { useRouter } from "next/navigation";
 
-function InventoryOutboundSearch() {
+function WarehousesTrackForm() {
   const router = useRouter();
+  const { warehouses, categories } = useWarehouseTrack();
+
   const {
     control,
     handleSubmit,
@@ -17,8 +19,6 @@ function InventoryOutboundSearch() {
     register,
     watch,
   } = useForm();
-
-  const { warehouses, categories } = useInventoryOutbound();
 
   const {
     zones,
@@ -37,14 +37,13 @@ function InventoryOutboundSearch() {
   const onSubmit = (data) => {
     const params = new URLSearchParams();
 
-    // همه فیلدهایی که مقدار دارند رو اضافه می‌کنیم، حتی "all"
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
         params.append(key, String(value));
       }
     });
 
-    const url = `/inventory/outbound?${params.toString()}`;
+    const url = `/warehouses/track?${params.toString()}`;
 
     router.push(url);
   };
@@ -55,10 +54,6 @@ function InventoryOutboundSearch() {
       className="space-y-4 mx-auto p-6"
       dir="rtl"
     >
-      <h1 className="text-2xl font-semibold text-foreground mb-6">
-        جستجوی قطعه
-      </h1>
-
       {/* فیلد جستجو */}
       <TextInputField
         id="query"
@@ -210,7 +205,7 @@ function InventoryOutboundSearch() {
         />
       </div>
 
-      {/* دسته‌بندی و */}
+      {/* دسته بندی */}
       <SelectField
         name="category"
         label="دسته‌بندی قطعه"
@@ -273,4 +268,4 @@ function InventoryOutboundSearch() {
   );
 }
 
-export default InventoryOutboundSearch;
+export default WarehousesTrackForm;

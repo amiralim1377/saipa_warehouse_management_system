@@ -23,7 +23,7 @@ function WarehousesActions() {
       </Link>
 
       <Link href="/warehouses/track">
-        <Button className="bg-muted text-muted-foreground px-4 sm:px-6 py-2 sm:py-3 rounded-lg w-full sm:w-auto text-center flex-1 sm:flex-auto min-w-[150px]">
+        <Button className="bg-muted text-muted-foreground hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg w-full sm:w-auto text-center flex-1 sm:flex-auto min-w-[150px]">
           رهگیری کالا
         </Button>
       </Link>

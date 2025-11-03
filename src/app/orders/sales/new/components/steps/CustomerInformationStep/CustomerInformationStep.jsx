@@ -30,10 +30,12 @@ export default function CustomerInformationStep() {
     return <NoCustomers />;
   }
 
+  console.log(customers);
+
   const customerOptions = customers.map((c) => ({
     value: c.id,
     label:
-      c.customer_type === "حقوقی"
+      c.customer_type === "company"
         ? c.company_name
         : `${c.first_name || ""} ${c.last_name || ""}`.trim(),
   }));

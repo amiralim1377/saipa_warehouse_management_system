@@ -53,7 +53,6 @@ export const editProductDetails = async ({ updatedPart, id }) => {
     return {
       success: true,
       message: "محصول با موفقیت به‌روزرسانی شد.",
-      data: updatedProduct,
     };
   } catch (error) {
     console.error("❌ خطا در به‌روزرسانی محصول:", error);

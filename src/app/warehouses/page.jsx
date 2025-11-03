@@ -6,8 +6,6 @@ import getWarehouseStats from "./services/getWarehouseStats";
 async function WarehousesPage() {
   const warehouseStats = await getWarehouseStats();
 
-  console.log(warehouseStats);
-
   return (
     <div>
       <WarehousesStats warehouseStats={warehouseStats} />
