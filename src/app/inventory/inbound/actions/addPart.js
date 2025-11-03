@@ -22,13 +22,19 @@ import prisma from "@/lib/prismaClient";
 
 export const addPart = async (partData) => {
   try {
-    const data = await prisma.parts_inventory.create({
+    await prisma.parts_inventory.create({
       data: partData,
     });
 
-    return data;
+    return {
+      success: true,
+      message: "محصول با موفقیت وارد انبار شد!",
+    };
   } catch (err) {
     console.error("Failed to add part:", err);
-    throw err;
+    return {
+      success: false,
+      message: err.message || "خطای ناشناخته در ثبت محصول",
+    };
   }
 };

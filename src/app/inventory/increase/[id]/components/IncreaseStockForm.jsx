@@ -34,7 +34,7 @@ export default function IncreaseStockForm({ targetProducts }) {
       const response = await updateStockQuantity(product.id, increase);
 
       if (response.success) {
-        toast.success("موجودی با موفقیت بروزرسانی شد ✅");
+        toast.success(response.message || "موجودی با موفقیت بروزرسانی شد");
         router.replace("/inventory");
       } else {
         toast.error(response.message || "خطایی در بروزرسانی موجودی رخ داد.");

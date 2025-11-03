@@ -85,15 +85,14 @@ export default function InventoryInboundForm() {
 
   const onSubmit = async (data) => {
     try {
-      const id = uuidv4();
-
-      const total_value = Number(data.stock) * Number(data.unitPrice);
+      const total_value =
+        (Number(data.stock) || 0) * (Number(data.unitPrice) || 0);
 
       const parts_inventory = {
-        id,
+        id: uuidv4(),
         part_code: data.partCode,
         part_name: data.partName,
-        stock: Number(data.stock),
+        stock: Number(data.stock) || 0,
         status: data.status,
         category_id: data.category,
         subcategory_id: data.subcategory,
@@ -106,24 +105,28 @@ export default function InventoryInboundForm() {
         supplier_id: data.supplier,
         location: data.location,
         inbound_type: data.inboundType,
-        entry_date: data.entryDate
-          ? new Date(data.entryDate).toISOString()
-          : new Date().toISOString(),
-        unit_price: Number(data.unitPrice),
-        total_value,
+        entry_date: data.entryDate ? new Date(data.entryDate) : new Date(),
+        unit_price: Number(data.unitPrice) || 0,
+        total_value: Number(total_value) || 0,
         description: data.description || "",
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
+        created_at: new Date(),
+        updated_at: new Date(),
         batch_number: uuidv4(),
-        min_stock: data.min_stock,
+        min_stock: Number(data.min_stock) || 0,
       };
 
       const result = await addPart(parts_inventory);
-      toast.success("محصول با موفقیت وارد انبار شد!");
-      reset();
-      router.replace("/inventory");
+
+      if (result.success) {
+        toast.success(result.message || "محصول با موفقیت وارد انبار شد!");
+        reset();
+        router.replace("/inventory");
+      } else {
+        toast.error(result.message || "خطا در ثبت محصول");
+      }
     } catch (error) {
       console.error("Error adding part:", error);
+      toast.error("خطا در ثبت محصول");
     }
   };
 

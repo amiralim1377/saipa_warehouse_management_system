@@ -1,35 +1,33 @@
 "use server";
 
 import prisma from "@/lib/prismaClient";
+import { Prisma } from "@prisma/client";
 
 export const updateStockQuantity = async (partId, increaseAmount) => {
   try {
-    // بررسی وجود کالا
     const part = await prisma.parts_inventory.findUnique({
       where: { id: partId },
       select: { stock: true },
     });
 
-    if (!part) {
-      throw new Error("❌ محصول مورد نظر پیدا نشد.");
-    }
+    if (!part) throw new Error("❌ محصول مورد نظر پیدا نشد.");
 
-    // محاسبه موجودی جدید
-    const newStock = (part.stock || 0) + Number(increaseAmount);
+    const currentStock =
+      part.stock instanceof Prisma.Decimal ? part.stock.toNumber() : part.stock;
 
-    // به‌روزرسانی در پایگاه داده
-    const updatedPart = await prisma.parts_inventory.update({
+    const qty = Number(increaseAmount);
+    if (isNaN(qty)) throw new Error("مقدار افزایش باید عدد باشد");
+
+    const newStock = (currentStock || 0) + qty;
+
+    await prisma.parts_inventory.update({
       where: { id: partId },
-      data: {
-        stock: newStock,
-        updated_at: new Date(),
-      },
+      data: { stock: newStock, updated_at: new Date() },
     });
 
     return {
       success: true,
       message: "موجودی کالا با موفقیت بروزرسانی شد.",
-      data: updatedPart,
     };
   } catch (error) {
     console.error("❌ خطا در بروزرسانی موجودی:", error);
