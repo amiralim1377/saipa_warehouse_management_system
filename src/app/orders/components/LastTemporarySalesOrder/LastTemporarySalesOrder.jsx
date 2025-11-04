@@ -294,7 +294,7 @@ function LastTemporarySalesOrder({ orders = [] }) {
                       itemId={order.id}
                       itemType="سفارش"
                       approveFunction={approveSalesOrder}
-                      onApproved={() => console.log("Approved!")}
+                      onApproved={() => {}}
                     />
                   </TableRowActions>
                 </div>

@@ -6,6 +6,8 @@ import ProductCategoryFilter from "@/components/ProductCategoryFilter/ProductCat
 import ProductsStats from "./components/ProductsStats/ProductsStats";
 import getProductsStats from "@/services/getProductsStats";
 
+export const dynamic = "force-dynamic";
+
 async function Productspage({ searchParams }) {
   const params = await searchParams;
   const page = Number(params?.page) || 1;

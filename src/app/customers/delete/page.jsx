@@ -2,6 +2,8 @@ import DeleteCustomerListView from "./components/DeleteCustomerListView/DeleteCu
 import NoCustomers from "./components/NoCustomers/NoCustomers";
 import { getCustomers } from "./services/getCustomer";
 
+export const dynamic = "force-dynamic";
+
 async function DeleteCustomersPage() {
   const customers = await getCustomers();
 

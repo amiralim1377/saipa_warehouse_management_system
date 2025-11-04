@@ -7,6 +7,8 @@ import RecentSuppliers from "./components/RecentSuppliers/RecentSuppliers";
 import newestSuppliers from "./services/newestSuppliers";
 import fetchLatestPartsBySupplier from "./services/fetchLatestPartsBySupplier";
 
+export const dynamic = "force-dynamic";
+
 async function SuppliersPage() {
   const SuppliersStatsData = await getSuppliersStats();
   const {

@@ -4,6 +4,8 @@ import WarehouseStructureTable from "./components/WarehouseStructureTable/Wareho
 import getWarehouseStats from "./services/getWarehouseStats";
 import { getWarehouseStructureSummary } from "./services/getWarehouseStructureSummary";
 
+export const dynamic = "force-dynamic";
+
 async function WarehousesPage() {
   const warehouseStats = await getWarehouseStats();
   const { data, success } = await getWarehouseStructureSummary();

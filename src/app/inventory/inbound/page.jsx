@@ -5,6 +5,8 @@ import { QueryClientProviderWrapper } from "@/providers/QueryClientProviderWrapp
 import { getWarehouse } from "./services/getWarehouse";
 import { getSuppliers } from "./services/getsuppliers";
 
+export const dynamic = "force-dynamic";
+
 export default async function InventoryInboundPage() {
   const categories = await getCategories();
   const warehouse = await getWarehouse();

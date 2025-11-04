@@ -2,6 +2,8 @@ import NoSuppliers from "../details/components/SuppliersList/NoSuppliers/NoSuppl
 import SuppliersCustomerListView from "./components/SuppliersCustomerListView/SuppliersCustomerListView";
 import { getSuppliers } from "./services/getSuppliers";
 
+export const dynamic = "force-dynamic";
+
 async function DeleteSuppliersPage() {
   const { suppliers, message } = await getSuppliers();
 

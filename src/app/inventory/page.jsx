@@ -5,6 +5,8 @@ import NoProducts from "../products/components/NoProducts";
 import InventoryAlertsTable from "@/components/InventoryAlertsTable/InventoryAlertsTable";
 import getInventoryStats from "./services/getInventoryStats";
 
+export const dynamic = "force-dynamic";
+
 export default async function InventoryPage() {
   const {
     data: statsData = [],

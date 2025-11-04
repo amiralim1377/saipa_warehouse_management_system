@@ -3,6 +3,12 @@ import OrdersTable from "@/app/orders/components/OrdersTable/OrdersTable";
 import OrdersStats from "./components/OrdersStats/OrdersStats";
 import { getConfirmedOrdersStats } from "./services/getConfirmedOrdersStats";
 import { getDraftOrdersStats } from "./services/getDraftOrdersStats";
+import { getSalesOrdersDraft } from "./services/getSalesOrdersDraft";
+import { getPurchaseOrdersDraft } from "./services/getPurchaseOrdersDraft";
+import { getSalesOrders } from "./services/getSalesOrders";
+import { getPurchaseOrders } from "./services/getPurchaseOrder";
+
+export const dynamic = "force-dynamic";
 
 async function OrdersPage() {
   const {
@@ -16,6 +22,30 @@ async function OrdersPage() {
     success: draftSuccess,
     data: draftOrdersStats,
   } = await getDraftOrdersStats();
+
+  const {
+    data: myTemporarySalesOrders,
+    message: salesMessage,
+    status: salesStatus,
+  } = await getSalesOrdersDraft();
+
+  const {
+    data: myTemporaryPurchaseOrders,
+    message: purchaseMessage,
+    status: purchaseStatus,
+  } = await getPurchaseOrdersDraft();
+
+  const {
+    data: myConfirmedSalesOrders,
+    message: confirmedSalesMessage,
+    status: confirmedSalesStatus,
+  } = await getSalesOrders();
+
+  const {
+    data: myConfirmedPurchaseOrders,
+    message: confirmedPurchaseMessage,
+    status: confirmedPurchaseStatus,
+  } = await getPurchaseOrders();
 
   return (
     <div className="p-6">
@@ -36,7 +66,12 @@ async function OrdersPage() {
         <h2 className="text-lg font-semibold text-foreground mb-3">
           آخرین سفارش‌ها
         </h2>
-        <OrdersTable />
+        <OrdersTable
+          confirmedSalesOrders={myConfirmedSalesOrders}
+          confirmedPurchaseOrders={myConfirmedPurchaseOrders}
+          temporarySalesOrders={myTemporarySalesOrders}
+          temporaryPurchaseOrders={myTemporaryPurchaseOrders}
+        />
       </div>
     </div>
   );

@@ -6,6 +6,8 @@ import getDashboardSummaryStats from "./services/getDashboardSummaryStats";
 import InventoryAlertsTable from "@/components/InventoryAlertsTable/InventoryAlertsTable";
 import NoProducts from "../products/components/NoProducts";
 
+export const dynamic = "force-dynamic";
+
 async function DashboradPage() {
   const DashboardStats = await getDashboardSummaryStats();
   const {

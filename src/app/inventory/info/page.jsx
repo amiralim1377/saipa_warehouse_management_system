@@ -1,6 +1,8 @@
 import fetchProducts from "../services/fetchProducts";
 import InventoryDetailsList from "./components/InventoryDetailsList";
 
+export const dynamic = "force-dynamic";
+
 async function InventoryDetailsPage() {
   const { success, data, message } = await fetchProducts();
 

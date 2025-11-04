@@ -4,6 +4,8 @@ import CustomersTable from "./components/CustomersTable/CustomersTable";
 import CustomersStats from "./components/CustomersStats/CustomersStats";
 import CustomersActions from "./components/CustomersActions/CustomersActions";
 
+export const dynamic = "force-dynamic";
+
 async function CustomersPage() {
   const CustomersData = await getCustomerStats();
   const customers = await getCustomers();

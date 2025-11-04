@@ -2,6 +2,8 @@ import EmptyWarehouseState from "./components/EmptyWarehouseState/EmptyWarehouse
 import WarehouseListView from "./components/WarehouseListView/WarehouseListView";
 import getWarehouses from "./services/getWarehouses";
 
+export const dynamic = "force-dynamic";
+
 async function WarehousesTable() {
   const warehouses = await getWarehouses();
   return (

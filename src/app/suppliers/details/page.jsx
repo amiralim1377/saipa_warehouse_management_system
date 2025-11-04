@@ -2,6 +2,8 @@ import { getSuppliers } from "../services/getSuppliers";
 import NoSuppliers from "./components/SuppliersList/NoSuppliers/NoSuppliers";
 import SuppliersList from "./components/SuppliersList/SuppliersList";
 
+export const dynamic = "force-dynamic";
+
 export default async function SuppliersDetailsPage() {
   const { status, message, suppliers: suppliersData } = await getSuppliers();
 
