@@ -1,9 +1,9 @@
 import InventoryAction from "@/components/InventoryAction/InventoryAction";
 import InventoryStats from "./components/InventoryStats/InventoryStats";
-import { getInventoryStats } from "./services/getInventoryStats";
 import { getLowStockAlerts } from "./services/getLowStockAlerts";
 import NoProducts from "../products/components/NoProducts";
 import InventoryAlertsTable from "@/components/InventoryAlertsTable/InventoryAlertsTable";
+import getInventoryStats from "./services/getInventoryStats";
 
 export default async function InventoryPage() {
   const {
