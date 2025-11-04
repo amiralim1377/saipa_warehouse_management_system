@@ -41,10 +41,10 @@ export default function SidebarNav() {
           pathname === item.href || pathname.startsWith(`${item.href}/`);
 
         return (
-          <li key={i} className="w-full">
+          <li key={i} className="w-full mb-2">
             <Link
               href={item.href}
-              className={`flex items-center gap-2 text-sm md:justify-start px-4 py-2 rounded transition-colors
+              className={`flex items-center gap-4 text-sm md:justify-start px-4 py-3 rounded transition-colors
                 ${
                   isActive
                     ? "bg-orange-100 text-primary dark:bg-primary dark:text-secondary font-medium"
