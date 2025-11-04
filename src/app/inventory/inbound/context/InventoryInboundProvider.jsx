@@ -5,7 +5,7 @@ const InventoryInboundContext = createContext();
 
 export function InventoryInboundProvider({
   children,
-  initialCategories = [],
+  categories: initialCategories = [],
   warehouse: initialWarehouse = [],
   suppliers: initialSuppliers = [],
 }) {

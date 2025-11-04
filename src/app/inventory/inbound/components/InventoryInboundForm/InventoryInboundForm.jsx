@@ -189,7 +189,7 @@ export default function InventoryInboundForm() {
         <CategorySelect
           control={control}
           errors={errors}
-          categories={categories.data}
+          categories={categories}
           rules={{ required: "دسته‌بندی الزامی است" }}
           placeholder="لطفاً یک دسته‌بندی انتخاب کنید"
         />
