@@ -1,34 +1,62 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  Package,
+  Boxes,
+  ShoppingCart,
+  Warehouse,
+  Truck,
+  Users2,
+  BarChart3,
+  Bell,
+  UserCog,
+  Settings,
+} from "lucide-react";
 
 const navLink = [
-  { label: "داشبورد", href: "/dashboard" },
-  { label: "کالاها و دسته‌بندی‌ها", href: "/products" },
-  { label: "مدیریت موجودی", href: "/inventory" },
-  { label: "سفارشات", href: "/orders" },
-  { label: "انبارها و مکان‌ها", href: "/warehouses" },
-  { label: "تأمین‌کنندگان", href: "/suppliers" },
-  { label: "مشتریان", href: "/customers" },
-  { label: "گزارش‌ها و تحلیل‌ها", href: "/reports" },
-  { label: "اعلان‌ها و هشدارها", href: "/notifications" },
-  { label: "کاربران و نقش‌ها", href: "/users" },
-  { label: "تنظیمات سیستم", href: "/settings" },
+  { label: "داشبورد", href: "/dashboard", icon: LayoutDashboard },
+  { label: "کالاها و دسته‌بندی‌ها", href: "/products", icon: Package },
+  { label: "مدیریت موجودی", href: "/inventory", icon: Boxes },
+  { label: "سفارشات", href: "/orders", icon: ShoppingCart },
+  { label: "انبارها و مکان‌ها", href: "/warehouses", icon: Warehouse },
+  { label: "تأمین‌کنندگان", href: "/suppliers", icon: Truck },
+  { label: "مشتریان", href: "/customers", icon: Users2 },
+  { label: "گزارش‌ها و تحلیل‌ها", href: "/reports", icon: BarChart3 },
+  { label: "اعلان‌ها و هشدارها", href: "/notifications", icon: Bell },
+  { label: "کاربران و نقش‌ها", href: "/users", icon: UserCog },
+  { label: "تنظیمات سیستم", href: "/settings", icon: Settings },
 ];
 
-function SidebarNav() {
+export default function SidebarNav() {
+  const pathname = usePathname();
+
   return (
-    <ul className=" w-[220px]  mt-4">
-      {navLink.map((item, i) => (
-        <li key={i} className="w-full">
-          <Link
-            href={item.href}
-            className="flex justify-center text-sm md:justify-start px-4 py-2  text-foreground hover:bg-orange-100 dark:hover:text-secondary hover:text-primary dark:hover:bg-primary rounded transition-colors"
-          >
-            {item.label}
-          </Link>
-        </li>
-      ))}
+    <ul className="w-[220px] mt-4">
+      {navLink.map((item, i) => {
+        const Icon = item.icon;
+        const isActive =
+          pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+        return (
+          <li key={i} className="w-full">
+            <Link
+              href={item.href}
+              className={`flex items-center gap-2 text-sm md:justify-start px-4 py-2 rounded transition-colors
+                ${
+                  isActive
+                    ? "bg-orange-100 text-primary dark:bg-primary dark:text-secondary font-medium"
+                    : "text-foreground hover:bg-orange-50 dark:hover:bg-primary/5 hover:text-primary"
+                }`}
+            >
+              <Icon size={18} className="shrink-0" />
+              <span>{item.label}</span>
+            </Link>
+          </li>
+        );
+      })}
     </ul>
   );
 }
-
-export default SidebarNav;
