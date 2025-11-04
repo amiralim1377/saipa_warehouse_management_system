@@ -6,8 +6,6 @@ import { WarehouseProvider } from "./context/WarehouseContext";
 async function EditDynamicWarehousesPage({ params }) {
   const { id } = await params;
 
-  console.log(id);
-
   const {
     warehouse: targetWarehouse,
     status,

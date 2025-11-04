@@ -53,9 +53,6 @@ async function WarehousesTrackPage({ searchParams }) {
     success,
   } = await getSearchProducts(searchFilters, warehouses);
 
-  console.log(searchResults);
-  console.log(message);
-  console.log(success);
   return (
     <>
       <QueryClientProviderWrapper>

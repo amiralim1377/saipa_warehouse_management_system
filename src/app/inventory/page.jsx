@@ -7,12 +7,12 @@ import getInventoryStats from "./services/getInventoryStats";
 
 export default async function InventoryPage() {
   const {
-    data: statsData,
+    data: statsData = [],
     message: statsMessage,
     success: statsSuccess,
   } = await getInventoryStats();
   const {
-    data: lowStockAlerts,
+    data: lowStockAlerts = [],
     message: alertsMessage,
     success: alertsSuccess,
   } = await getLowStockAlerts();

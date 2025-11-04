@@ -44,7 +44,7 @@ function WarehouseListView({ warehouses }) {
                     itemId={wh.id}
                     itemType="انبار"
                     deleteFunction={deleteWarehouse}
-                    onDeleted={() => console.log("انبار حذف شد")}
+                    onDeleted={() => {}}
                   />
                 </td>
               </tr>

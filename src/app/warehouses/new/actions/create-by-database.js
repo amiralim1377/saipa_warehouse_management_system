@@ -24,7 +24,6 @@ export async function createWarehouseWithStructureServer(warehouse) {
       throw error;
     }
 
-    console.log("✅ انبار با موفقیت ساخته شد. ID:", data);
     return data;
   } catch (err) {
     console.error("🚨 Failed to create warehouse structure:", err);

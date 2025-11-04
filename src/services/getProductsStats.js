@@ -12,8 +12,6 @@ export async function getProductsStats() {
       ? [result[0].get_parts_inventory_stats]
       : result;
 
-    console.log(stats);
-
     const serialized = stats.map((p) => ({
       ...p,
       total_value: p.total_value ? Number(p.total_value) : null,
