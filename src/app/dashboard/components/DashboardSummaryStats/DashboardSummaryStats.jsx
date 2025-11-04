@@ -1,21 +1,27 @@
 "use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-function DashboardSummaryStats({ DashboardStats }) {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 my-6">
-      {DashboardStats.map((item, index) => (
-        <Card key={index}>
-          <CardHeader>
-            <CardTitle>{item.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{item.value}</p>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
+import React from "react";
+import { AlertCircle } from "lucide-react";
+import StatsGrid from "@/components/StatsGrid/StatsGrid";
+
+export default function DashboardSummaryStats({ DashboardStats }) {
+  if (!DashboardStats || !DashboardStats.length) return null;
+
+  const statsData = DashboardStats.map((item) => {
+    const isLowStock = item.title.includes("کمبود موجودی");
+
+    return {
+      label: item.title,
+      value:
+        typeof item.value === "number"
+          ? item.value.toLocaleString("fa-IR")
+          : item.value,
+      ...(isLowStock && {
+        icon: AlertCircle,
+        color: "bg-red-100 text-red-600",
+      }),
+    };
+  });
+
+  return <StatsGrid stats={statsData} columns={5} />;
 }
-
-export default DashboardSummaryStats;
