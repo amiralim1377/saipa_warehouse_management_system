@@ -19,17 +19,14 @@ import { useSubcategories } from "../../../../../hooks/useSubcategories/useSubca
 import SupplierSelect from "../SupplierSelect/SupplierSelect";
 import { ZoneSelect } from "../ZoneSelect/ZoneSelect";
 import { AisleSelect } from "../AisleSelect/AisleSelect";
-import { useAislesByZone } from "../../../../../hooks/useAislesByZone/useAislesByZone";
-import { useRacksByAisle } from "../../../../../hooks/useRacksByAisle/useRacksByAisle";
 import { RackSelect } from "../RackSelect/RackSelect";
 import { ShelfSelect } from "../ShelfSelect/ShelfSelect";
-import { useShelvesByRack } from "../../../../../hooks/useShelvesByRack/useShelvesByRack";
 import { v4 as uuidv4 } from "uuid";
 import { addPart } from "../../actions/addPart";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { useWarehouseZones } from "@/hooks/useWarehouseZones/useWarehouseZones";
 import NumberInputField from "@/components/Form/NumberInputField/NumberInputField";
+import { useEmptyWarehouseStructure } from "../../hook/useEmptyWarehouseStructure/useEmptyWarehouseStructure";
 export default function InventoryInboundForm() {
   const router = useRouter();
   const {
@@ -72,16 +69,16 @@ export default function InventoryInboundForm() {
 
   const { data: subcategories, isLoading, error } = useSubcategories(control);
 
-  const { zones, zonesLoading } = useWarehouseZones({ control });
   const {
-    selectedZoneId,
-    data: aisles,
-    isLoading: aislesLoading,
-  } = useAislesByZone(control);
-
-  const { racks, isLoading: racksLoading } = useRacksByAisle(control);
-
-  const { shelves, isLoading: shelvesLoading } = useShelvesByRack(control);
+    zones,
+    aisles,
+    racks,
+    shelves,
+    zonesLoading,
+    aislesLoading,
+    racksLoading,
+    shelvesLoading,
+  } = useEmptyWarehouseStructure(control);
 
   const onSubmit = async (data) => {
     try {
