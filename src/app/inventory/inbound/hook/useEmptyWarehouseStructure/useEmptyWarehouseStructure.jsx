@@ -1,7 +1,9 @@
-import { useEmptyWarehouseZones } from "@/hooks/useEmptyWarehouseZones/useEmptyWarehouseZones";
-import { useEmptyAislesByZone } from "@/hooks/useEmptyAislesByZone/useEmptyAislesByZone";
-import { useEmptyRacksByAisle } from "@/hooks/useEmptyRacksByAisle/useEmptyRacksByAisle";
-import { useEmptyShelvesByRack } from "@/hooks/useEmptyShelvesByRack/useEmptyShelvesByRack";
+"use client";
+
+import { useEmptyAislesByZone } from "../useEmptyAislesByZone/useEmptyAislesByZone";
+import { useEmptyRacksByAisle } from "../useEmptyRacksByAisle/useEmptyRacksByAisle";
+import { useEmptyShelvesByRack } from "../useEmptyShelvesByRack/useEmptyShelvesByRack";
+import { useEmptyWarehouseZones } from "../useEmptyWarehouseZones/useEmptyWarehouseZones";
 
 export function useEmptyWarehouseStructure(control) {
   const { zones, zonesLoading } = useEmptyWarehouseZones({ control });

@@ -8,23 +8,18 @@ export const getDashboardSummaryStats = async () => {
     `;
 
     const stats = result[0];
-
     return [
-      { title: "تعداد کل کالاها", value: Number(stats.total_products) },
+      { label: "تعداد کل کالاها", value: Number(stats.total_products) },
       {
-        title: "تعداد سفارش‌های خرید باز",
+        label: "تعداد سفارش‌های خرید باز",
         value: Number(stats.open_purchase_orders),
       },
       {
-        title: "تعداد سفارش‌های فروش باز",
+        label: "تعداد سفارش‌های فروش باز",
         value: Number(stats.open_sales_orders),
       },
       {
-        title: "ارزش کل موجودی انبار(میلیون تومان)",
-        value: Number(stats.total_inventory_value),
-      },
-      {
-        title: "تعداد کالاهای کمبود موجودی",
+        label: "تعداد کالاهای کمبود موجودی",
         value: Number(stats.low_stock_products),
       },
     ];
