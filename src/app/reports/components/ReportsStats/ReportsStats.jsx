@@ -1,25 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import StatsGrid from "@/components/StatsGrid/StatsGrid";
 
-export default function ReportsStats() {
+export default function ReportsStats({ statsData }) {
+  if (!statsData) return null;
+
   const stats = [
-    { title: "کل سفارش‌ها", value: 120 },
-    { title: "کل مشتریان", value: 45 },
-    { title: "کالاهای کم موجودی", value: 7 },
-    { title: "کل تأمین‌کنندگان", value: 10 },
+    { label: "کل کالاها", value: statsData.total_parts },
+    { label: "کالاهای کم موجودی", value: statsData.low_stock_items },
+    { label: "کل ارزش موجودی", value: statsData.total_inventory_value },
+    { label: "کل تامین‌کنندگان", value: statsData.total_suppliers },
   ];
 
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {stats.map((stat, idx) => (
-        <Card key={idx} className="bg-card text-card-foreground">
-          <CardHeader>
-            <CardTitle className="text-sm">{stat.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{stat.value}</p>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
+  return <StatsGrid stats={stats} />;
 }
