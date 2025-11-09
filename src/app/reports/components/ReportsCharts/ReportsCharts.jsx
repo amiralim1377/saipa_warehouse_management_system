@@ -2,18 +2,20 @@
 
 import DynamicPieChart from "@/components/DynamicPieChart/DynamicPieChart";
 import InventoryStackedChart from "@/components/InventoryStackedChart/InventoryStackedChart";
+import WarehouseCapacityChart from "@/components/WarehouseCapacityChart/WarehouseCapacityChart";
 
 export default function SuppliersReportsCharts({
   supplierTypePercentage,
   customerTypePercentage,
   lowStockAlerts,
+  warehouseCapacityStats,
 }) {
-  const supplierChartData = supplierTypePercentage.map((item) => ({
+  const supplierChartData = supplierTypePercentage?.map((item) => ({
     name: item.type_name === "individual" ? "حقیقی" : "حقوقی",
     value: item.percentage,
   }));
 
-  const customerChartData = customerTypePercentage.map((item) => ({
+  const customerChartData = customerTypePercentage?.map((item) => ({
     name: item.type_name === "individual" ? "حقیقی" : "حقوقی",
     value: item.percentage,
   }));
@@ -31,6 +33,10 @@ export default function SuppliersReportsCharts({
         />
       </section>
       <InventoryStackedChart data={lowStockAlerts} />
+      <WarehouseCapacityChart
+        title={"جدول ظرفیت انبار ها"}
+        data={warehouseCapacityStats}
+      />
     </div>
   );
 }

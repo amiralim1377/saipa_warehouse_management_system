@@ -4,6 +4,7 @@ import ReportsStats from "./components/ReportsStats/ReportsStats";
 import getCustomerTypePercentage from "./services/getCustomerTypePercentage";
 import getReportsStats from "./services/getReportsStats";
 import getSupplierTypePercentage from "./services/getSupplierTypePercentage";
+import getWarehouseCapacityStats from "./services/getWarehouseCapacityStats";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,8 @@ async function ReportsPage() {
   const stats = await getReportsStats();
   const supplierTypePercentage = await getSupplierTypePercentage();
   const customerTypePercentage = await getCustomerTypePercentage();
+  const { status, data: warehouseCapacityStats } =
+    await getWarehouseCapacityStats();
   const {
     data: lowStockAlerts,
     message: alertsMessage,
@@ -33,6 +36,7 @@ async function ReportsPage() {
           supplierTypePercentage={supplierTypePercentage}
           customerTypePercentage={customerTypePercentage}
           lowStockAlerts={lowStockAlerts}
+          warehouseCapacityStats={warehouseCapacityStats}
         />
       </section>
     </div>
