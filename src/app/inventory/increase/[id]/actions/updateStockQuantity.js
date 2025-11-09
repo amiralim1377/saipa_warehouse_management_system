@@ -22,7 +22,7 @@ export const updateStockQuantity = async (partId, increaseAmount) => {
 
     await prisma.parts_inventory.update({
       where: { id: partId },
-      data: { stock: newStock, updated_at: new Date() },
+      data: { stock: newStock, status: "available", updated_at: new Date() },
     });
 
     return {

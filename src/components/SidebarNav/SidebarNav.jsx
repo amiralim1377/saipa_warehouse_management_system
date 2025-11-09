@@ -24,10 +24,6 @@ const navLink = [
   { label: "انبارها و مکان‌ها", href: "/warehouses", icon: Warehouse },
   { label: "تأمین‌کنندگان", href: "/suppliers", icon: Truck },
   { label: "مشتریان", href: "/customers", icon: Users2 },
-  { label: "گزارش‌ها و تحلیل‌ها", href: "/reports", icon: BarChart3 },
-  { label: "اعلان‌ها و هشدارها", href: "/notifications", icon: Bell },
-  { label: "کاربران و نقش‌ها", href: "/users", icon: UserCog },
-  { label: "تنظیمات سیستم", href: "/settings", icon: Settings },
 ];
 
 export default function SidebarNav() {

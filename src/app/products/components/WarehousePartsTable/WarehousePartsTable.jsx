@@ -1,6 +1,13 @@
 "use client";
 
-export default function WarehousePartsTable({ products = [] }) {
+import { Spinner } from "@/components/ui/spinner";
+import { useProducts } from "../../context/ProductsContext";
+
+export default function WarehousePartsTable({ products }) {
+  if (!products || products.length === 0) {
+    return <Spinner />;
+  }
+
   return (
     <div className="w-full">
       {/* Desktop & Tablet Table */}

@@ -1,4 +1,5 @@
 "use client";
+import { useProducts } from "@/app/products/context/ProductsContext";
 import Link from "next/link";
 
 export default function Pagination({ currentPage, totalPages }) {

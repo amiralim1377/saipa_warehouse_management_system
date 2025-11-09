@@ -1,19 +1,21 @@
-import { fetchProducts } from "./services/fetchProducts";
-import NoProducts from "./components/NoProducts";
-import Pagination from "@/components/Pagination/Pagination";
-import WarehousePartsTable from "./components/WarehousePartsTable/WarehousePartsTable";
-import ProductCategoryFilter from "@/components/ProductCategoryFilter/ProductCategoryFilter";
 import ProductsStats from "./components/ProductsStats/ProductsStats";
+import ProductPageContent from "./components/ProductPageContent/ProductPageContent";
+import { fetchProducts } from "./services/fetchProducts";
 import getProductsStats from "@/services/getProductsStats";
+import { ProductsProvider } from "./context/ProductsContext";
+import { fetchCategories } from "../orders/sales/new/services/fetchCategories";
+import getSubCategories from "./services/getSubCategories";
 
 export const dynamic = "force-dynamic";
 
 async function Productspage({ searchParams }) {
   const params = await searchParams;
   const page = Number(params?.page) || 1;
+  const { subcategories: subcategoryId } = await searchParams;
+
   const pageSize = 20;
   const { data, message, status, totalPages, currentPage } =
-    await fetchProducts(page, pageSize);
+    await fetchProducts(page, pageSize, subcategoryId);
 
   const {
     data: statsData,
@@ -21,26 +23,23 @@ async function Productspage({ searchParams }) {
     success: statsSuccess,
   } = await getProductsStats();
 
+  const { categories } = await fetchCategories();
+  const { subcategories: subcategoriesData } = await getSubCategories();
+
   return (
     <>
       <ProductsStats data={statsData} />
-      <div className="flex flex-col lg:flex-row w-full gap-4 p-4">
-        <div className="flex-1 flex flex-col space-y-2 overflow-x-auto">
-          {status === "success" && data.length > 0 ? (
-            <>
-              <WarehousePartsTable products={data} />
-              <Pagination currentPage={currentPage} totalPages={totalPages} />
-            </>
-          ) : (
-            <NoProducts message={message} />
-          )}
-        </div>
-
-        {/* فیلتر */}
-        <div className="w-full lg:w-1/6 overflow-y-auto p-2">
-          <ProductCategoryFilter />
-        </div>
-      </div>
+      <ProductsProvider
+        categories={categories}
+        subcategories={subcategoriesData}
+      >
+        <ProductPageContent
+          currentPage={currentPage}
+          totalPages={totalPages}
+          products={data}
+          message={message}
+        />
+      </ProductsProvider>
     </>
   );
 }
