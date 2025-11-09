@@ -1,10 +1,21 @@
+import getLowStockAlerts from "@/services/getLowStockAlerts";
 import ReportsCharts from "./components/ReportsCharts/ReportsCharts";
 import ReportsStats from "./components/ReportsStats/ReportsStats";
-import ReportsTable from "./components/ReportsTable/ReportsTable";
+import getCustomerTypePercentage from "./services/getCustomerTypePercentage";
 import getReportsStats from "./services/getReportsStats";
+import getSupplierTypePercentage from "./services/getSupplierTypePercentage";
+
+export const dynamic = "force-dynamic";
 
 async function ReportsPage() {
   const stats = await getReportsStats();
+  const supplierTypePercentage = await getSupplierTypePercentage();
+  const customerTypePercentage = await getCustomerTypePercentage();
+  const {
+    data: lowStockAlerts,
+    message: alertsMessage,
+    success: alertsSuccess,
+  } = await getLowStockAlerts();
 
   return (
     <div className="p-6 space-y-6">
@@ -18,15 +29,11 @@ async function ReportsPage() {
         <h2 className="text-lg font-semibold mb-2 text-foreground">
           نمودارها و تحلیل‌ها
         </h2>
-        <ReportsCharts />
-      </section>
-
-      {/* جدول جزئیات */}
-      <section>
-        <h2 className="text-lg font-semibold mb-2 text-foreground">
-          جزئیات تراکنش‌ها
-        </h2>
-        <ReportsTable />
+        <ReportsCharts
+          supplierTypePercentage={supplierTypePercentage}
+          customerTypePercentage={customerTypePercentage}
+          lowStockAlerts={lowStockAlerts}
+        />
       </section>
     </div>
   );

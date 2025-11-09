@@ -32,9 +32,14 @@ import { toast } from "react-toastify";
 import formatJalaaliDate from "@/utils/formatJalaaliDate";
 import convertJalaaliToTehran from "@/utils/convertJalaaliToTehran";
 import editProductDetails from "../actions/editProductDetails";
+import { useEmptyWarehouseStructure } from "@/app/inventory/inbound/hook/useEmptyWarehouseStructure/useEmptyWarehouseStructure";
+import { useWarehouseStructure } from "@/hooks/useWarehouseStructure/useWarehouseStructure";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function InventoryInfoEditForm({ partData }) {
   const part = partData[0];
+
+  console.log(part);
 
   const router = useRouter();
   const params = useParams();
@@ -80,10 +85,20 @@ export default function InventoryInfoEditForm({ partData }) {
 
   const { data: subcategories, isLoading, error } = useSubcategories(control);
 
-  const { zones, zonesLoading } = useWarehouseZones({ control });
-  const { data: aisles, isLoading: aislesLoading } = useAislesByZone(control);
-  const { racks, isLoading: racksLoading } = useRacksByAisle(control);
-  const { shelves, isLoading: shelvesLoading } = useShelvesByRack(control);
+  const {
+    zones,
+    zonesLoading,
+    aisles,
+    aislesLoading,
+    racks,
+    racksLoading,
+    shelves,
+    shelvesLoading,
+  } = useWarehouseStructure(control);
+
+  if (shelvesLoading) {
+    return <Spinner />;
+  }
 
   const onSubmit = async (data) => {
     try {

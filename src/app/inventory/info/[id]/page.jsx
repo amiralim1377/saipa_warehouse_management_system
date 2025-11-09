@@ -1,9 +1,9 @@
-import getTargetProducts from "../../services/getTargetProducts";
+import getTargetProductDetails from "../../services/getTargetProductDetails";
 import ProductDetailsCard from "./components/ProductDetailsCard";
 
 export default async function InventoryInfoDetailsPage({ params }) {
   const { id: targetId } = await params;
-  const result = await getTargetProducts(targetId);
+  const result = await getTargetProductDetails(targetId);
 
   const data = Array.isArray(result) ? result[0] : result;
 
