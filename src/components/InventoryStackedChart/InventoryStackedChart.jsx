@@ -87,15 +87,21 @@ export default function InventoryLineChart({ data }) {
 }
 
 const CustomTick = ({ x, y, payload }) => {
+  const displayName =
+    payload.value.length > 15
+      ? payload.value.slice(0, 15) + "..."
+      : payload.value;
+
   return (
     <g transform={`translate(${x},${y})`}>
-      <title>{payload.payload?.fullName || payload.value}</title>
+      <title>{payload.value}</title>
       <text
+        y={0}
         dy={16}
         textAnchor="middle"
         className="text-[10px] fill-[var(--muted-foreground)]"
       >
-        {payload.value}
+        {displayName}
       </text>
     </g>
   );
