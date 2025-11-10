@@ -11,9 +11,6 @@ import {
   Truck,
   Users2,
   BarChart3,
-  Bell,
-  UserCog,
-  Settings,
 } from "lucide-react";
 
 const navLink = [
@@ -24,13 +21,14 @@ const navLink = [
   { label: "انبارها و مکان‌ها", href: "/warehouses", icon: Warehouse },
   { label: "تأمین‌کنندگان", href: "/suppliers", icon: Truck },
   { label: "مشتریان", href: "/customers", icon: Users2 },
+  { label: "گزارش‌ها و تحلیل‌ها", href: "/reports", icon: BarChart3 },
 ];
 
 export default function SidebarNav() {
   const pathname = usePathname();
 
   return (
-    <ul className="w-[220px] mt-4">
+    <ul className="w-[220px]  mt-4">
       {navLink.map((item, i) => {
         const Icon = item.icon;
         const isActive =

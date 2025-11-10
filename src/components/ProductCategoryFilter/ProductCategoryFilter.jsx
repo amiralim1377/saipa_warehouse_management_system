@@ -44,7 +44,7 @@ export default function ProductCategoryTree() {
   };
 
   return (
-    <aside className="border-l border bg-background sticky top-0 p-4 space-y-4 overflow-y-auto">
+    <aside className="border-l  rounded-lg  border bg-background sticky top-0 p-4 space-y-4 overflow-y-auto">
       {categories.map((category) => (
         <Collapsible key={category.id} defaultOpen={false}>
           <CollapsibleTrigger className="flex justify-between items-center w-full p-2 rounded hover:bg-primary">

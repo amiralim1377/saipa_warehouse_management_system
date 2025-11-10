@@ -18,9 +18,7 @@ export default function IncreaseStockForm({ targetProducts }) {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
-    defaultValues: {
-      increaseAmount: "",
-    },
+    defaultValues: { increaseAmount: "" },
   });
 
   const onSubmit = async (data) => {
@@ -47,39 +45,44 @@ export default function IncreaseStockForm({ targetProducts }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-xl mx-auto p-6 space-y-4"
+      className="max-w-xl mx-auto p-6 space-y-6"
       dir="rtl"
     >
       <h2 className="text-xl font-semibold text-center mb-4">
         افزایش موجودی کالا
       </h2>
 
-      <div>
+      <div className="flex flex-col gap-1">
         <Label>نام کالا</Label>
         <Input value={product?.part_name || "-"} readOnly />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-1">
         <Label>کد کالا</Label>
         <Input value={product?.part_code || "-"} readOnly />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-1">
         <Label>مکان کالا</Label>
         <Input value={product?.location || "-"} readOnly />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-1">
         <Label>واحد</Label>
         <Input value={product?.unit || "-"} readOnly />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-1">
         <Label>موجودی فعلی</Label>
         <Input value={product?.stock ?? 0} readOnly />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-1">
+        <Label>حداقل موجودی</Label>
+        <Input value={product?.min_stock ?? 0} readOnly />
+      </div>
+
+      <div className="flex flex-col gap-1">
         <Label>افزایش موجودی</Label>
         <Input
           type="number"

@@ -32,27 +32,19 @@ import { toast } from "react-toastify";
 import formatJalaaliDate from "@/utils/formatJalaaliDate";
 import convertJalaaliToTehran from "@/utils/convertJalaaliToTehran";
 import editProductDetails from "../actions/editProductDetails";
-import { useEmptyWarehouseStructure } from "@/app/inventory/inbound/hook/useEmptyWarehouseStructure/useEmptyWarehouseStructure";
 import { useWarehouseStructure } from "@/hooks/useWarehouseStructure/useWarehouseStructure";
 import { Spinner } from "@/components/ui/spinner";
+import { useEmptyWarehouseStructure } from "@/app/inventory/inbound/hook/useEmptyWarehouseStructure/useEmptyWarehouseStructure";
 
 export default function InventoryInfoEditForm({ partData }) {
   const part = partData[0];
 
-  console.log(part);
-
   const router = useRouter();
   const params = useParams();
 
-  const {
-    categories,
-    setCategories,
-    warehouses,
-    setWarehouses,
-    inboundType,
-    setInboundType,
-    suppliers,
-  } = useInventoryInbound();
+  const { categories, warehouses, suppliers } = useInventoryInbound();
+
+  console.log(categories);
 
   const {
     register,
@@ -194,6 +186,7 @@ export default function InventoryInfoEditForm({ partData }) {
             { value: "pending", label: "در انتظار بررسی" },
           ]}
         />
+
         {/* دسته‌بندی */}
         <CategorySelect
           control={control}

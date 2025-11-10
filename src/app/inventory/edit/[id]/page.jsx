@@ -9,7 +9,7 @@ import { InventoryInboundProvider } from "../../inbound/context/InventoryInbound
 export default async function InventoryInfoEditPage({ params }) {
   const { id: targetId } = await params;
   const data = await getTargetProducts(targetId);
-  const categories = await getCategories();
+  const { categories, message, success } = await getCategories();
   const warehouse = await getWarehouse();
   const suppliers = await getSuppliers();
 
@@ -25,7 +25,7 @@ export default async function InventoryInfoEditPage({ params }) {
     <>
       <QueryClientProviderWrapper>
         <InventoryInboundProvider
-          initialCategories={categories}
+          categories={categories}
           warehouse={warehouse}
           suppliers={suppliers}
         >

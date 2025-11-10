@@ -1,10 +1,9 @@
 import getLowStockAlerts from "@/services/getLowStockAlerts";
-import DashboardNotifications from "./components/DashboardNotifications/DashboardNotifications";
 import DashboardQuickActions from "./components/DashboardQuickActions/DashboardQuickActions";
 import DashboardSummaryStats from "./components/DashboardSummaryStats/DashboardSummaryStats";
 import getDashboardSummaryStats from "./services/getDashboardSummaryStats";
-import InventoryAlertsTable from "@/components/InventoryAlertsTable/InventoryAlertsTable";
 import NoProducts from "../products/components/NoProducts";
+import InventoryAlertsTable from "@/components/InventoryAlertsTable/InventoryAlertsTable";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +18,7 @@ async function DashboradPage() {
     <div>
       <DashboardSummaryStats DashboardStats={DashboardStats} />
       <DashboardQuickActions />
-      <DashboardNotifications />
+      {/* <DashboardNotifications /> */}
 
       <h3 className="text-lg font-semibold  my-4">هشدارهای موجودی</h3>
       {lowStockAlerts.length > 0 ? (

@@ -80,7 +80,11 @@ function ProductDetailsCard({ data }) {
                     : "bg-red-500 text-white"
                 }`}
               >
-                {status === "available" ? "موجود" : "ناموجود"}
+                {status === "available"
+                  ? "موجود"
+                  : status === "low"
+                  ? "کم"
+                  : "ناموجود"}
               </Badge>
             </div>
           </div>

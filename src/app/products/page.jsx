@@ -13,7 +13,7 @@ async function Productspage({ searchParams }) {
   const page = Number(params?.page) || 1;
   const { subcategories: subcategoryId } = await searchParams;
 
-  const pageSize = 20;
+  const pageSize = 10;
   const { data, message, status, totalPages, currentPage } =
     await fetchProducts(page, pageSize, subcategoryId);
 
