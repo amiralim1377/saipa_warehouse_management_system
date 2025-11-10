@@ -11,7 +11,7 @@ function CorporateSuppliers({ suppliers }) {
       <h2 className="text-lg font-semibold text-[var(--color-foreground)] mb-3">
         لیست تأمین‌کنندگان حقوقی
       </h2>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-lg">
         <table className="min-w-[700px] w-full text-right border border-border rounded-lg">
           <thead className="bg-muted text-muted-foreground">
             <tr>

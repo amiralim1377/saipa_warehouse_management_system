@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -12,8 +11,6 @@ import {
   Truck,
   Users2,
   BarChart3,
-  Menu,
-  X,
 } from "lucide-react";
 
 const navLink = [
@@ -27,22 +24,11 @@ const navLink = [
   { label: "گزارش‌ها و تحلیل‌ها", href: "/reports", icon: BarChart3 },
 ];
 
-export default function MobileMenu() {
-  const [open, setOpen] = useState(false);
+export default function MobileMenu({ open, setOpen }) {
   const pathname = usePathname();
 
   return (
     <div className="md:hidden">
-      {/* 🔹 دکمه‌ی همبرگر */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="fixed top-4 right-4 z-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 p-2 rounded-md shadow-md"
-        aria-label="toggle menu"
-      >
-        {open ? <X size={24} /> : <Menu size={24} />}
-      </button>
-
-      {/* 🔹 منوی بازشونده */}
       <div
         className={`fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-900 shadow-lg transition-transform duration-300 z-40 ${
           open ? "translate-x-0" : "translate-x-full"
@@ -53,12 +39,11 @@ export default function MobileMenu() {
             const Icon = item.icon;
             const isActive =
               pathname === item.href || pathname.startsWith(`${item.href}/`);
-
             return (
               <li key={i} className="mb-2">
                 <Link
                   href={item.href}
-                  onClick={() => setOpen(false)} // بستن منو بعد از کلیک
+                  onClick={() => setOpen(false)}
                   className={`flex items-center gap-3 px-3 py-3 rounded text-sm transition-colors ${
                     isActive
                       ? "bg-orange-100 text-primary dark:bg-primary dark:text-secondary font-medium"
@@ -73,8 +58,6 @@ export default function MobileMenu() {
           })}
         </ul>
       </div>
-
-      {/* 🔹 پس‌زمینه‌ی تار برای بستن منو */}
       {open && (
         <div
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-30"

@@ -22,6 +22,13 @@ export default function WarehouseCapacityChart({ title, data }) {
     "var(--color-chart-5)",
   ];
 
+  // کوتاه کردن اسم‌ها برای XAxis و نگه داشتن اسم کامل برای Tooltip
+  const formattedData = data.map((item) => ({
+    ...item,
+    shortName:
+      item.name.length > 12 ? item.name.slice(0, 12) + "..." : item.name,
+  }));
+
   return (
     <div
       style={{
@@ -49,12 +56,12 @@ export default function WarehouseCapacityChart({ title, data }) {
 
       <ResponsiveContainer width="100%" height={360}>
         <BarChart
-          data={data}
+          data={formattedData}
           margin={{ top: 10, right: 20, left: 0, bottom: 80 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
           <XAxis
-            dataKey="name"
+            dataKey="shortName" // از اسم کوتاه استفاده می‌کنیم
             tick={{
               fill: "var(--color-foreground)",
               fontSize: 13,
@@ -62,8 +69,8 @@ export default function WarehouseCapacityChart({ title, data }) {
             }}
             interval={0}
             textAnchor="middle"
-            angle={-30}
-            dy={15}
+            angle={0} // کاملاً صاف
+            dy={10}
           />
           <YAxis
             tick={{
@@ -85,9 +92,13 @@ export default function WarehouseCapacityChart({ title, data }) {
               fontWeight: 500,
               color: "var(--color-popover-foreground)",
             }}
+            formatter={(value, name, props) => {
+              const fullName = props.payload.name;
+              return [value, fullName];
+            }}
           />
           <Bar dataKey="capacity" radius={[6, 6, 0, 0]}>
-            {data.map((_, index) => (
+            {formattedData.map((_, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={chartColors[index % chartColors.length]}

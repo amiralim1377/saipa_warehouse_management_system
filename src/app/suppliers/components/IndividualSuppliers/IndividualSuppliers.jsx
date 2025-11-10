@@ -6,8 +6,8 @@ import { deleteSupplier } from "../../actions/deleteSupplier";
 
 function IndividualSuppliers({ suppliers }) {
   return (
-    <div className="mt-6 overflow-x-auto">
-      <h2 className="text-lg font-semibold text-[var(--color-foreground)] mb-3">
+    <div className="mt-6 overflow-x-auto rounded-lg">
+      <h2 className="text-lg font-semibold text-[var(--color-foreground)] mb-3 rounded-lg">
         لیست تأمین‌کنندگان حقیقی
       </h2>
       <table className="min-w-[600px] w-full text-right border border-border rounded-lg">

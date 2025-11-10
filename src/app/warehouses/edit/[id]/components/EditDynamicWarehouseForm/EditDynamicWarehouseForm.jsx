@@ -27,7 +27,6 @@ function EditDynamicWarehouseForm() {
 
   const {
     handleSubmit,
-
     reset,
     formState: { isSubmitting },
   } = methods;
@@ -41,9 +40,9 @@ function EditDynamicWarehouseForm() {
       const result = await updateWarehouseWithStructureServer(payload);
 
       if (result.success) {
-        toast.success(result.message || "انبار با موفقیت اپدیت شد");
+        toast.success(result.message || "انبار با موفقیت آپدیت شد");
+        reset(payload);
         router.replace("/warehouses");
-        reset();
       } else {
         throw new Error(result.message || "❌ Failed to update warehouse");
       }

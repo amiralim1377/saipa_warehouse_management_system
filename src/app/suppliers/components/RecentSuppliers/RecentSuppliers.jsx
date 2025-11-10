@@ -19,8 +19,8 @@ function RecentSuppliers({ newestSuppliersData }) {
       <h2 className="text-lg font-semibold text-foreground mb-3">
         لیست آخرین تأمین‌کنندگان
       </h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-[600px] w-full text-right border border-border rounded-lg">
+      <div className="overflow-x-auto rounded-lg">
+        <table className="min-w-[600px]  w-full text-right border border-border rounded-lg">
           <thead className="bg-muted text-muted-foreground">
             <tr>
               <th className="p-2 border-b">نام</th>

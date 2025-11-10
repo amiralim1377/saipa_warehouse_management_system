@@ -2,15 +2,15 @@
 import { supabase } from "@/lib/supabaseClient";
 
 /**
- * آپدیت انبار و ساختار سلسله‌مراتبی آن (زون‌ها، راهروها، رک‌ها، طبقات)
- * شامل منطق حذف رکوردهای حذف‌شده در هر سطح
+ * Update warehouse and its hierarchical structure (zones, aisles, racks, shelves)
+ * Includes logic to delete removed records at each level
  */
 export async function updateWarehouseWithStructureServer(warehouse) {
   try {
-    if (!warehouse?.id) throw new Error("❌ شناسه انبار یافت نشد");
+    if (!warehouse?.id) throw new Error("❌ Warehouse ID not found");
 
-    // 1️⃣ آپدیت اطلاعات انبار
-    // ⚠️ فقط ستون‌های واقعی جدول warehouses
+    // 1️⃣ Update warehouse information
+    // ⚠️ Only update actual columns of the warehouses table
     const { error: warehouseError } = await supabase
       .from("warehouses")
       .update({
@@ -24,14 +24,14 @@ export async function updateWarehouseWithStructureServer(warehouse) {
 
     if (warehouseError) throw warehouseError;
 
-    // 📌 تابع کمکی برای حذف رکوردهای حذف‌شده و آپدیت/اینسرت
+    // 📌 Helper function to delete removed records and handle update/insert
     async function syncLevel({
       table,
       parentField,
       parentId,
       newItems,
       subSync,
-      hasLevel = false, // اگر سطح دارد (مثل shelves)
+      hasLevel = false, // If the entity has a "level" field (like shelves)
     }) {
       const { data: existing, error: fetchError } = await supabase
         .from(table)
@@ -57,8 +57,8 @@ export async function updateWarehouseWithStructureServer(warehouse) {
       for (const item of newItems || []) {
         let itemId = item.id;
         const payload = hasLevel
-          ? { name: item.name, level: item.level } // برای shelves
-          : { name: item.name }; // برای سایر جدول‌ها
+          ? { name: item.name, level: item.level } // For shelves
+          : { name: item.name }; // For other tables
 
         if (itemId) {
           const { error } = await supabase
@@ -80,7 +80,7 @@ export async function updateWarehouseWithStructureServer(warehouse) {
       }
     }
 
-    // 2️⃣ زون‌ها → راهروها → رک‌ها → طبقات
+    // 2️⃣ Zones → Aisles → Racks → Shelves
     await syncLevel({
       table: "zones",
       parentField: "warehouse_id",
@@ -104,7 +104,7 @@ export async function updateWarehouseWithStructureServer(warehouse) {
                   parentField: "rack_id",
                   parentId: rackId,
                   newItems: rack.shelves,
-                  hasLevel: true, // مدیریت level برای طبقات
+                  hasLevel: true, // Handle "level" for shelves
                 });
               },
             });
