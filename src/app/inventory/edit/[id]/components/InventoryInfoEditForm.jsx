@@ -44,8 +44,6 @@ export default function InventoryInfoEditForm({ partData }) {
 
   const { categories, warehouses, suppliers } = useInventoryInbound();
 
-  console.log(categories);
-
   const {
     register,
     handleSubmit,

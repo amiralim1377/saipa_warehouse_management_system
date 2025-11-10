@@ -30,8 +30,6 @@ export default function CustomerInformationStep() {
     return <NoCustomers />;
   }
 
-  console.log(customers);
-
   const customerOptions = customers.map((c) => ({
     value: c.id,
     label:

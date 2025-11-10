@@ -191,7 +191,7 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
                           itemId={order.id}
                           itemType="سفارش"
                           deleteFunction={deletePurchaseOrder}
-                          onDeleted={() => console.log("Deleted!")}
+                          onDeleted={() => {}}
                         />
                         <ApproveItemButton
                           itemId={order.id}
@@ -290,13 +290,13 @@ function LastTemporaryPurchaseOrder({ orders = [] }) {
                       itemId={order.id}
                       itemType="سفارش"
                       deleteFunction={deletePurchaseOrder}
-                      onDeleted={() => console.log("Deleted!")}
+                      onDeleted={() => {}}
                     />
                     <ApproveItemButton
                       itemId={order.id}
                       itemType="سفارش"
                       approveFunction={approvePurchaseOrder}
-                      onApproved={() => console.log("Approved!")}
+                      onApproved={() => {}}
                     />
                   </TableRowActions>
                 </div>
