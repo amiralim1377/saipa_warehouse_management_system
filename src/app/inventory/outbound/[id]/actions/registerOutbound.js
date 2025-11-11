@@ -29,23 +29,33 @@ export async function registerOutbound(formData) {
         quantity,
         order_number,
         description,
-        customer_id,
+        customer_id, // فقط id ارسال می‌کنیم
+        part_code: formData.part_code,
+        part_name: formData.part_name,
+        unit: formData.unit,
+        unit_price: formData.unit_price,
+        total_value: formData.unit_price * quantity,
+        warehouse_id: formData.warehouse_id,
+        zone_id: formData.zone_id,
+        aisle_id: formData.aisle_id,
+        rack_id: formData.rack_id,
+        shelf_id: formData.shelf_id,
         parts_inventory: { connect: { id: part_id } },
       },
     });
 
-    //parts_inventory کاهش موجودی در
     await prisma.parts_inventory.update({
       where: { id: part_id },
       data: {
         stock: { decrement: quantity },
+        total_value: { decrement: formData.unit_price * quantity }, // کاهش ارزش کل
       },
     });
 
     return {
       success: true,
       message: "خروج کالا با موفقیت ثبت شد ✅",
-      data: outbound,
+      data: null,
     };
   } catch (err) {
     console.error("❌ خطا در ثبت خروج کالا:", err);

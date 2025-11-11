@@ -105,14 +105,30 @@ model parts_inventory {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model parts_outbound {
-  id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  part_id         String?          @db.Uuid
-  quantity        Int
-  customer_id     String?          @db.Uuid
-  order_number    String?
-  description     String?
-  created_at      DateTime?        @default(now()) @db.Timestamptz(6)
-  parts_inventory parts_inventory? @relation(fields: [part_id], references: [id], onDelete: Cascade)
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  part_code   String
+  part_name   String
+  quantity    Int
+  unit        String
+  batch_number String?
+  customer_id String?  @db.Uuid
+  order_number String?
+  description  String?
+  warehouse_id String @db.Uuid
+  zone_id      String @db.Uuid
+  aisle_id     String @db.Uuid
+  rack_id      String @db.Uuid
+  shelf_id     String @db.Uuid
+  unit_price   Decimal
+  total_value  Decimal
+  created_at   DateTime @default(now())
+
+  parts_inventory parts_inventory @relation(fields: [part_id], references: [id])
+  part_id         String           @db.Uuid
+
+  @@index([part_id])
+  @@index([customer_id])
+  @@index([warehouse_id, zone_id, aisle_id, rack_id, shelf_id])
 }
 
 

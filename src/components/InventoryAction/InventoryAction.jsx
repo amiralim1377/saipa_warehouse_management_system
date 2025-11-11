@@ -33,6 +33,12 @@ function InventoryActionLinks() {
           اطلاعات محصول
         </Button>
       </Link>
+
+      <Link href="/inventory/outbound-history">
+        <Button className="bg-indigo-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg w-full sm:w-auto flex-1 sm:flex-auto min-w-[150px]">
+          تاریخچه خروجی
+        </Button>
+      </Link>
     </div>
   );
 }

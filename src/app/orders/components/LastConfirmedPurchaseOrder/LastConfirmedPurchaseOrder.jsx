@@ -14,6 +14,7 @@ const statusMap = {
 };
 
 function LastConfirmedPurchaseOrder({ orders = [] }) {
+  console.log(orders);
   const hasOrders = orders.length > 0;
   const [showPDF, setShowPDF] = useState(false);
 
@@ -130,7 +131,7 @@ function LastConfirmedPurchaseOrder({ orders = [] }) {
                             className="break-words text-sm text-muted-foreground"
                           >
                             {item.name} - تعداد: {item.quantity} - قیمت:{" "}
-                            {item.price}
+                            {item.unitPrice}
                           </div>
                         ))}
                       </div>

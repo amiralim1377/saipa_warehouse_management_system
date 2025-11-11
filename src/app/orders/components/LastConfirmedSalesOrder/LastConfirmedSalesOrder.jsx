@@ -123,7 +123,7 @@ function LastConfirmedSalesOrder({ orders = [] }) {
                       {order.items?.map((item, idx) => (
                         <div key={idx}>
                           {item.name} - تعداد: {item.quantity} - قیمت:{" "}
-                          {item.price}
+                          {item.unit_price}
                         </div>
                       ))}
                     </td>

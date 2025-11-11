@@ -7,6 +7,7 @@ import SelectField from "@/components/Form/SelectField/SelectField";
 import { toast } from "react-toastify";
 import { registerOutbound } from "../../actions/registerOutbound";
 import { useRouter } from "next/navigation";
+import UnitSelect from "@/app/inventory/inbound/components/UnitSelect/UnitSelect";
 
 function OutboundForm({ product }) {
   const { customersData } = useInventoryDynamicOutbound();
@@ -37,7 +38,16 @@ function OutboundForm({ product }) {
 
     const result = await registerOutbound({
       ...data,
-      customer: data.customer,
+      customer_id: data.customer,
+      part_code: product.part_code,
+      part_name: product.part_name,
+      warehouse_id: product.warehouse_id,
+      zone_id: product.zone_id,
+      aisle_id: product.aisles?.id,
+      rack_id: product.racks?.id,
+      shelf_id: product.shelves?.id,
+      unit_price: product.unit_price,
+      total_value: product.unit_price * data.quantity,
     });
 
     if (result.success) {
@@ -55,7 +65,6 @@ function OutboundForm({ product }) {
       className="grid gap-4 p-6 max-w-3xl mx-auto bg-card text-foreground rounded-lg"
     >
       <h1 className="text-2xl font-bold mb-6">📦 فرم خروجی قطعه</h1>
-
       {/* نام قطعه */}
       <div>
         <label className="block mb-1 font-medium">نام قطعه</label>
@@ -66,7 +75,6 @@ function OutboundForm({ product }) {
           className="w-full px-3 py-2 rounded-md border border-border bg-input text-foreground"
         />
       </div>
-
       {/* کد فنی */}
       <div>
         <label className="block mb-1 font-medium">کد فنی</label>
@@ -77,7 +85,6 @@ function OutboundForm({ product }) {
           className="w-full px-3 py-2 rounded-md border border-border bg-input text-foreground"
         />
       </div>
-
       {/* موجودی */}
       <div>
         <label className="block mb-1 font-medium">موجودی فعلی</label>
@@ -88,7 +95,6 @@ function OutboundForm({ product }) {
           className="w-full px-3 py-2 rounded-md border border-border bg-input text-foreground"
         />
       </div>
-
       {/* محل ذخیره */}
       <div>
         <label className="block mb-1 font-medium">انبار</label>
@@ -99,7 +105,6 @@ function OutboundForm({ product }) {
           className="w-full px-3 py-2 rounded-md border border-border bg-input text-foreground"
         />
       </div>
-
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block mb-1 font-medium">زون</label>
@@ -141,7 +146,6 @@ function OutboundForm({ product }) {
           />
         </div>
       </div>
-
       {/* تعداد خروجی */}
       <div>
         <label className="block mb-1 font-medium">تعداد خروجی</label>
@@ -160,7 +164,13 @@ function OutboundForm({ product }) {
           <p className="text-destructive text-sm mt-1">این فیلد الزامی است</p>
         )}
       </div>
-
+      {/* واحد */}
+      <UnitSelect
+        control={control}
+        errors={errors}
+        rules={{ required: "انتخاب واحد الزامی است" }}
+        placeholder="واحد قطعه را انتخاب کنید"
+      />
       {/* انتخاب مشتری */}
       <SelectField
         name="customer"
@@ -178,7 +188,6 @@ function OutboundForm({ product }) {
         errors={errors}
         placeholder="انتخاب کنید"
       />
-
       {/* شماره سفارش */}
       <div>
         <label className="block mb-1 font-medium">شماره سفارش / حواله</label>
@@ -192,7 +201,6 @@ function OutboundForm({ product }) {
           <p className="text-destructive text-sm mt-1">این فیلد الزامی است</p>
         )}
       </div>
-
       {/* توضیحات */}
       <div>
         <label className="block mb-1 font-medium">توضیحات</label>
@@ -204,19 +212,47 @@ function OutboundForm({ product }) {
         />
       </div>
 
-      {/* Hidden fields برای ارسال به دیتابیس */}
       <input type="hidden" {...register("part_id")} value={product.id} />
-      <input
-        type="hidden"
-        {...register("part_name")}
-        value={product.part_name}
-      />
       <input
         type="hidden"
         {...register("part_code")}
         value={product.part_code}
       />
+
+      <input
+        type="hidden"
+        {...register("part_name")}
+        value={product.part_name}
+      />
       <input type="hidden" {...register("stock")} value={product.stock} />
+      <input type="hidden" {...register("unit")} value={product.unit} />
+      <input
+        type="hidden"
+        {...register("warehouse_id")}
+        value={product.warehouse_id}
+      />
+      <input type="hidden" {...register("zone_id")} value={product.zone_id} />
+      <input
+        type="hidden"
+        {...register("aisle_id")}
+        value={product.aisles?.id}
+      />
+      <input type="hidden" {...register("rack_id")} value={product.racks?.id} />
+      <input
+        type="hidden"
+        {...register("shelf_id")}
+        value={product.shelves?.id}
+      />
+      <input
+        type="hidden"
+        {...register("unit_price")}
+        value={product.unit_price}
+      />
+      <input
+        type="hidden"
+        {...register("total_value")}
+        value={product.unit_price * watch("quantity")}
+      />
 
       <Button
         type="submit"
