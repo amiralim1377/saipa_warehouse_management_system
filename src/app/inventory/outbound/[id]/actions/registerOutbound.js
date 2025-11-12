@@ -29,7 +29,7 @@ export async function registerOutbound(formData) {
         quantity,
         order_number,
         description,
-        customer_id, // فقط id ارسال می‌کنیم
+        customer_id,
         part_code: formData.part_code,
         part_name: formData.part_name,
         unit: formData.unit,
@@ -54,7 +54,7 @@ export async function registerOutbound(formData) {
 
     return {
       success: true,
-      message: "خروج کالا با موفقیت ثبت شد ✅",
+      message: "خروج کالا با موفقیت ثبت شد ",
       data: null,
     };
   } catch (err) {

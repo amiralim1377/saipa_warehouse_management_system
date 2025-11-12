@@ -35,7 +35,7 @@ function InventoryEditList({ data }) {
               <td className="p-3">{item.stock}</td>
               <td className="p-3">{item.min_stock}</td>
               <td className="p-3">
-                {Number(item.unit_price).toLocaleString()} ریال
+                {Number(item.unit_price).toLocaleString()} تومان
               </td>
               <td className="p-3 text-center">
                 <Link href={`/inventory/edit/${item.id}`}>

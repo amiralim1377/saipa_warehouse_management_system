@@ -14,7 +14,6 @@ const statusMap = {
 };
 
 function LastConfirmedPurchaseOrder({ orders = [] }) {
-  console.log(orders);
   const hasOrders = orders.length > 0;
   const [showPDF, setShowPDF] = useState(false);
 

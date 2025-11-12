@@ -8,8 +8,6 @@ export default async function OutboundDetailPage({ params }) {
   const { id: productId } = await params;
   const { message, product, success } = await getTargetProduct(productId);
 
-  console.log(product);
-
   const {
     message: customersMessage,
     success: customersSuccess,

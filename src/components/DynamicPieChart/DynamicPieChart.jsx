@@ -59,7 +59,7 @@ export default function DynamicPieChart({
       )}
 
       <ResponsiveContainer width="100%" height={320}>
-        <PieChart>
+        <PieChart className="p-3">
           <Pie
             data={data}
             dataKey="value"
