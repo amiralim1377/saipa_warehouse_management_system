@@ -18,7 +18,7 @@ export default function WarehousePartsTable({ products }) {
               <th className="px-2 py-1 border">کد قطعه</th>
               <th className="px-2 py-1 border">نام قطعه</th>
               <th className="px-2 py-1 border">موجودی</th>
-              <th className="px-2 py-1 border">وضعیت</th>
+              <th className="px-2 py-1 border text-center ">وضعیت</th>
               <th className="px-2 py-1 border">دسته‌بندی</th>
               <th className="px-2 py-1 border">زیرمجموعه</th>
               <th className="px-2 py-1 border">واحد</th>
@@ -38,7 +38,9 @@ export default function WarehousePartsTable({ products }) {
                 <td className="px-2 py-1 border">{product.part_code}</td>
                 <td className="px-2 py-1 border">{product.part_name}</td>
                 <td className="px-2 py-1 border">{product.stock}</td>
-                <td className="px-2 py-1 border">{product.status}</td>
+                <td className="px-2 py-1 border text-center">
+                  {product.status}
+                </td>
                 <td className="px-2 py-1 border">{product.category_name}</td>
                 <td className="px-2 py-1 border">{product.subcategory_name}</td>
                 <td className="px-2 py-1 border">{product.unit}</td>

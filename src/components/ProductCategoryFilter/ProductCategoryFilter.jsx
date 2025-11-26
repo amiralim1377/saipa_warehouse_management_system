@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -11,11 +10,10 @@ import {
 } from "@/components/ui/collapsible";
 import { useProducts } from "@/app/products/context/ProductsContext";
 
-export default function ProductCategoryTree() {
+export default function ProductCategoryFilter() {
   const {
     categories,
     subcategories,
-    selectedCategory,
     setSelectedCategory,
     updateRoute,
     selectedSubCategory,
@@ -44,7 +42,7 @@ export default function ProductCategoryTree() {
   };
 
   return (
-    <aside className="border-l  rounded-lg  border bg-background sticky top-0 p-4 space-y-4 overflow-y-auto">
+    <aside className="border-l flex flex-col justify-between h-full bg-background text-sm  rounded-lg  border   sticky top-0 p-4 space-y-4 ">
       {categories.map((category) => (
         <Collapsible key={category.id} defaultOpen={false}>
           <CollapsibleTrigger className="flex justify-between items-center w-full p-2 rounded hover:bg-primary">
@@ -64,7 +62,7 @@ export default function ProductCategoryTree() {
           </CollapsibleContent>
         </Collapsible>
       ))}
-      <div className="flex gap-2 mt-4">
+      <div className="flex flex-col gap-2 mt-4">
         <Button
           variant="outline"
           className="flex-1"
