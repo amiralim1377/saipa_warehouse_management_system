@@ -16,7 +16,7 @@ const actions = [
   {
     label: "ثبت سفارش خرید",
     href: "/orders/purchase/new",
-    className: "bg-primary text-primary-foreground",
+    className: "bg-primary text-white",
   },
   {
     label: "ثبت سفارش فروش",
