@@ -13,7 +13,7 @@ export default function Header() {
   return (
     <header className="flex flex-col gap-2 px-4 sm:px-6 py-3 bg-card text-foreground border-b border-border shadow-sm relative">
       {/* Top info text */}
-      <div className="text-xs sm:text-sm hidden md:block text-muted-foreground">
+      <div className="text-sm md:text-base mt-1 hidden md:block text-muted-foreground">
         سامانه مدیریت انبارداری و لجستیک سایپا
       </div>
 
