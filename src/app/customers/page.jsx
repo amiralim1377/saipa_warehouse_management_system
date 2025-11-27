@@ -27,7 +27,7 @@ async function CustomersPage() {
 
       {/* جدول مشتریان */}
       <section>
-        <h2 className="text-lg font-semibold mb-2 text-[var(--color-foreground)]">
+        <h2 className="text-lg font-semibold mb-2 text-foreground">
           لیست مشتریان
         </h2>
         <CustomersTable customers={customers} />

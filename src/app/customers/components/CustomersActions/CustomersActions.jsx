@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 function CustomersActions() {
   return (
-    <div className="flex flex-wrap gap-4 mt-4 justify-start sm:justify-start md:justify-start lg:justify-start">
+    <div className="flex flex-wrap gap-4 rounded-2xl mt-4 justify-start sm:justify-start md:justify-start lg:justify-start">
       <Button
         asChild
         className="bg-primary text-secondary-foreground px-4 sm:px-6 py-2 sm:py-3 rounded-lg min-w-[150px] text-center flex-1 sm:flex-auto"

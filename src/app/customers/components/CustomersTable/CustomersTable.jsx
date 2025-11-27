@@ -8,8 +8,8 @@ import deleteCustomer from "../../delete/actions/deleteCustomers";
 
 export default function CustomersTable({ customers }) {
   return (
-    <div className="p-4 overflow-x-auto">
-      <table className="min-w-full border border-[var(--color-border)] rounded-lg text-sm leading-normal">
+    <div className=" overflow-x-auto ">
+      <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden text-sm leading-normal">
         <thead className="bg-[var(--color-card)] text-[var(--color-foreground)]">
           <tr>
             <th className="px-3 py-2 text-left font-normal leading-normal align-middle">
@@ -62,12 +62,19 @@ export default function CustomersTable({ customers }) {
                 <td className="px-3 py-2 text-center align-middle">
                   <div className="flex gap-2 justify-center">
                     <Link href={`customers/orders/${c.id}`}>
-                      <Button size="sm" variant="secondary">
+                      <Button
+                        size="sm"
+                        className="bg-indigo-600 text-white hover:bg-indigo-700"
+                      >
                         <History className="w-4 h-4" />
                       </Button>
                     </Link>
+
                     <Link href={`customers/edit/${c.id}`}>
-                      <Button size="sm" variant="outline">
+                      <Button
+                        size="sm"
+                        className="bg-yellow-500 text-white hover:bg-yellow-600"
+                      >
                         <Pencil className="w-4 h-4" />
                       </Button>
                     </Link>
