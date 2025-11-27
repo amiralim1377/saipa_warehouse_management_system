@@ -39,7 +39,7 @@ function IndividualSuppliers({ suppliers }) {
               </td>
               <td className="p-2 border-b flex gap-2 flex-wrap">
                 <Link href={`/suppliers/edit/${sup.id}`}>
-                  <Button className="bg-accent text-accent-foreground px-3 py-1 rounded-lg">
+                  <Button className="bg-amber-500 text-accent-foreground px-3 py-1 rounded-lg">
                     ویرایش
                   </Button>
                 </Link>
@@ -51,7 +51,7 @@ function IndividualSuppliers({ suppliers }) {
                 />
 
                 <Link href={`/suppliers/details/${sup.id}`}>
-                  <Button className="bg-muted hover:text-black  text-muted-foreground px-3 py-1 rounded-lg">
+                  <Button className="bg-blue-500 hover:text-black text-accent-foreground px-3 py-1 rounded-lg">
                     جزئیات
                   </Button>
                 </Link>

@@ -50,7 +50,7 @@ function RecentSuppliers({ newestSuppliersData }) {
                 <td className="p-2 border-b flex gap-2 flex-wrap">
                   <Link
                     href={`/suppliers/edit/${sup.id}`}
-                    className="bg-accent hover:bg-primary  text-accent-foreground px-3 py-1 rounded-lg"
+                    className="bg-amber-500 hover:bg-primary  text-accent-foreground px-3 py-1 rounded-lg"
                   >
                     ویرایش
                   </Link>
@@ -62,7 +62,7 @@ function RecentSuppliers({ newestSuppliersData }) {
                   />
                   <Link
                     href={`/suppliers/details/${sup.id}`}
-                    className="bg-muted hover:text-black hover:bg-primary text-muted-foreground px-3 py-1 rounded-lg"
+                    className="bg-blue-500 hover:text-black hover:bg-primary text-accent-foreground px-3 py-1 rounded-lg"
                   >
                     جزئیات
                   </Link>
