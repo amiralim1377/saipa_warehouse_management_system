@@ -12,7 +12,7 @@ export default function StatsGrid({ stats }) {
           className="p-5 sm:p-6 rounded-lg shadow-md text-center w-full"
         >
           <CardContent className="grid gap-1">
-            <p className="text-2xl sm:text-3xl md:text-4xl font-semibold truncate">
+            <p className="text-2xl sm:text-2xl md:text-3xl font-semibold truncate">
               {typeof stat.value === "number"
                 ? stat.value.toLocaleString("fa-IR")
                 : stat.value}

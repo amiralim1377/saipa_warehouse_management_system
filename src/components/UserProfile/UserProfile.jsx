@@ -15,7 +15,7 @@ export default function UserProfile() {
   return (
     <div className="flex items-center gap-3">
       {/* اطلاعات کاربر (Desktop: md+) */}
-      <div className="hidden md:flex flex-col text-right">
+      <div className="hidden md:flex gap-y-1 flex-col text-right">
         <p className="text-sm font-medium text-foreground">امیرعلی مرادی نیا</p>
         <p className="text-xs text-muted-foreground">مدیر انبار مرکزی</p>
       </div>

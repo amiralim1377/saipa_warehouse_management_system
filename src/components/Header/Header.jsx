@@ -20,7 +20,7 @@ export default function Header() {
       <div className="flex items-center justify-between relative">
         {/* Desktop brand */}
         <div className="font-bold text-orange-600 text-lg hidden md:block">
-          سایپالجستیک
+          سایپا لجستیک
         </div>
 
         {/* Mobile menu toggle */}

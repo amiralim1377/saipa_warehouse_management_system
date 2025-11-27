@@ -19,7 +19,7 @@ const navLink = [
   { label: "مدیریت موجودی", href: "/inventory", icon: Boxes },
   { label: "سفارشات", href: "/orders", icon: ShoppingCart },
   { label: "انبارها و مکان‌ها", href: "/warehouses", icon: Warehouse },
-  { label: "تأمین‌کنندگان", href: "/suppliers", icon: Truck },
+  { label: "تامین‌ کنندگان", href: "/suppliers", icon: Truck },
   { label: "مشتریان", href: "/customers", icon: Users2 },
   { label: "گزارش‌ها و تحلیل‌ها", href: "/reports", icon: BarChart3 },
 ];

@@ -8,7 +8,7 @@ export default function SideBar() {
       <div>
         <div className="flex flex-col items-center py-4">
           <Image src={"/saipa-logo.webp"} width={50} height={50} alt="logo" />
-          <p className="mt-2 font-bold text-primary text-lg">سایپالجستیک</p>
+          <p className="mt-2 font-bold text-primary text-lg">سایپا لجستیک</p>
         </div>
 
         <SidebarNav />
