@@ -14,7 +14,7 @@ function InventoryActionLinks() {
       </Link>
 
       <Link href="/inventory/outbound">
-        <Button className="bg-secondary text-secondary-foreground px-4 py-2 rounded-lg w-full sm:w-auto">
+        <Button className="bg-[#5F9EA0] text-secondary-foreground px-4 py-2 rounded-lg w-full sm:w-auto">
           ثبت خروجی
         </Button>
       </Link>
