@@ -2,7 +2,7 @@
 
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
-const defaultColors = ["#4CAF50", "#F44336", "#FFC107", "#2196F3", "#9C27B0"];
+const defaultColors = ["#008000", "#ff0000", "#FFC107", "#2196F3", "#9C27B0"];
 
 const renderCustomLabel = ({
   cx,
@@ -13,7 +13,7 @@ const renderCustomLabel = ({
   index,
 }) => {
   const RADIAN = Math.PI / 180;
-  const radius = outerRadius + 50;
+  const radius = outerRadius + 48;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
@@ -26,10 +26,10 @@ const renderCustomLabel = ({
       fill={sliceColor}
       textAnchor={x > cx ? "start" : "end"}
       dominantBaseline="central"
-      fontSize={13}
+      fontSize={18}
       fontWeight={600}
       stroke="#fff"
-      strokeWidth={0.5}
+      strokeWidth={0.1}
     >
       {`${(percent * 100).toFixed(1)}%`}
     </text>
@@ -44,21 +44,14 @@ export default function DynamicPieChart({
   if (!data || data.length === 0) return null;
 
   return (
-    <div style={{ width: "100%", maxWidth: "500px", margin: "0 auto" }}>
+    <div className="max-w-[500px] w-full mx-auto p-4 border border-gray-300 rounded-lg shadow-sm">
       {title && (
-        <h3
-          style={{
-            textAlign: "center",
-            marginBottom: "1rem",
-            fontWeight: "600",
-            color: "#333",
-          }}
-        >
+        <h3 className="text-center mb-4 font-semibold sidebar-foreground">
           {title}
         </h3>
       )}
 
-      <ResponsiveContainer width="100%" height={320}>
+      <ResponsiveContainer width="100%" height={350}>
         <PieChart className="p-3">
           <Pie
             data={data}
@@ -80,12 +73,14 @@ export default function DynamicPieChart({
           </Pie>
           <Tooltip
             contentStyle={{
-              backgroundColor: "#fff",
-              borderRadius: "8px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-              padding: "8px 12px",
+              borderRadius: "10px",
+              padding: "12px 14px",
             }}
-            itemStyle={{ fontSize: "14px", fontWeight: 500 }}
+            itemStyle={{
+              fontSize: "10px",
+              fontWeight: 400,
+              color: "#1f2937",
+            }}
           />
         </PieChart>
       </ResponsiveContainer>
