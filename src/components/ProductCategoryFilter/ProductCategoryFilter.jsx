@@ -64,12 +64,12 @@ export default function ProductCategoryFilter() {
       ))}
       <div className="flex flex-col gap-2 mt-4">
         <Button
-          variant="outline"
-          className="flex-1"
+          className="flex-1 bg-red-500 text-white"
           onClick={handleClearFilter}
         >
           حذف فیلتر
         </Button>
+
         <Button className="flex-1" onClick={handleApplyFilter}>
           اعمال فیلتر
         </Button>

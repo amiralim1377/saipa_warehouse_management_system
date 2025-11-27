@@ -40,18 +40,7 @@ export default function WarehouseCapacityChart({ title, data }) {
         color: "var(--color-card-foreground)",
       }}
     >
-      {title && (
-        <h3
-          style={{
-            textAlign: "center",
-            marginBottom: "1.5rem",
-            fontWeight: 600,
-            color: "var(--color-card-foreground)",
-          }}
-        >
-          {title}
-        </h3>
-      )}
+      {title && <h3 className="text-xl font-bold mb-6 text-center">{title}</h3>}
 
       <ResponsiveContainer width="100%" height={360}>
         <BarChart

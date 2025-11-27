@@ -43,7 +43,11 @@ function DeleteItemButton({ itemId, itemType, deleteFunction, onDeleted }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="destructive">
+        <Button
+          size="sm"
+          className="bg-red-500 text-secondary-foreground"
+          variant=""
+        >
           حذف
         </Button>
       </DialogTrigger>
@@ -61,10 +65,10 @@ function DeleteItemButton({ itemId, itemType, deleteFunction, onDeleted }) {
             انصراف
           </Button>
           <Button
-            variant="destructive"
+            variant=""
             onClick={handleDelete}
             disabled={isPending}
-            className="disabled:opacity-60 disabled:cursor-not-allowed"
+            className="disabled:opacity-60 bg-red-500 disabled:cursor-not-allowed"
           >
             {isPending ? "در حال حذف..." : `تایید حذف ${itemType}`}
           </Button>

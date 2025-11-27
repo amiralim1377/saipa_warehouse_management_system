@@ -47,7 +47,18 @@ export default function InventoryLineChart({ data }) {
                 tickMargin={20}
                 tick={<CustomTick />}
               />
-              <YAxis tick={{ fill: "var(--muted-foreground)", fontSize: 10 }} />
+              <YAxis
+                tick={{
+                  fill: "var(--color-foreground)",
+                  fontSize: 13,
+                  fontWeight: 500,
+                }}
+                axisLine={true}
+                tickLine={false}
+                width={50}
+                mirror={false}
+                tickMargin={25}
+              />
               <Tooltip
                 wrapperClassName="rounded-lg shadow-md bg-[var(--popover)] text-[var(--popover-foreground)]"
                 formatter={(value, name) =>
