@@ -11,7 +11,7 @@ async function CustomersPage() {
   const customers = await getCustomers();
 
   return (
-    <div className="p-6 space-y-6">
+    <div className=" space-y-6">
       {/* آمار مشتریان */}
       <section>
         <CustomersStats CustomersData={CustomersData} />

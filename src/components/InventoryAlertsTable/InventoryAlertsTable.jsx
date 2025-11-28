@@ -45,7 +45,7 @@ function InventoryAlertsTable({ lowStockAlerts, onIncreaseStock }) {
   };
 
   return (
-    <div className="p-6 mx-auto">
+    <div className=" mx-auto">
       <Table className="bg-card rounded-xl ">
         <TableHeader className="">
           <TableRow>

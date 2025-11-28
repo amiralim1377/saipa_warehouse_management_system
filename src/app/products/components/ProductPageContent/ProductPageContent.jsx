@@ -7,7 +7,7 @@ import ProductCategoryFilter from "@/components/ProductCategoryFilter/ProductCat
 
 function ProductPageContent({ message, products, currentPage, totalPages }) {
   return (
-    <div className="flex flex-col items-start   lg:flex-row w-full gap-4 p-4">
+    <div className="flex flex-col items-start   lg:flex-row w-full gap-4 ">
       <div className="flex-1    rounded-lg flex flex-col space-y-2 overflow-x-auto">
         {products.length > 0 ? (
           <>

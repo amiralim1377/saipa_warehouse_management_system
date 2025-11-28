@@ -48,7 +48,7 @@ async function OrdersPage() {
   } = await getPurchaseOrders();
 
   return (
-    <div className="p-6">
+    <div className="">
       {/* آمار سفارش‌ها */}
       <OrdersStats
         confirmedOrdersStats={confirmedOrdersStats}
@@ -63,9 +63,6 @@ async function OrdersPage() {
 
       {/* جدول سفارش‌ها */}
       <div className="mt-6">
-        <h2 className="text-lg font-semibold text-foreground mb-3">
-          آخرین سفارش‌ها
-        </h2>
         <OrdersTable
           confirmedSalesOrders={myConfirmedSalesOrders}
           confirmedPurchaseOrders={myConfirmedPurchaseOrders}

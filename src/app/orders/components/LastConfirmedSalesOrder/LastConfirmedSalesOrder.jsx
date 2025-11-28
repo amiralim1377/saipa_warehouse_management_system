@@ -34,7 +34,7 @@ function LastConfirmedSalesOrder({ orders = [] }) {
 
   if (!hasOrders) {
     return (
-      <div className="bg-background p-4 rounded-lg shadow-md">
+      <div className="bg-background  rounded-lg shadow-md">
         <div className="w-full bg-card border border-border rounded-lg p-8 flex flex-col items-center justify-center text-muted-foreground">
           <PackageOpen className="w-12 h-12 mb-3 text-muted" />
           <p className="text-lg font-medium mb-2">هیچ سفارشی وجود ندارد.</p>
@@ -47,7 +47,7 @@ function LastConfirmedSalesOrder({ orders = [] }) {
   }
 
   return (
-    <div className="bg-background p-4 rounded-lg shadow-md">
+    <div className="bg-background  rounded-lg shadow-md">
       {/* Header actions */}
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-4">
         <h2 className="text-xl font-bold">آخرین سفارش‌های فروش تأیید شده</h2>

@@ -48,7 +48,7 @@ export default function OrdersStats({
   ];
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-8 ">
       <div>
         <h2 className="text-xl font-semibold mb-4 text-foreground">
           آمار سفارش‌های تایید شده

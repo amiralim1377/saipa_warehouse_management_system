@@ -21,7 +21,7 @@ async function ReportsPage() {
   } = await getLowStockAlerts();
 
   return (
-    <div className="p-6 space-y-6">
+    <div className=" space-y-6">
       {/* آمار کلیدی */}
       <section>
         <ReportsStats statsData={stats} />
