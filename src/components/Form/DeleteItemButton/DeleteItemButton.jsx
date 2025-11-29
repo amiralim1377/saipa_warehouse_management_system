@@ -68,7 +68,7 @@ function DeleteItemButton({ itemId, itemType, deleteFunction, onDeleted }) {
             variant=""
             onClick={handleDelete}
             disabled={isPending}
-            className="disabled:opacity-60 bg-red-500 disabled:cursor-not-allowed"
+            className="disabled:opacity-60 text-secondary-foreground bg-red-500 disabled:cursor-not-allowed"
           >
             {isPending ? "در حال حذف..." : `تایید حذف ${itemType}`}
           </Button>
