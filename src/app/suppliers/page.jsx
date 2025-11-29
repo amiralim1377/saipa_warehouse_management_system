@@ -6,6 +6,7 @@ import SuppliersByType from "./components/SuppliersByType/SuppliersByType";
 import RecentSuppliers from "./components/RecentSuppliers/RecentSuppliers";
 import newestSuppliers from "./services/newestSuppliers";
 import fetchLatestPartsBySupplier from "./services/fetchLatestPartsBySupplier";
+import ReusableTable from "./components/ReusableTable/ReusableTable";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,10 @@ async function SuppliersPage() {
     <div>
       <SuppliersStats SuppliersStatsData={SuppliersStatsData} />
       <SuppliersActions />
-      <RecentSuppliers newestSuppliersData={newestSuppliersData} />
+      <ReusableTable
+        suppliers={newestSuppliersData}
+        label="لیست آخرین تأمین‌کنندگان"
+      />
       <SuppliersByType />
       <SupplierPartsTable latestPartsBySupplier={latestPartsBySupplier} />
     </div>

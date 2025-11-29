@@ -1,8 +1,7 @@
 import { getCompanySuppliers } from "../../services/getCompanySuppliers";
 import { getIndividualSuppliers } from "../../services/getIndividualSuppliers";
 
-import CorporateSuppliers from "../CorporateSuppliers/CorporateSuppliers";
-import IndividualSuppliers from "../IndividualSuppliers/IndividualSuppliers";
+import ReusableTable from "../ReusableTable/ReusableTable";
 
 async function SuppliersByType() {
   const {
@@ -19,8 +18,11 @@ async function SuppliersByType() {
 
   return (
     <div>
-      <CorporateSuppliers suppliers={companyData} />
-      <IndividualSuppliers suppliers={individualData} />
+      <ReusableTable suppliers={companyData} label="لیست تأمین‌کنندگان حقوقی" />
+      <ReusableTable
+        suppliers={individualData}
+        label="لیست تأمین‌کنندگان حقیقی"
+      />
     </div>
   );
 }
